@@ -1,8 +1,13 @@
 /**
+ *  问题
+ *      ajax('http://someurl.com', callback) 这个callback一定是异步的吗？
+ *         如果这个请求被缓存了呢？应该是同不的吧
+ *      
  *  异步：现在与未来
  *      JS异步变为同步有什么问题？  ajax变成同步
  *          浏览器就会等待结果，等待的同时锁定UI（滚动 按钮），并且阻塞所有的用户交互。为什么会这样呢？因为JS是单线程，一次只能做一件事
- *      
+ *      部分浏览器会异步处理控制台I/O(console.log)
+
  *      
  *  事件循环
  *      主线程 异步队列 （微任务 宏任务）
@@ -19,11 +24,60 @@
  *      控制反转
  *          回调函数会延迟发生，并且是在第三方的控制下
  * 
- *  
- *      
+ *  Promise.all 
+ *      返回值是一个传入promise完成消息的数组，与指定的顺序一致（与完成顺序无关）
+ *      传入空数组 会立即完成 返回值是空数组
+ *  Promise.race
+ *      传入一个空数组 会挂住 且永远不会决议
  *  
 **/
+void function () {
+    // 异步处理控制台I/O
+    var a = {
+        index: 1
+    }
+    console.log(a); // ??
+    a.index++;
+    // a不会立即打印一个快照，而是会异步处理输出 如果想强制执行快照 可以使用JSON.stringify(a)
+}();
+void function() {
+    // 回调问题
+    /**
+     *  A 避免回调函数未被调用问题
+     *      如果超时函数未被调用执行超时方法 
+     *
+     *
+     *
+    **/
+    // A
+    function timeoutify(fn, delay) {
+        var timer = setTimeout(() => {
+            timer = null;
+            fn(new Error('timeout！'))
+        }, delay);
 
+        return function() {
+            console.log('in')
+            if(timer){
+                clearTimeout(timer);
+                fn.apply(this, ...arguments)
+            }
+        }
+    }
+    function foo() {
+        console.log(1)
+    }
+
+    setTimeout(timeoutify(foo, 500), 2000)
+
+
+    // B
+
+
+
+
+
+}();
 void function() {
     // 事件循环
     setTimeout(function(){
@@ -80,7 +134,12 @@ void function() {
      *          解决了Zalgo风险（不出错是同步，出错是异步）
      *      是可以信任的Promise吗
      *          向Promise.resolve() 传递一个非promise 非thenable的立即值，就会得到一个用这个值填充的promie值
+     *          如果是鸭子类型 对象有then方法 则包装成真正的promise传入
      *          如果向Promise传入一个真正的promise 就会返回这个promise
+     *              var p = new Promise(() => {}) Promise.resolve(p) === p
+     *          
+     *          Promise.reject不会对传入的Promise/thenable进行处理，而是直接将值传出
+     * 
      * 
      *  链式流
      *      每次调用then()，他都会返回一个新的Promise对象
@@ -182,4 +241,94 @@ void function() {
     )
     // p.then((res) => console.log('res', res), (err) => console.log('err', err));
 
+
+
+
+ var p1 = new Promise(resolve => {
+        resolve(42)
+    }) 
+
+ p1.then(() =>  {
+    p1.then(() =>  {
+        console.log(2)
+    })
+    console.log(1)
+ })
+ p1.then(() =>  {
+        console.log(3)
+ })
+}();
+
+    alert(1)
+
+void function() {
+    function getY(x) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(3 * x - 1)
+            }, 100)
+        })
+    }
+    // foo返回的Promise对象不是单一值
+    function foo(bar, baz){
+        var x = bar * baz;
+
+        return getY(x)
+        .then((y) => {
+            return [x, y]
+        })
+    }
+
+    foo(10, 20).then((total) => {
+        const [x, y] = total;
+
+        console.log(x, y)
+    })
+
+
+    // foo方法修改为 
+    function foo (bar, baz) {
+        var x = bar * baz;
+
+        return [
+            Promise.resolve(x),
+            getY(x)
+        ]
+    }
+
+    function spread() {
+        return Function.apply.bind(fn, null)
+    }
+    Promise.all(
+        foo(10, 20)
+    ).then(
+        spread(function(x, y){
+            console.log(x, y)
+        })
+    )
+
+
+    // 解构版本
+    // Promise.all(
+    //     foo(10, 20)
+    // ).then([x, y] => {
+    //     console.log(x, y)
+    // })
+
+    
+    function foo(x, y) {
+        const URL = 'https://someurl.com/?x=' + x + '&y=' + y;
+        return new Promise((resolve) => {
+            console.log(URL)
+            setTimeout(() => {
+                const data = {a: 1}
+                resolve(data)
+            }, 3000)
+        })
+    }
+
+    foo(1,2).then((res) => {
+        console.log(res)
+    })
+    
 }();
