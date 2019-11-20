@@ -1,0 +1,107 @@
+名词短语可以做什么成分？
+    简单句的主语 宾语 补语
+
+名词短语
+    英语是一种拼音文字，以词尾的变化来表示单，复数
+    一些名词的开头有限定词 和词尾的单复数形成呼应，共同限定名词范围
+
+    冠词是限定中一种
+
+    demo
+        a new book 一本新书
+        many good students 许多好学生
+        his beautiful wife 他美丽的妻子
+        the best answer 最好的答案
+        those sweet roses 哪些芬芳的玫瑰
+
+    这些名词短语分三部分组成
+        第一部分 限定词 这个限定词决定名词部分的范围
+        中间部分 形容词 为依附在名词上的修饰语
+        第三部分 名词
+    名词短语中任何一部分都可以省略，且意思不变
+        Of these answers, this one is the best
+        the best 就是一个名词短语，表示为最好的一个
+
+        I want those 我要那种的
+        those 就是名词短语
+
+什么时候不需要用限定词？
+    复数
+        不适合加 a(n)的话，就可以把这个位置空下来
+        many goods students 
+            many 是一个拿掉的， 剩下的good students 依然正确
+        a new book
+            a如果去掉了的话，book表示单数形态，因此要用限定词配合标示它，new book变成不完整的表示
+        
+        a 有one的意思，是为了交代后面的东西是一个的概念
+        不适合加 a(n)的话，就可以把这个位置空下来
+
+        Unmarried men are a rare species these days （未婚男士目前是稀有品种了）
+        men已经表示名词是复数，自然不能用a(n)来表示一个，这时候限定词可以省略
+    抽象名词
+        honesty bribery没有具体形态，不能以'一个'来表示
+    物质名词
+        water food 虽然是具体的东西，但是形状不固定，不能以'一个'来表示
+        
+专有名词
+    人名，地名等都是专有名词，因为代表的对象只有一个，也不是加a(n)
+    为什么只有一个的东西不适合加a(n)呢？
+        因为a有one的意思，那就暗示有第二个存在，所以不应该加
+
+    there are five Sundays this month (这个月有五个周末)
+    不是专有名词
+    I have an appointment on Sunday(我周日有约)
+    专有名词
+
+补语位置
+    补语位置的专有名词最难判断
+    补语和主语（或宾语）有同等关系，如果主语是专有名词，那么补语同等也是专有名词 条件是补语位置上的名词必须有唯一性
+
+    Mr. Elson was president of the high school（爱尔森先生曾是这所高中的校长）
+    Elson是人名（专有名词）所以不能加s，也不能加a(n),我们就可以不用限定词，校长本来是普通名词，因为主语是专有名词，所以补语也变成专有名词
+    Some say he was a better president than Mr. Robert（人们说他当校长，比罗伯逊先生干得更好）
+    补语位置的名词不唯一，跟另一个校长比较就有两任校长，不是专有名词了
+
+    同位语是补语，注意是否为专有名词
+    mattin Wales， Head of the football, at the time, wore a mustache(马丁当时的足球对长，留有小胡子)
+    Head of the football是同位语, 等同于 who was Head of ... Head是主语补语，主语是专有名词，所以不加限定词
+
+定冠词 the的用法
+    在语言学上 the有that或者those的弱化形式，that或者those是指示形容词，有明确的指示功能，所以定冠词the也可以同样理解
+    凡是上下文中有明确或者暗示时，也就是有‘那个’的指示功能时，便要使用定冠词the
+
+    I need a book to read on my trip(我在旅途中需要一本书去读)
+    随意一本书 
+    I have finished the book you lent me(我已经读完了你借给我的那本书)
+    特指你借我的那本书
+
+    Modern history is my favorite subject(近代史是我最喜欢的科目)
+    history是抽象名词所以不加a, modern 是修饰语 并不算明确的指示 所以不加the
+    The history of recent China is a sorry record(中国近代史是一部伤心史)
+    中国近代那一段历史，所以前面加上冠词the
+
+定冠词和专有名词
+    专有名词的定义是 只有一个对象存在的名词，既然只有一个对象存在就不能加 the来表示这个（那个）
+
+    This is not the John I know（这个不是我认识的john）
+    暗示还有另一个john存在，另一面我不认识的john
+    This is a photography show of the Taibei 50 years ago(这是50年前的台北摄影展)
+    暗示台北今日与50年前不同
+
+    the Paciffic (Ocean)    太平洋
+    the Atlanitc (Ocean)    太平洋
+    the Dead Sea            死海
+
+    以上名词位置都是普通名词，做短语省略了名词 所以the是修饰 后面的名词而不是形容词部分
+
+    the Mississippi (River)     密西西比河
+    the Hilton(Hotel)           希尔顿酒店
+
+
+总结
+    1 名词短语包括 限定词 形容词 名词三个部分 任一部分都可以省略
+    2 如果名词短语中不用限定词，是因为该名词不适合加a(n)
+    3 a(n)是one的弱化，the是that/those的弱化
+
+
+

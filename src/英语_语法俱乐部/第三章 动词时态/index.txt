@@ -1,0 +1,82 @@
+简单式
+    简单式的动词可以清楚的交代此动作是发生在那个阶段，而且与它搭配的时间副词通常会明确的标示出一个阶段
+
+    过去时间
+        过去分词 -ed视为一个表达被动意味的形容词词尾
+        现在分词 表示一种持续性，相当于正在 一直 口吻
+        The U.S established diplomatic relations with the P.R.c in 1979 (1979年中美建交)
+        1979年是现在以前 属于过去时间 动词用established,是过去时间的简单式
+
+        The movable print was introduced to England in 1845(活版印刷于1845年被引进英国)
+        过去时间的简单句 
+        过去分词 -ed视为一个表达被动意味的形容词词尾
+        be动词当做动词看 1845年属于过去时间，过去时间的简单句  动词用was 过去分词introduced当作形容词补语看待
+
+        I was visiting clients the whole day yesterday
+        过去时间的简单句
+        现在分词 表示一种持续性，相当于正在 一直 口吻
+        the whole day yesterday表明过去时间，过去时间的简单句 动词用was 
+
+        I was watching TV when I heard the doorbell
+        when I heard the doorbell 表示过去时间
+    现在时间
+        如果时间副词是now 或者以now为中心或大或小的括弧，就要用现在时间的简单式
+
+        Bush is the U.S. President (布什是美国总统)
+        意思是 布什这个阶段是美国总统 
+
+        All mothers love their children
+        全天下所有的妈妈都爱子女 这个是以now为中心的一个很大的时间弧
+
+        the ozone layer is being depleted(臭氧正在被消耗 被动语态A被B...)
+        臭氧是正在被消耗 时态是现在时态 being表示正在... depleted是过去分词短语 表示被消耗
+    未来时间
+        括号放在now右边 will 表示到时候会 为什么是will be 
+
+        there will be a major election in March(三月份将有一个大选)
+
+        Do not call me at six tomorrow.I will still be sleeping then
+
+        The building will be razed next month
+
+完成式
+    相对于简单式用括弧形状表达时间，完成式则是用箭头形式来表达时间，表达动作的截止时间
+    简单式交代动作的发生时段，完成式并不对发生的时段明确的交代，只表示'曾经' '做过'的意思
+
+    现在时间
+        I am sure I have seen this face somewhere
+        时间发生在 现在之前
+        am 表示现在时间 没有时间副词交代过是什么时候‘看到’过这张脸,这个看到是现在之前肯定看过
+
+        We have been woking overtime for a week to fill your order(我们连续加班一个星期赶出你的货)
+        时间发生在 到现在一个星期
+        woking 现在分词，表持续性 一直在加班
+
+        The house has been redcorated twice since they moved in(已经被装修过两次了)
+        时间发生在 他们搬过来到现在
+    过去时间
+        Many soliders had died from pneumonia before the discovery of penicillin(发现盘尼西林以前，已经有很多士兵死于肺炎)
+        在盘尼西林没发现之前（相当于直到1927年以前）
+
+        I had been smoking three packs of cigatettes a day before I decided to quit()
+        时间发生在 截止到我决定戒烟之前
+        
+        Japan had not been defeated yet by the time Germany surrendered unconditionally(到德国无条件投降为止)
+        时间发生在 直到德国投降
+    未来时间
+        next April, I will have worked here for 20 years（到四月，我就在这里工作20年了）
+        时间发生在 截止到四月 （我工作 没有被动语态）
+
+        Come back at 5:00.Your car will have been fixed by then(一定已经修好了)
+        时间发生在 截止到5点 车被修理 被动语态
+
+        In two more minutes,she will have been talking on the phone for three hours(再过两分钟)
+        时间发生在 截止到两分钟之后 ing表示持续发生
+
+
+总结
+    1. 把be动词当作动词看，句子就只剩两种状态：简单句 完成句
+    2. 简单式是以括弧型的时间来表达（有明确时间段 in1967 ）
+    3. 完成式是以箭头的时间来表达（截止到某一个时间）
+    4. be动词后面的分词当作形容词补语。现在分词有正在进行的意思，过去分词有被动的意思
+

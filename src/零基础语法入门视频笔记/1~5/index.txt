@@ -1,0 +1,49 @@
+第一讲 语序和五种基本句式
+    五种单句的基本句型
+        S + V
+            The universe remains 宇宙长存
+        S + V + O
+            
+        S + V + C
+            The food is delicious
+
+        S + V + O + O(主语 + 谓语动词 + 间宾 + 直宾)
+        S + V + O + C
+
+第二讲 be动词的形式和用法
+    be动词的形式
+        动词原形
+            be
+        一般现在时
+            is（单数主语）, am(第一人称), are（复数主语）
+        一般过去时
+            was（单数主语）, were（复数主语）
+        现在分词
+            being
+        过去分词
+            been
+
+        The man is back
+        They are back
+        He was back
+        They were back
+        They have been back
+    be动词的用法
+        后接名词 形容词 地点副词 或短语作为补足语
+
+        The man is a teacher（名词）
+        Marry's new dresses are colorful（形容词）
+        My mother was in the kitchen（地点副词）
+
+第三讲 be动词的否定/提问/回答
+    be动词的否定
+        在 am are was were 后面加not，缩略式 am not, isn't, wasn't, weren't
+        The man isn't back
+        I am not back
+        They aren't back
+        He wasn't back
+        They weren't back
+    使用be动词提问和回答
+        Is he a teacher? Yes, he is / No, he isn't
+        Are you a teacher? Yes, I am / No, I am not
+        Were they teachers? Yes, they were / No, they weren't

@@ -1,0 +1,14 @@
+函数形参的默认值
+
+ES5模拟默认参数
+    timeout = timeout || 5000
+    缺点 如果传入的时间是 0 （false值）有问题
+    timeout = typeof timeout !== 'undefined' ? timeout : 5000
+ES6中的默认参数值
+    使用默认值的情况
+        传入的值 不是undefined（不传值 默认传undefined）
+        传入的值 是false值 也没有关系
+
+    function makeRequest(url, timeout = 5000, callback = function(){}) {}
+    
+

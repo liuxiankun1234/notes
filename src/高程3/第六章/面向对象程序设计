@@ -1,0 +1,328 @@
+对象的定义
+    一个无序属性的集合 其属性可以包含 基本值 对象 函数
+
+    属性类型
+        数据属性
+            包含一个数据值的位置 可以写入 和 读取
+            特性
+                Configurable
+                    能否通过delete删除属性从而重新定义属性 能否修改属性的特性 或者能否把数据属性修改为访问器属性 
+                    设置为false 之后 不可以修改除writable(false --> true)之外的所有特性 不可以delete属性
+                    默认为true
+                Enumerable
+                    能否通过for-in循环返回属性    
+                    默认值为true
+                Writable
+                    能否修改属性值
+                    默认值为true
+                Value
+                    包含这个属性的数据值
+                    读值的时候从这里读
+                    默认值 undefined
+
+            Object.defineProperty() 可以配置属性 未设置的值 默认设置为false
+
+        访问器属性
+            访问器属性不包含数据值
+            特性
+                Configurable
+                    能否通过delete删除属性从而重新定义属性 能否修改属性的特性 或者能否把数据属性修改为访问器属性 
+                    设置为false 之后 不可以修改除writable之外的所有特性
+                    默认为true
+                Enumerable
+                    能否通过for-in循环返回属性    
+                    默认值为true
+                get
+                set
+
+    定义多个属性
+        Object.defineProperties(obj, {
+            name: {
+                value: 12
+            },
+            age: {
+                writable: false
+            },
+            _year: {
+                value: 2018
+            }
+            year: {
+                get: function() {
+                    return this._year
+                },
+                set: function(value) {
+                    this._year = value
+                }
+            }
+        })
+
+    获取描述符方法
+        Object.getOwnPropertyDescriptor(obj, name) // 要拿哪个对象的哪个属性的描述符
+
+创建对象
+    工厂模式
+        缺陷
+            无法解决对象识别问题（对象的constructor属性是用来识别对象类型的）
+        例子
+        function createperson(name, age, job){
+            var person = new Object()
+            person.name = name
+            person.age = age
+            person.job = job
+            return person
+        }
+        var person = createPerson('lxk', 26, 'Software Engineer')
+
+    构造函数模式
+        缺陷
+            每个方法都要在实例中重新创建一遍
+            A.sayName !== B.sayName 
+
+        解决方案
+            把对象中的方法提取到全局作用域中（ 既然是全局对象 只给某个构造函数使用 也很难受 ）
+            使用原型模式
+
+        function Person(name, age, job) {
+            this.name = name
+            this.age = age
+            this.job = job
+
+            this.sayName = function() {
+                return this.job
+            }
+        }
+
+        var person1 = new Person( 'lxk', 26, 'software engineer' )
+        var person2 = new Person( 'lxk', 26, 'software engineer' )
+
+        例子
+            function C() {
+                this.a = 1;
+                return false
+            }
+            new C(); // 返回 {a: 1}
+
+            构造函数返回值 如果是一个对象的情况 new C() 得到返回值 是返回的对象
+            如果返回基本类型值 则忽略
+
+
+        构造函数 与 工厂模式区别
+            没有 显示的创建对象
+            直接将属性赋值到this上
+            没有显示的返回对象
+
+        new 操作符号 作用
+            内部创建一个新对象
+            绑定作用域（this 指向这个对象）
+            执行代码（添加属性）
+            返回这个新对象
+
+            特殊情况
+                如果构造函数中有返回值
+                    返回值类型 是 基本类型  返回 new 实例
+                    返回值类型 是 引用类型  返回引用类型对象
+
+
+        构造函数与其他函数的区别
+            调用方式不同
+            new 调用 
+                this指向当前实例
+            普通函数调用
+                非严格模式 this指向window
+            call apply 调用
+                this指向当前对象
+
+    原型模式
+        缺陷
+            不能传递参数
+            原型对象的 共享属性如果是引用类型的话 就会出问题
+        创建的每个函数都有一个prototype原型属性 这个属性是一个指针 指向一个对象
+        function Person() {
+        }
+        Person.prototype.name = 'lxk'
+        Person.prototype.age = 28
+        Person.prototype.sayName = function() {
+            return this.name
+        }
+
+        理解原型
+            创建一个函数 就会为该函数创建一个prototype属性 这个属性值指向当前构造函数的原型对象
+            原型对象上有一个constructor属性 这个属性是一个指针 指向当前原型所在构造函数
+
+        方法
+
+            A.isPrototypeOf(B) // 判断条件 ret =  B.__prototype === A.prototype
+            Object.getPrototypeOf(person)
+                返回 __proto__ 这个值
+            hasOwnProperty()
+                person.hasOwnProperty('name') //person实例有name属性吗
+            Object.getOwnPropertyNames()
+                无论是否可以枚举都可以拿到属性名
+
+
+        实例中的属性 会屏蔽 原型上的同名属性
+ 
+        es5 constructor和prototype属性的[[Enumerable]]特性设置为 false
+
+        更简单的原型语法
+            var Person = function() {}
+            Person.prototype = {
+                constructor: Person,
+                name: 'lxk',
+                sayName: function() {
+                    return this.name
+                }
+            }
+
+            // 适用于ES5兼容写法
+            Person.prototype = {
+                name: 'lxk',
+                sayName: function() {
+                    return this.name
+                }
+            }
+            Object.defineProperty(Person.prototype, 'constructor', {
+                enumerable: false,
+                value: Person
+            })
+
+            问题
+                如果没有 constructor 这个属性 constructor 将指向Object 原型链查找constructor
+                constructor变得可以枚举了
+
+        原型的动态性
+            var friend = new Person();
+            Person.prototype.sayHi = function(){
+                return 'hi'
+            };
+            friend.sayHi(); //"hi"(没有问题!)
+
+            原型与实例的松散连接
+
+
+            function Person(){
+            }
+            var friend = new Person();
+            Person.prototype = {
+                constructor: Person,
+                name : "Nicholas",
+                age : 29,
+                job : "Software Engineer",
+                sayName : function () {
+                    alert(this.name);
+                }
+            };
+            friend.sayName();   //error
+            问题原因
+                friend对象内部__proto__指向 Person.prototype 
+                Person.prototype 又被改写 所以原原型对象上没有这个方法
+
+    组合使用构造函数模式和原型模式
+        构造函数模式 写属性
+        原型模式 写方法
+
+    动态原型模式
+        注意
+            使用动态原型模式时，不能使用对象字面量重写原型。前面已经解释过了，如果在已经创建了实例的情况下重写原型，那么就会切断现有实例与新原型之间的联系。
+
+        function Person(name, age, job) {
+            this.name = name; 
+            this.age = age; 
+            this.job = job;
+
+            if(typeof this.sayName !== 'function') {
+                Person.prototype.sayName = function() {
+                    return this.name
+                }
+            }
+        }
+    寄生构造函数模式
+    稳妥构造函数模式
+
+继承
+    继承方式
+        接口继承
+            只继承方法签名
+        实现继承
+            esscript只支持实现继承 原型链模式
+    
+    原型链
+        缺陷
+            引用类型值的原型 会是公用的
+            不能传递参数
+        构造函数 原型 实例方法
+            每个构造函数都有一个原型对象， 每个原型对象都有一个指针（constructor）指向当前构造函数，每个实例都有一个内部指针指向当前构造函数的原型
+        本质是重写原型对象
+        // 父类
+        function SuperType() {
+            this.property = true
+        }
+        SuperType.prototype.getSuperValue = function() {
+            return this.property
+        }
+        // 子类
+        function SubType(){
+            this.subproperty = false;
+        }
+        SubType.prototype = new SuperType();
+        SubType.prototype.getSubValue = function() {
+            return this.subproperty;
+        }
+
+        默认原型
+        原型与实例之间的关系
+            isPrototypeOf 
+                Object.prototype.isPrototypeOf(instance)
+                只要是原型链上出现过 就返回true
+
+    借用构造函数
+        Super.call(this)
+        构造函数的问题 方法不是公用的 每个实例都是重新new的一个函数
+    组合继承
+        缺陷
+            父类方法调用了两次
+
+        借用构造函数
+            内部传递属性
+        原型模式
+            传递方法
+
+    寄生式继承
+
+    寄生组合继承 （最优解）
+        寄生方法只要是拿到父类原型上的所有属性和方法 然后clone一个副本 将指针丢给子类的原型
+        使用 inheritPrototype(SubType, SuperType)方法 替换 SubType.prototype = new SuperType()
+        function inheritPrototype(SubType, SuperType) {
+            /**
+             *      SubType     子类
+             *      SuperType   超类
+             *      
+             *      步骤
+             *          创建对象 （创建一个超类的副本 同一个指针引用）
+             *          增强对象  （修正constructor指针）
+             *          指定对象 
+             *          Object(SuperType.prototype) === SuperType.prototype 指针相同
+            **/
+            var prototype = Object(SuperType.prototype);
+            prototype.constructor = SuperType 
+            SubType.prototype = prototype
+        }
+
+        Object() 方法等同与 new Object() 包装器
+            参数为 null undefined 时候 返回一个 {}
+
+        Object.create(obj)
+            参数必填
+                创建一个原型为obj的对象
+                obj 为null undefined 时候 创建一个原型为null的对象
+            
+待看
+    寄生构造函数模式
+    稳妥构造函数模式
+    寄生式继承
+
+
+
+
+
+
