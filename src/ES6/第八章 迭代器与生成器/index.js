@@ -99,13 +99,14 @@
     console.log( iterators1.next() )
     console.log( iterators1.next() )
     console.log( iterators1.next() )
-
+ 
     // 错误示范 抛错
-    // function* createIterator2(items) {
-    //     items.forEach(item => {
-    //         yield i + 1
-    //     })
-    // }
+    function* createIterator2(items) {
+        // yield 不可以在其它函数内部使用
+        items.forEach(item => {
+            yield i + 1
+        })
+    }
 
     // 生成器的函数表达式 function关键字后的括号前加一个*
     let createIterator3 = function *() {}
