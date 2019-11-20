@@ -1,0 +1,343 @@
+JS语法
+    区分大小写
+        js中一切都区分大小写 (变量 函数名 操作符 属性 方法)
+    标识符 （变量 函数名 属性名 函数参数） 命名规则
+        第一个字符必须是 字母 _ $ 
+        其他字符可以是 字母 $ _ 数字
+        关键字 保留字 eval arguments 不能作为标识符 否则会报错
+
+变量
+    ECMAScript的变量是松散类型的  松散：在特定时间内保存一个特定值的的一个名字
+    用var定义的变量将成为定义该变量的作用域中的局部变量 函数退出后销毁
+
+
+数据类型
+    基本类型
+        Number String Boolean Undefined Null Symbol
+    复杂类型
+        Object 本质： 一组无序的名值对
+
+    typeof 操作符
+        返回值
+            'undefined' 值是 未定义
+            'boolean'   值是 布尔值
+            'string'    值是 字符串
+            'number'    值是 数值
+            'object'    值是 对象 或者 null
+            'function'  值是 函数
+
+    Undefined 类型
+        值 只有undefined
+
+        什么情况是undefined呢？ 
+            未初始化的变量 
+            数组的空元素 
+            void n
+            没有传递值的命名参数
+
+
+        为什么是 void 0
+            1 某些浏览器undefined可以被改写
+            2 void 运算符 对给定的表达式进行求值，然后返回 undefined。
+            
+
+        对于未声明的变量 typeof unName ---> return 'undefined'
+
+    Null 类型
+        本质：一个空对象指针
+        适用于 某个变量未来被定义一个对象 可以使用null来初始化
+
+    Boolean 类型
+        注 Boolean类型的值 建议使用is + 值来定义 增加可读性 例： isLogin
+        可以使用Boolean() 或 !!value 方法来转化成Boolean类型 
+        true值 非false
+        false值 0 NaN '' false undefined null
+
+    Number 类型
+        基本的数值字面量格式是十进制整数
+        整数进制 10 8 2 16
+            八进制 
+                规则 
+                    第一位必须是0 然后是0～7的数字
+                    在'use strict'模式下 八进制无效
+                示例
+                    var octalNumber = 079 // 被解析为十进制
+                    var octalNumber = 071 // 返回 57
+
+            十六进制
+                规则
+                    前两位必须是 0x 后跟（0~9 及 A~F） A~F不区分大小写
+
+        浮点数值
+            var floatNumber = .5 不推荐使用
+            var floatNumber = 0.5 推荐使用 
+
+            精度丢失 0.1 + 0.2 !== .3
+
+        NaN
+            一个不是数字的数值类型
+            特性
+                传染 凡是涉及到NaN的操作都会返回NaN NaN + 12 // NaN
+                NaN 不等于任何值 包括本身 NaN !== NaN // true
+
+            isNaN 函数
+                任何不能转换为数值的值都将返回true
+                isNaN(NaN) // true
+                isNaN('10') // false
+                isNaN('boolean') // true
+                isNaN(true) // false
+
+                isNaN() 也适用于对象 只不过要调用对象的 valueOf toString方法
+
+        数值转换
+            tips： 加号 等同于 Number()  + === Number()
+
+            Number()
+            parseInt()
+            parseFloat()
+
+            Number转型函数 可以用于任何数据类型
+            parseInt 和 parseFloat 只适用于 字符串
+
+            Number函数转化规则
+                Boolean类型 true --> 1 false --> 0
+                Number类型 简单的传入传出
+                null --> 0
+                undefined --> NaN
+
+                针对字符串规则
+                    字符串 只包含数字 
+                        Number('-012') // -12
+                    字符串 包含有效的浮点
+                        Number('-012.1') // -12.1
+                    字符串 包含有效的十六进制格式
+                        Number('oxf') // 15
+                    字符串 空
+                        Number('') // 0
+                    others
+                        return NaN
+
+                对象
+                    调用valueOf方法 返回NaN 继续调用toString方法
+
+            parseInt 将字符串转为整数类型
+                接受两个参数
+                    parseInt('1212', 8) // 将字符串1212解析为一个八进制的数值
+                    最好传进制参数
+                规则
+                    忽略前置空格 知道遇到第一个非空字符开始解析
+                    第一个字符不是数字或者负号 返回NaN
+                    parseInt('') // NaN
+
+            parseFloat 
+                将字符串转为浮点类型 
+                没有第二个参数
+
+    String 类型
+        字符串特点
+            字符串是不可变的 一旦创建 值就不能改变
+            var lang = 'Java'
+            lang = lang + ' Script'
+            操作过程
+                创建一个可以容纳拼接之后的字符串的新字符串 然后填充java sciprt 然后销毁之前的
+
+        转换为字符串
+            toString方法
+                参数 基数（进制基数）
+                var num = 10
+                    num.toString(2) // '1010'
+                除了 null 和 undefined 其他都有toString方法
+
+            String方法
+                如果值有toString 方法 则调用 toString（没有参数）方法
+                如果值是null --> 'null'
+                如果值是undefined --> 'undefined'
+
+    Object 类型
+
+操作符
+    应用于对象的操作符 都会调用对象的valueOf()或者toString()方法
+
+    一元操作符
+        含义： 只能操作一个值的操作符
+
+        递增/递减操作符
+
+        前置递增/递减操作
+        var age = 23
+        ++age // 返回24 等同于 age = age + 24
+
+        前置递增/递减操作
+            先相加再返回
+        后置递增/递减操作
+            先返回再相加
+
+    位操作符
+        按内存中表示数值的位来操作数值
+
+
+        ～按位非
+            ～25 // -26
+                        二进制 
+            25       00000000000000000000000000011001
+            ～25      11111111111111111111111111100110
+
+        按位与  &
+            规则： 有一假则假
+
+            25 & 3
+            0000 0000 0000 0000 0000 0000 0001 1001
+            0000 0000 0000 0000 0000 0000 0000 0011
+
+            0000 0000 0000 0000 0000 0000 0000 0001
+
+        按位或  |
+            规则： 有一真则真
+
+            25 | 3
+            有一假则假
+            0000 0000 0000 0000 0000 0000 0001 1001
+            0000 0000 0000 0000 0000 0000 0000 0011
+
+            0000 0000 0000 0000 0000 0000 0001 1011
+
+        按位异或  ^  
+            规则
+                1   1   0
+                0   0   0
+                1   0   1
+                0   1   1
+
+            0000 0000 0000 0000 0000 0000 0001 1001
+            0000 0000 0000 0000 0000 0000 0000 0011
+            0000 0000 0000 0000 0000 0000 0001 1010
+
+        左移
+            << 
+        右移动
+            >>
+
+    布尔操作符
+
+        逻辑非 !
+            取反  关联真值
+
+        逻辑与 &&
+            有一假则假
+            规则
+                第一个操作数 是真 返回第二个操作数
+                
+                如果有一个操作数是 null 则返回null
+                如果有一个操作数是 NaN 则返回NaN
+                如果有一个操作数是 undefined 则返回undefined
+
+
+
+        逻辑或 ||
+            有一真则真
+        null NaN undefined 都可认为是false
+        对象可以认为是 true
+
+    加性操作符
+        加法
+            规则
+                如果一个操作数 是NaN 返回NaN（NaN有传染性）
+                null === 0 undefined === NaN
+        
+        减法
+            规则
+                如果一个操作数 是NaN 返回NaN（NaN有传染性）
+                如果有一个操作数是字符串、布尔值、null 或 undefined，则先在后台调用 Number()函数将其转换为数值，然后再根据前面的规则执行减法计算。如果转换的结果是 NaN，则减法的结果就是 NaN
+
+                如果有一个操作数是对象，则调用对象的 valueOf()方法以取得表示该对象的数值。如果得到的值是 NaN，则减法的结果就是 NaN。如果对象没有 valueOf()方法，则调用其 toString()方法并将得到的字符串转换为数值
+
+                1 - true // 0
+                1 - undefined // NaN
+                1 - null // 1
+
+    关系操作符号
+        > < >= <=
+            规则
+                数值类型 比较
+                字符串类型 进行编码比较 
+                如果有一个是数值 将另一个操作数转成数值 进行比较
+                如果一个操作数是对象，则调用这个对象的 valueOf()方法，用得到的结果按照前面的规则执行比较。如果对象没有 valueOf()方法，则调用 toString()方法，并用得到的结果根据前面的规则执行比较
+                如果一个操作数是布尔值，则先将其转换为数值，然后再执行比较
+
+        == !==
+            规则
+                null == undefined
+                布尔值 true 转成 1 false 转成 0
+                如果一个操作数是字符串，另一个操作数是数值，在比较相等性之前先将字符串转换为数值
+                如果一个操作数是对象，另一个操作数不是，则调用对象的 valueOf()方法，用得到的基本类型值按照前面的规则进行比较
+
+        逗号
+            规则
+                可以用于赋值
+                    var num = (5, 1, 4, 8, 0); // num的值为0
+
+语句
+    if语句
+        if (condition) statement1 else statement2
+
+        condition 可以是任意表达式 如果非布尔值 调用 Boolean(condition) 将结果转成一个布尔值
+
+    do while 语句
+        do {
+            statement
+        } while (expression)
+
+        后测试循环语句 先执行一次
+
+    break continue
+        break 终止整个单层循环 双层for循环 只能终止 最里层
+        continue 跳过此次循环
+
+    switch
+        比较时 使用的是 === 
+
+函数
+    严格模式下规定
+        函数名不能命名为 eval 和 arguments
+        不能把参数命名为 eval 和 arguments
+        不能出现两个命名参数同名的情况
+
+    理解参数
+        命名的参数只提供便利 不是必须
+
+        function doAdd(num1, num2) {
+            arguments[1] = 10;
+            alert(arguments[0] + num2);
+        }
+
+        arguments[1]的值 和 num2 的值 会同步（ 不是访问的同一个内存空间 ）
+        如果只传了一个值 arguments[1]的值不会反应到num2中 因为arguments的长度是由传递进来的参数决定 不是定义参数觉定的
+
+        严格模式
+            arguments 不能被重写
+
+    没有重载
+
+
+问题
+    null 和 undefined关系
+        null是一个空指针引用
+        typeof null === 'object'
+        null是一个关键字，非全局变量
+        +null === 0
+        Object.prototype.__proto__ === null
+
+        undefined是默认值 声明未定义 数组中空元素 函数默认返回值
+        typeof undefined === 'undefined'
+        undefined是一个全局变量
+        Object.is(+undefined, NaN) === true
+
+        undefined == null 隐式转换相等
+
+
+
+
+
+
+
+

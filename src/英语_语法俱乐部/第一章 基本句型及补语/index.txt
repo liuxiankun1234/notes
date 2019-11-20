@@ -1,0 +1,104 @@
+五种单句的基本句型
+    S + V
+    S + V + O
+    S + V + C
+    S + V + O + O(主语 + 谓语动词 + 间宾 + 直宾)
+    S + V + O + C
+
+    基本句型分为5种，是因为5种不用的动词造成的。
+    不及物动词 像die这种动作，可以独立发生，不涉及到别的人或物，就会造成 S + V
+    及物动词 像kill这种动作，就必须发生在另一个对象上，有杀就要有东西被杀 就会造成 S + V + O  
+    在所有的英语动词中，只有解释为'是'的动词是空的，完全没有意义。也只有这样的动词需要补语
+
+不必翻译的动词： be动词
+    The soup is so hot
+        中文：汤太烫了
+        英文： 英语中is是动词不能丢掉，如果仅仅写The soup is语意不完整，动词'是'缺乏叙述能力，起连缀作用
+              ，因而他又被叫做连缀动词，跟在连缀动词后的部分代替了叙述角色，补足句子语意
+
+
+需要补语的动词有哪些？
+    连缀动词
+        be动词  
+            am is are were was
+        感观动词 五官
+            look
+            sound
+            smell
+            taste
+            feel
+        变化动词
+            become
+            turn
+            get
+            grow
+        静止动词
+            keep 
+            stay
+            remain
+        appear
+        seem
+        make
+
+    连缀动词可以翻译成各种各样的是，都没有实际意义，需要补语来补充说明
+    把上面这些动词都换成be动词，没有太大的变化，这个就是 主语 + 动词 + 补语（S + V + C）句形，凡是解释成为各种各样的是的句子都是这种句型
+    例子
+        The dress looks pretty（裙子很好看）
+        The dog seems friendly （狗子看起来很友好）
+        He became a teacher (他当了老师)
+        A nurse makes a good wife (娶护士做太太真不错)
+
+宾语补语句型
+    主语补语的句型，是用补语告诉你主语是什么，中间用'是'为动词串联起来                   
+    主语+动词+宾语+补语的句型 
+        是告诉你宾语是什么 暗示中间有一个'是'的关系存在
+            I find the dress pretty(我发现这个裙子很漂亮) 
+            dress(宾语) pretty(补语) 存在关系 dress is pretty
+    如何判断宾语补语？
+        将宾语和补语拿出来，中间加上一个be动词，看看能不能成为一个S + V + C
+    例子
+        I don`t find the drug bitter(我并没发现药很苦) drug is bitter
+        His college training made him a teacher(他的大学教育使得他成为一名教师) he is a teacher
+        Most people consider a nurse a good wife(大部分人认为护士是一个好的妻子) nurse is a good wife
+
+补语的词类
+    名词或者是形容词比较合理   
+    因为主语或宾语都是名词，所以补语也可以是名词或形容词，经过'是'连接来表达同等的关系
+
+没有补语的be动词
+    be动词必需加宾语，没有宾语的be动词不被当作连缀动词使用。
+    这时候be动词被翻译为存在
+    
+    I think；therefore I am; 我思故我在
+    To be or not to be; that is the question; （生存还是毁灭，这是一个问题）
+
+有两个宾语的句型
+    John is father gave him a dog;（s+v+o+o） 给他一个狗 给谁什么东西
+    John is father called him a dog（s+v+o+c）骂他是一个狗 宾语（him） is 补语(dog)
+
+例句：
+    john died in World War Two(john死于二战)
+        这个句子讲了：一个叫john的人死了，怎么死的呢？在二战中死的
+        主语 + 动词 + 修饰动词的修饰语
+        这个句子去掉修饰语也完全没有问题
+
+
+
+名词解析
+    S       主语：Subject
+    V       动词：Verb
+    O       宾语：Object
+    C       补语：Complement
+    P       表语：Predicative
+    主语：Subject       --->  动作的发出者 ---> 我
+    动词：Verb          --->      动作    ---> 踢
+    宾语：Object        --->  动作的承受者 ---> 球
+    表语：描述主语的性质 特点 位置的词
+    补语：在连缀动词后面的部分，因为替代了动词扮演的叙述角色，补足句子使他获得完整的意思
+    不及物动词：动词可以独立发生，不涉及到别的人或物    例如 he died
+    及物动词：动词不可以独立发生，涉及到别的人或物      例如 he killd three soliders 像杀这种动作一般要跟一个宾语来接受这个动作
+    连缀动词：解释为'是'的动词没有叙述能力，只能把主语和后面构成叙述的部分链接起来，所以叫连缀动词
+
+tips:
+    在所有的英语动词中，只有解释为'是'的动词是空的，完全没有意义，一般的动词，不论及物还是不及物,都承担叙述全全句最主要的内容的工作
+

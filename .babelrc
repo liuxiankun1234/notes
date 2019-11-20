@@ -1,0 +1,15 @@
+{
+    "presets": ["es2015", "latest"],
+    "plugins": [[
+        "transform-runtime",
+        {
+          "helpers": false,
+          "polyfill": false,
+          "regenerator": true,
+          "moduleName": "babel-runtime"
+        }
+      ]],
+    "ignore": [
+      "./src/*" // 对当前编译文件不使用严格模式
+    ]
+}

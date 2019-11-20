@@ -1,0 +1,17 @@
+delete 操作符
+    可以删除属性 不可以删除变量
+
+    原因
+        var 定义的变量 configurable 设置为 false
+
+
+    var name = 'lxk'
+    delete name // false 
+    name // lxk
+
+    window.name = 'lxk'
+    delete window.name true
+    window.name // undefined
+
+
+可以跳过看第十章了 248页

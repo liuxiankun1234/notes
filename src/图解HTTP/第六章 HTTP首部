@@ -1,0 +1,267 @@
+HTTP报文首部
+    HTTP报文的结构
+        报文首部
+            在客户端和服务器端处理时起至关重要作用的信息几乎都在这边
+            包含 请求行 （方法 URI HTTP版本）
+                请求首部字段
+                通用首部字段
+                实体首部字段
+                其他
+
+        空行（CR + LF） 
+        报文主体
+            所需要的用户和资源的信息都在这边
+
+    HTTP请求报文
+        在请求中 HTTP报文由方法 URI HTTP版本 HTTP首部字段等部分构成
+
+HTTP首部字段
+    HTTP首部字段传递重要信息
+        首部字段是为了给浏览器和服务器提供报文主体大小 所使用的语言 认证信息等内容
+    HTTP首部字段结构
+        key：value || value,value
+
+    如果HTTP首部字段重复了怎么办？
+        规范未明确，根据浏览器内部处理逻辑的不同，结果可能不一致 所以不能重复
+    4种HTTP首部字段类型（根据实际用途划分）
+        通用首部字段（General Header Fields）
+            请求报文和响应报文都会使用的首部
+        请求首部字段
+            从客户端向服务器端发送报文时使用的首部。补充了请求的附加内容 客户端信息 响应内容相关优先级等信息
+        响应首部字段
+            从服务器端向客户端返回响应报文时使用的首部。补充了响应的附加内容，也会要求客户端附加额外内容的信息
+        实体首部字段
+            针对请求报文和响应报文的实体部分使用的首部。补充了资源内容更新时间等与实体有关的信息  
+    非HTTP/1.1首部字段
+        在HTTP协议中国使用的首部字段不限于RFC2616中定义的47种首部字段
+        Cookie Set-Cookie Content-Disposition等在其他RFC中定义的首部字段使用频率也很高
+        非正式的首部字段统一归纳在RFC4229 HTTP Header Field Registrations 中 
+    End-to-end首部 和 Hop-by-hop 首部
+        HTTP首部字段将定义缓存代理和非缓存代理的行为
+        端到端首部（End-to-end Header）
+            分在此类中的首部会转发给请求/响应对应的最终接收目标，且必须保存在由缓存生成的响应中，另外规定它必须被转发
+        逐跳首部（Hop-by-hop Header）
+            分在此类中的首部请求只对单次转发有效，会因通过缓存或代理再而不再转发。HTTP/1.1和之后版本中，如果要是Hop-by-hop 首部，需提供Connection首部字段
+            HTTP/1.1中的逐跳字段（ 其他所有字段都属于 端到端首部）
+                Connection
+                Keep-Alive
+                Proxy-Authenticate
+                Proxy-Authorization
+                Trailer
+                TE
+                Transfer-Encoding
+                Upgrade
+
+HTTP/1.1通用首部字段
+    请求报文 和 响应报文双方都会使用的首部
+
+    Cache-Control
+        通过首部字段的Cache-Control的指令，就能操作缓存的工作机制
+        指令适用于请求和响应时 多指令之间使用','分隔
+
+        缓存请求指令一览
+            缓存请求指令
+                指令                    参数        说明
+                no-cache                无          强制向源服务器再次验证
+                no-store                无          不缓存请求或响应的任何内容
+                max-age = [ 秒 ]        必需         响应的最大Age值
+                max-stale( = [ 秒 ])    可省略       接收已过期的响应
+                min-fresh = [ 秒 ]      必需         期望在指令时间内的响应仍有效
+                no-transform            无          代理不可更改的媒体类型
+                only-if-cached          无          从缓存获取资源
+                cache-extension         -           新指令标记（token）
+            缓存响应指令
+                public                  无          可向任意方提供响应的缓存
+                private                 可省略       仅向特定用户返回响应
+                no-cache                可省略       缓存前必须先确认其有效性
+                no-store                无          不缓存请求或响应的任何内容
+                no-transform            无          代理不可更改媒体类型
+                must-revalidate         无          可缓存但必需再向源服务器进行确认
+                proxy-revalidate        无          要求中间缓存服务器对缓存的的响应有效性再进行确认
+                max-age = [ 秒 ]        必需         响应的最大Age值   
+                s-maxage = [ 秒 ]       必需         公共缓存服务器响应的最大Age值
+                cache-extension         -           新标记指令
+        表示是否能缓存的指令
+            public指令
+                Cache-Control: public
+                含义： 任何途径的用户用户可以无条件的缓存该响应
+            private指令
+                Cache-Control: private
+                含义： 响应只以特定的用户作为对象
+                表明响应只能被单个用户缓存，不能作为共享缓存（即代理服务器不能缓存它）,可以缓存响应内容
+            no-cache指令
+                Cache-Control: no-cache
+                含义： 防止从缓存中返回过期的资源
+                请求：告知缓存服务器必需原原本本的转发请求，并告知缓存者，别拿你的缓存糊弄人，必需转发我的请求，并验证你的缓存（如果有的话）（端对端重载）
+                响应：允许缓存服务器缓存副本，实际价值是强制缓存者，校验缓存的新鲜度，一旦新鲜可以使用缓存作为响应
+                服务端返回的响应中包含no-cache指令，缓存服务器不能对资源进行缓存。源服务器以后也将不再对缓存服务器请求中提出的资源进行确认，且禁止其对资源缓存
+                no-cache=Location
+                    服务器返回的响应中，对no-cache字段名具体指定参数值，那么客户端就不能缓存资源，无参数指令可以使用缓存。
+                    只能在响应指令中指定该参数
+                no-cache=Set-Cookie
+                    告诉缓存者Set-Cookie这个字段不要使用缓存内容，而是使用新的，对其他可以使用缓存
+        控制可执行缓存的对象的指令
+            no-store指令
+                Cache-Control: no-store
+                含义：禁止被缓存 暗示请求（和对应的响应） 或响应中包含机密信息
+        指定缓存期限和认证的指令
+            s-maxage指令
+                Cache-Control: s-maxage=604800(单位：秒)
+                功能同max-age，不同点s-maxage指令只适用于供多位用户使用的公共缓存服务器（代理）
+                仅适用于共享缓存(比如各个代理)，并且私有缓存中它被忽略
+            max-age指令
+                Cache-Control：max-age=604800
+                请求：客户端发送请求资源包含max-age指令时，如果判断缓存资源的缓存时间数值比指定时间的数值更小，那么客户端就接受资源
+                max-age = 0 时，那么缓存服务器通常将请求转发给服务器
+                响应：响应包含max-age指令时，服务器端将不对资源的有效性再次确认，数值代表资源缓存的最长时间
+                http/1.1版本的缓存服务器遇到同时存在Expires首部字段会先处理max-age指令，1.0版本相反
+            min-fresh指令
+                Cache-Control：min-fresh=60
+                请求：要求缓存服务器返回至少还未过指定时间的缓存资源
+                比如，min-fresh为60秒，在这60s内如果有超过有效期限的资源都无法作为响应返回了
+            max-stale指令
+                Cache-Control：max-stale=3600
+                请求：可以指示缓存资源即使过期也照常接收
+                未指定参数值，那么无论过期多久客户端都会接受，指定时间即使资源过期，但是还在指定时间内，仍可作被客户端接收
+            only-if-cached指令
+                Cache-Control: only-if-cached
+                请求：客户端仅在缓存服务器本地缓存目标资源的情况下才会要求其返回，换言之，该指令要求缓存服务器不重新加载响应，也不会再次确认资源有效性
+                     若发生请求缓存服务器的本地缓存无响应，则返回状态码504
+            must-revalidate指令
+                Cache-Control: must-revalidate
+                代理会向源服务器再次验证即将返回的响应缓存目标是否有效
+                如果代理无法联通资源服务器再次获取有效资源的话，缓存必需给客户的一个504（可以理解为缓存服务器没跟源服务器确认资源，有点懵懵的，就返回504了）
+                使用must-revalidate指令会忽略max-stale指令
+            proxy-revalidate指令
+                Cache-Control: proxy-revalidate
+                所有缓存服务器在接受到客户端带有该指令的请求返回响应之前，必需再次验证缓存的有效性
+            no-transform指令
+                Cache-Control: no-transform
+                请求： 缓存不能改变主体的媒体资源类型
+                响应：同请求
+                不得对资源进行转换或转变。Content-Encoding, Content-Range, Content-Type等HTTP头不能由代理修改。
+                非透明代理可以对图像格式进行转换，以便节省缓存空间或者减少缓慢链路上的流量。 no-transform指令不允许这样做
+        Cache-Control扩展
+            cache-extension token
+                Cache-Control: private, community="UCI"
+                通过cache-extension标记（token），可以扩展首部字段内的指令
+                上例子，Cache-Control内部并没有community这个指令，可以借助cache-extension这个指令添加，如果缓存服务器能理解，就可以使用，不理解就忽略
+            
+    Connection（不再转发的首部字段）
+        定当前的事务完成后，是否会关闭网络连接。如果该值是“keep-alive”，网络连接就是持久的，不会关闭，使得对同一个服务器的请求可以继续在该连接上完成
+
+        控制不再转发给代理的首部字段
+            Connection: Upgrade 告知代理服务器删除首部字段 Upgrade 后再转发
+
+        管理持久连接
+            Connection： close 关闭持久连接
+            Connection： keep-alive 保持持久连接（1.1版本之前需要指定）
+
+    Date
+        首部字段创建HTTP报文的日期和时间
+
+    Pragma
+        1.1之前版本的历史遗留字段 只用在客户端发送请求
+        Pragma：no-cache 要求所有的代理服务器 不返回缓存的资源
+
+    Trailer
+        事先说明在报文主体后记录了哪些首部字段
+    
+    Transfer-Encoding
+        规定了传输报文主体时采用的编码方式
+        1.1的传输编码仅对分块传输编码有效
+    
+    Upgrade
+        用于检测HTTP协议及其他协议是否可使用更高版本进行通信
+        参数可以用来指定一个完全不同的通信协议
+        例子
+            Upgrade: TLS/1.0
+            Connection: Upgrade
+            Upgrade首部字段产生作用的对象仅限于客户端和临接服务器之间
+            所有使用Upgrade的时候 要指定Connection
+            对于有首部字段Upgrade的请求，服务器可用101 Switching Protocols状态吗作为响应返回
+    
+    Via
+        用于追踪客户端与服务器之间的请求和响应报文的传输路径
+        报文经过代理或网关时，会先在首部字段Via中附加该服务器信息
+    
+    Warning
+        用于告知用户一些与缓存相关的问题的警告
+        Warning: [警告码] [警告的主机:端口] '[警告的内容]' ([日期时间])
+        
+        警告码       警告内容                               说明
+        110         Response is state（响应已过期）        代理返回已过期的资源
+        111         Revalidation failed(再验证失败)       代理再验证资源有效性时势失败（服务器无法到达等原因）
+        112         DisConnection operation(断开连接操作)  代理与互联网连接被故意断开
+        113         Heuristic expiration（试探性过期）      响应的使用期限超过24小时（有效缓存的设定时间大于24小时的情况下）
+        199         Miscellaneous warning(杂项警告)        任意的警告内容
+        214         Transformation applied(使用了转换)     代理对内容编码或媒体类型等执行了某些处理
+        299         Miscellaneous persistent warning(持久杂项警告)  任意的警告内容
+
+    请求首部字段
+        从客户端往服务器端发送请求的报文中所使用的字段 用于补充请求的附加信息 客户端信息 对响应内容相关的优先级等问题
+        Accept
+            首部字段可通知服务器，用户代理能够处理的媒体类型以及媒体类型的相对优先级
+            可使用type/subtype这种形式
+            文本文件
+                text/html, text/plain, text/css
+                application/xhtml+xml, application/xml
+            图片文件
+                image/jpeg, image/gif, image/png
+            视频文件
+                video/mpeg, video/quicktime
+            应用程序使用的二进制文件
+                application/octet-stream, application/zip
+            
+            如果浏览器不支持png图片的显示，那Accept就不指定image/png,而指定可以处理的image/gif和image/jpeg等图片类型
+            使用q=0.9表示权重范围值 0～1
+        Accept-Charset
+            请求头用来告知（服务器）客户端可以处理的字符集类型
+            浏览器通常不会设置此项值，因为每种内容类型的默认值通常都是正确的，但是发送它会更有利于识别
+        Accept-Encoding
+            告知服务器用户代理支持的内容编码及内容编码的优先顺序，可一次性指定多种内容编码
+            * 指定任意编码格式
+            可以使用q权重
+            gzip
+            compress
+            deflate
+            identity 
+                不执行压缩或不会变化的默认编码格式
+        Accept-Language
+            告知服务器用户代理支持的自然语言集以及优先级 可指定多种语言
+            可以使用q权重   
+        Authorization
+            用来告知浏览器，用户代理的认证信息（证书值） 通常想要通过服务器认证的用户代理会在接收到返回的401状态码
+            响应后，把首部字段Authorization加入请求中
+        Expect
+            规定了一个期望条件 Expect: 100-continue
+            是一个请求消息头，包含一个期望条件，表示服务器只有在满足此期望条件的情况下才能妥善地处理请求
+            服务器可以做如下回应
+                100     如果消息头中的期望条件可以得到满足 使得请求可以顺利进行
+                417     如果服务器不能满足期望条件的话 也可以是其他任意表示客户端错误的状态码 417
+        From
+            请求的From 中包含一个 电子邮箱 这个电子邮箱地址属于发送请求的用户代理的实际掌控者的人类用户
+            如果你在运行一个机器人代理程序（比如爬虫），那么 Form 首部应该随请求一起发送，这样的话，在服务器遇到问题的时候，例如机器人代理发送了过量的、不希望收到的或者不合法的请求，站点管理员可以联系到你
+        Host
+            单台服务器（单个IP）可以有几个域名（虚拟主机） 所以Host是HTTP/1.1中必需存在的一个字段 用来区分
+            告知服务器，请求的资源所处在的互联网主机名和端口号
+            首部字段Host和以单台服务器分配多个域名的虚拟主机的工作机制密切相关 也是Host存在的真实意义
+            请求被发送到服务器端，域名会用IP替换掉。但是这个时相同的IP地址下部署运行多个域名，那么服务器就无法理解究竟是哪个域名对应的请求。因此需要使用首部Host来指出请求的主机名
+            未设定主机名 可以直接传空
+        If-Match
+            形如If-XXXX这样的请求首部字段，都可以称为条件请求
+        If-Modified-Since
+            条件式首部请求
+            用于确认代理或客户端拥有的本地资源的有效性
+            获取资源的更新日期可以通过Last-Modified来确定
+            If-Modified-Since 只可以用在 GET 或 HEAD 请求中
+            如果在If-Modified-Since指定的日期时间后，资源发生了更新，服务器接受请求，如果服务器未更新 返回304
+            举例：客户端发送请求说 我的资源是1月1日的缓存资源 现在是3月3号 服务器大兄弟 你这个资源之后更新没啊 
+                 服务器：更新了 --> 大兄弟 我这个资源更新了 重新给你发一份
+                        未跟新 --> 大兄弟 我这也没更新啊 使用本地缓存吧 （304）
+        
+
+
+
+
+            

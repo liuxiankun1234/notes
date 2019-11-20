@@ -1,0 +1,64 @@
+函数表达式
+    定义函数两种方式
+        函数声明
+            特性
+                函数声明提升
+            function functionName(args) {
+            }
+        函数表达式
+            创建的是匿名函数（拉姆达函数）
+            var functionName = function() {}
+
+    递归
+        function factorial(num) {
+            if( num < 1) {
+                return 1
+            } else {
+                return num * factorial(num - 1)
+            }
+        }
+
+        // 问题 
+        var anotherFactorial = factorial
+        factorial = null // 修改引用的指针 内部factorial指针也变为null 出问题
+        anotherFactorial(4)
+
+        解决一
+            arguments.callee
+                指向当前函数的一个指针
+                严格模式下 失效
+
+        解决二
+            命名函数表达式代替 
+                f 在函数内部可以被访问  不可以在函数外部访问
+                factorial不可以在函数内部访问 可以在函数外部访问
+
+            var factorial = function f(num) {
+                if( num < 1) {
+                    return 1
+                } else {
+                    return num * f(num - 1)
+                }
+            }
+
+    闭包
+        有权访问另一个函数作用域中的变量的函数
+        保存一些私有变量不被外界访问
+
+
+    闭包
+        有权访问其他作用域中的变量的一个函数
+
+    var func = function (list) {
+        const list = list || []
+        return function (name) {
+            if( list.indexOf(name) !== -1 ){
+                list.push(name)
+                return list
+            }
+        }
+    }
+
+    var list = func([1,2,3]);
+    var list2 = list(4)
+
