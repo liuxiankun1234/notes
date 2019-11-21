@@ -30,6 +30,18 @@
  *  Promise.race
  *      传入一个空数组 会挂住 且永远不会决议
  *  
+ * 
+ *      new Promise(executor)
+ *          executor里报错,promise状态被置为rejected 忽略函数返回值
+ * 
+ *      promise.then()
+ *          返回一个值(return 12)  等同于 resolve(12)
+ *          没有返回值 等同于 resolve(undefined)
+ *          抛出一个错误(throw new Error('cry')) 等同于 reject(throw new Error('cry'))
+ *          返回一个promise对象的话 等同于Promise.then()操作 
+ *              如果返回promise是接受状态 那么then返回的也会成为接受状态，并且将promise的接受状态的回调函数的参数作为返回值作为该promise的参数
+ *              如果返回promise是拒绝状态 同上
+ *              如果返回promise是pending then的状态也是pending，并且终态和返回promise终态相同
 **/
 void function () {
     // 异步处理控制台I/O
