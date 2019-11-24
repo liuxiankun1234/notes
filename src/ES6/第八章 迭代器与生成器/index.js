@@ -66,6 +66,8 @@
      *  生成器的对象的方法
      *      ES5 let o = { createIterator: function *() {}}
      *      ES6 let o = { *createIterator() {} }
+     *  不能使用箭头函数来创建生成器
+     * 
      * 
      *   特性
      *      生成器函数每执行完一条yield语句后函数就会停止执行 知道再次调用next()方法才会继续执行
@@ -102,7 +104,7 @@
  
     // 错误示范 抛错
     function* createIterator2(items) {
-        // yield 不可以在其它函数内部使用
+        // yield 只能在生成器函数内部使用 不能穿透函数边界
         items.forEach(item => {
             yield i + 1
         })
@@ -196,7 +198,7 @@
      *  内建迭代器 
      *      集合对象迭代器
      *          ES6中的3种集合对象 array Map Set
-     *          内建迭代器
+     *          集合对象内建迭代器
      *              entries() 返回一个迭代器方法 值为多个键值对
      *              values()  返回一个迭代器方法 值为集合的值
      *              keys()    返回一个迭代器方法 值为集合中的所有键名
@@ -204,7 +206,7 @@
     
     /**
      *  entries()
-     *      entries() 返回一个迭代器方法
+     *      entries() 返回一个迭代器方法\
      *          可以使用for-of方法循环这个集合
      *          也可以 使用next()方法 循环这个结合
      *  
