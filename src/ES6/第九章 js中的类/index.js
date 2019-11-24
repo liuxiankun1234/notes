@@ -23,8 +23,8 @@
      *          let PersonClass = class {}
      *      this.name name 是类的自有属性
      *      
-     *      类声明 typeof 得到的是一个'function' 所以类只是ES5的一个语法糖
-     *      与函数不同的是 类属性不可以赋予新值 PersonClass.prototype就是这样一个只可读的类属性
+     *      class 是ES5的语法糖 typeof PersonClass === 'function'
+     *      class的prototype不可以改写，只可以添加属性 等同于cosnt定义
      *      
      *      为什么要使用类声明？
      *          类的prototype是一个只读属性，不可被修改

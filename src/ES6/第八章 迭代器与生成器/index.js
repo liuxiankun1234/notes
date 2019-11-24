@@ -3,18 +3,28 @@
  *      createCombinedIterator1 搜索这个方法瞧一瞧
  *      主要是return 这个方法
  * 
+ *      var iterator = function *createItreator() { yield 1; yield 2; yield 3; }
+ *      [...iterator]
+ *          展开运算符同for-of一样 仅处理有[Symbol.iterator]属性的对象
+ *         ... 展开 iterator 的[Symbol.iterator]方法
+ *              iterator是Set Array      默认[Symbol.iterator]是 values()
+ *              iterator是Map            默认[Symbol.iterator]是 entries()
+ *              其它迭代器没有默认[Symbol.iterator]
+ * 
  *  第八章 迭代器与生成器
  *      迭代器
+ *          为什么会有迭代器出现呢？
+ *              多个for循环嵌套问题，追踪变量会很复杂，迭代器消除了这种复杂性减少循环中的错误
  *          是一个特殊的对象 具有next()方法
  *      生成器 
  *          是一个返回迭代器对象的函数
- *  
+ *          通过关键字 function 后面的*来表示 *可以紧挨着function关键字
  *      注意事项
  *          yield first + 2 中yield优先级 比 加号优先级低 所以等同于 yield (first + 2)
- *  
- * 
- * 
- * 
+ *          yield 只能在生成器内部使用，不能穿透函数边界（同 return）即便是生成器函数作用域中的function也不行
+ *          不能用箭头函数来创建生成器
+ *          yield value 和 iterator.next(value) 可以双向传递value
+ *   
 **/
 (function() {
     console.log('******************  1  ******************');
@@ -116,18 +126,21 @@
 (function() {
     console.log('******************  3  ******************');
      /**
+     *  for-of 同迭代器一样 解决循环内部索引追踪问题
      * 
      *  可迭代对象和for-of循环
      *      可迭代对象具有 Symbol.iterator 属性 
      *          是一种与迭代器密切相关的对象
      *          理解为返回一个生成迭代器对象的生成器
      *      Symbol.iterator 通过指定的函数可以返回一个作用于附属对象的迭代器
-     * 
      *      ES6中所有集合对象（数组 Set集合以及Map结合）和 字符串都是可迭代对象 都有默认的迭代器
-     *  
+     *          
+     *      for-of循环通过调用[Symbol.itreator]方法来获取迭代器，多次调用next方法获取value值，循环至done为true为止
+     *      具有 Symbol.iterator 属性的对象都有默认的迭代器 则可以使用for-of循环
+     *
      *  特性
      *      由于生成器默认会为Symbol.iterator属性赋值，因此所有通过生成器创建的迭代器都是可迭代对象
-     *  
+     *      可以通过Symbol.iterator来访问对象默认的迭代器
      *  警告
      *      如果将 for-of 语句用于不可迭代对象 null undefined将会导致程序抛错
      * 
@@ -143,9 +156,9 @@
     **/
 
     /**
-     *      访问默认迭代器
+     *      访问默认迭代器  
      *          for-of方法执行JS内部对调用 迭代器方法
-     *          具有 Symbol.iterator 属性的对象都有默认的迭代器 则可以使用for-of循环
+     *          
      *  
      *          
      *      ******** 访问到 数组的 生成器函数 生成器函数执行 ********
@@ -196,9 +209,9 @@
 
     /**
      *  内建迭代器 
-     *      集合对象迭代器
+     *      集合对象迭代器 
      *          ES6中的3种集合对象 array Map Set
-     *          集合对象内建迭代器
+     *          集合对象内建迭代器 返回的都是迭代器
      *              entries() 返回一个迭代器方法 值为多个键值对
      *              values()  返回一个迭代器方法 值为集合的值
      *              keys()    返回一个迭代器方法 值为集合中的所有键名
@@ -206,13 +219,15 @@
     
     /**
      *  entries()
-     *      entries() 返回一个迭代器方法\
+     *      entries() 返回一个迭代器方法
      *          可以使用for-of方法循环这个集合
      *          也可以 使用next()方法 循环这个结合
      *  
      *  values() 返回一个值
-     *  keys()   返回一个键值
-     * 
+     *  keys()   返回一个键  
+     *              数组 返回数字类型的键 数组本身的其它属性不会被返回
+     *              Set 由于键与值相同 所以返回值与 values()相同 
+     *              Map 返回独立的键
     **/ 
     let colors = ['red', 'green'];
     let tracking = new Set([123, 456, 789])
@@ -304,8 +319,8 @@
      *      
      *      注意
      *          return 返回之后 通知done为true 不执行之后的yield
-     *          return 的值 只在第一次done为ture的时候 返回 之后还是undefined
-     *          for-of中不支持return
+     *          return 一个值的时候 只在第一次done为ture的时候返回 之后再调用next() value还是undefined
+     *          展开运算符和for-of会直接忽略return语句指定的任何返回值
      *    
      *      
     **/
@@ -327,10 +342,10 @@
     /**
      *  委托生成器
      *      将两个迭代器合二为一 可以执行复杂的任务
-     *      可以创建一个生成器 再给yeild语句添加星符号 就可以将生成数据的过程委托给其他迭代器
+     *      可以创建一个生成器 再给yeild语句添加星符号 就  可以将生成数据的过程委托给其他迭代器
      *  
-     *  yield * 也可以用在 字符串上 调字符串默认迭代器
-     *  yield *'HELLO'
+     *  yield * 也可以用在 字符串上 委托给 字符串默认迭代器
+     *  yield *'HELLO' 
     **/
     // 例子一
     function *createNumberIterator() {
@@ -358,8 +373,11 @@
     
     // 例子二
     function *createNumberIterator1() {
+        console.log('yield 1')
         yield 1;
+        console.log('yield 2')
         yield 2;
+        console.log('return 3')
         return 3;
     }
     function *createRepeatingIterator(count) {
