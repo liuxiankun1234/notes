@@ -25,6 +25,10 @@
  *          不能用箭头函数来创建生成器
  *          yield value 和 iterator.next(value) 可以双向传递value
  *   
+ *      在委托生成器内部
+ *          yield *createIterator();
+ *          createIterator 生成器内部的return不会被yield 而是当正常的return返回值
+ *          在生成器中函数中的return 会在next()时 done置为ture的时候value设置为这个值 再次调用则会成为undefined
 **/
 (function() {
     console.log('******************  1  ******************');
