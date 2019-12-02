@@ -1,10 +1,10 @@
-import sums from './test_01';
-console.log(sums);
+import * as all from './test_01';
+console.log(all);
 /**
  *      用模块封装代码
  *      
  *      什么是模块
- *          含义： 是自动运行在严格模式下并且没有办法推出运行的JS代码
+ *          含义： 是自动运行在严格模式下并且没有办法退出运行的JS代码
  *                与共享一切架构相反的是 在模块顶部创建的变量不会自动被添加到全局共享作用域，这个变量仅仅在模块顶部作用域存在 
  *                而且模块必需导出一部分外部代码可以访问的元素 如变量 函数等 
  *          
@@ -70,5 +70,10 @@ console.log(sums);
  *                  内嵌script
  *                  web worker 或 server worker 方法加载并执行JS文件
 **/
+window.a = 2;
+delete window.a
 
+
+
+console.log(window.a, this)
 
