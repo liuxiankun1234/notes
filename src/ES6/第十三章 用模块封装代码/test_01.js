@@ -1,4 +1,7 @@
 function sum(a, b){
     return a + b;
 }
-export default sum
+export const ERR_OK = 0;
+
+
+export { sum as default }

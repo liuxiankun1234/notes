@@ -1,5 +1,8 @@
 // import '../common/scss/index.scss'
 
+/***************************** JavaScript高级程序设计 上卷 *****************************/
+import './高程3/第三章/index';
+
 /***************************** 你不知道的javascript 上卷 *****************************/
 // import './你不知道的Javascript上卷/第一部分 作用域和闭包/index';
 // import './你不知道的Javascript上卷/第二部分 this和原型对象/index';
@@ -8,7 +11,7 @@
 
 /***************************** 你不知道的javascript 中卷 *****************************/
 // import './你不知道的Javascript中卷/第一章 类型/index';
-import './你不知道的Javascript中卷/第二部分 异步和性能/生成器/index';
+// import './你不知道的Javascript中卷/第二部分 异步和性能/生成器/index';
 
 /***************************** 学习Javascript数据结构与算法  *****************************/
 // import './学习Javascript数据结构与算法/第二章 数组/index';
