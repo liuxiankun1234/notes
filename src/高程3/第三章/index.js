@@ -234,8 +234,8 @@
  *          左移(<<)
  *              位做移动n位，用零补充
  *          有符号的右移(>>) 
- *              忽略符号 其他无影响
- *              ？？？
+ *              将数值向右移动，但保留符号位（结果最小是0）
+ *              位做移动n位，用零补充
  *          无符号的右移动(>>>)
  *              正数规则同>>相同
  *              负数将位右移，剩余使用零填充 会产生很大的数
@@ -247,8 +247,96 @@
  *              ** !! === Boolean() 表示转换成布尔类型值
  *              
  * 
- *          逻辑与
- *          逻辑或
+ *          逻辑与(&&)
+ *              优先级高于逻辑或
+ *              规则：有一假则假
+ *              如果第一个操作数能够决定结果(false值)，那么就不会对第二个操作数进行求值 直接返回false值
+ *                  NaN && 'A'          // 返回NaN
+ *                  0 && 'A'            // 返回0
+ *                  null && 'A'         // 返回null
+ *                  undefined && 'A'    // 返回undefined
+ *                  '' && 'A'           // 返回 ''
+ *                  false && 'A'        // 返回 false
+ *                  
+ *          逻辑或(||)
+ *              规则：有一真则真
+ *              如果第一个操作数能够决定结果(true值)，那么就不会对第二个操作数进行求值 直接返回true值
+ *              true || 'A'             // 返回 true
+ *              '非空字符' || 'A'        // 返回 '非空字符'
+ *              1 || 'A'                // 返回 1
+ *              ({}) || 'A'             // 返回 {}
+ *
+ *      乘性操作符 
+ *          乘法(*) 
+ *              如果乘积超过了ES数值的表示范围 则返回Infinity或者-Infinity
+ *              如果一个数是NaN         返回NaN 
+ *              Infinity * 0        === NaN
+ *              Infinity * n        === Infinity(符号取决于n)
+ *              Infinity * Infinity === Infinity
+ *              如果有一个操作数不是数值，后台调用Number()进行转换，再调用上规则
+ *          除法(/)
+ *              如果乘积超过了ES数值的表示范围 则返回Infinity或者-Infinity
+ *              如果一个数是NaN           返回NaN 
+ *              Infinity / Infinity     === NaN
+ *              0 / 0                   === NaN
+ *              n / 0                   === Infinity (n !== 0 符号取决于n的正负)
+ *              如果有一个操作数不是数值，后台调用Number()进行转换，再调用上规则
+ *          求模(%)
+ *              Infinity % n            === NaN (n有限大的数值 0 负数 正数) 
+ *              n % Infinity            === n (n有限大的数值 0 负数 正数)      
+ *              Infinity % Infinity     === NaN
+ *              如果有一个操作数不是数值，后台调用Number()进行转换，再调用上规则
+ * 
+ *      加性操作符号
+ *          加法
+ *              数值
+ *                  NaN + n                  === NaN(有一个操作数是NaN 返回NaN)
+ *                  Infinity + Infinity      === Infinity
+ *                  -Infinity + -Infinity    === -Infinity
+ *                  Infinity + -Infinity     === NaN
+ *              字符串
+ *                  字符串 + 字符串 ===字符串拼接
+ *                  如果一个操作符是字符串 另一个是非字符串 将非字符串转成字符串(调用String()方法) 然后拼接
+ *          减法
+ *              NaN + n                  === NaN(有一个操作数是NaN 返回NaN)
+ *              Infinity - Infinity      === NaN
+ *              -Infinity - Infinity     === NaN
+ *              Infinity + Infinity      === Infinity
+ *              -Infinity - Infinity     === -Infinity
+ *              如果操作数是字符串 布尔值 null undefined 调用Number()转换为数值
+ *              如果操作数是对象 调用valueOf() 返回值不是数值 则调用toString()方法
+ * 
+ *      关系操作符
+ *          > < >= <=
+ *          如果两个操作数都是数值 则执行数值比较
+ *          如果两个操作数都是字符串 则比较字符串的编码值
+ *              '23' > '3' --> false 因为比较编码值 2的编码是50 3的编码是51 所以'23' < '3'
+ *          如果一个操作数是数值 则将另一个操作数转为一个数值 进行比较
+ *          对象调用valueOf() 返回值不是数值 调用toString()方法
+ *          布尔值转为数值，然后进行比较
+ *      
+ *      相等操作符
+ *          相等/不相等 类型转换
+ *              一个操作数是布尔值，转成数值进行比较        Number(boolean)
+ *              一个操作数是字符串 另一个操作数是数值       Number(string)与数值比较
+ *              null undefined 不进行转换
+ *              一个操作数是对象 转成基本类型(valueOf() toString()) 进行比较
+ *              null == undefined // true
+ *              null != 0 // true
+ *              undefined == 0 // false
+ *          全等/不全等
+ *      
+ *      逗号操作符
+ *          多用于声明多个变量 
+ *          还可用于赋值 (总是返回表达式的最后一项)     
+ *          
+**/
+
+/**
+ *  语句
+ *      if语句
+ * 
+ * 
 **/
 void function() {
     // JS区分大小写
