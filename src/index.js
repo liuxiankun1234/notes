@@ -1,7 +1,8 @@
 // import '../common/scss/index.scss'
 
 /***************************** JavaScript高级程序设计 上卷 *****************************/
-import './高程3/第三章/index';
+// import './高程3/第三章/index';
+import './高程3/第四章/index';
 
 /***************************** 你不知道的javascript 上卷 *****************************/
 // import './你不知道的Javascript上卷/第一部分 作用域和闭包/index';
