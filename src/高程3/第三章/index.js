@@ -334,7 +334,16 @@
 
 /**
  *  语句
- *      if语句
+ *      不建议使用with语句
+ *      break 
+ *          跳出循环
+ *      continue 
+ *          跳出本次循环
+ *      switch
+ *          case的值 可以是常量 变量 表达式 
+ *          值比较时 使用全等操作
+ *      label
+ *          给循环设置label 可以通过 break/continue跳出对应循环
  * 
  * 
 **/
