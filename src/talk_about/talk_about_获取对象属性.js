@@ -20,7 +20,7 @@
      *      Object.getOwnPropertyNames 是全部字符串属性
      *      Object.keys                仅可枚举字符串属性 
      *      for-in 循环只检索可枚举的字符串属性
-     *      hasOwnProperty  包含可枚举和不可枚举的字符串属性和Symbol属性
+     *      hasOwnProperty  当前对象的可枚举和不可枚举的字符串属性和Symbol属性
      *      移动端兼容性都没问题 都可以使用
      *  
      *  注：
