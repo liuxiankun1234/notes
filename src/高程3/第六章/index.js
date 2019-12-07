@@ -1,4 +1,7 @@
 /**
+ *  待解决问题
+ *      寄生构造函数模式创建对象 new调用跟正常调用有什么区别吗？一定要new调用吗？
+ * 
  *  面向对象的程序设计
  *      对象
  *          无序属性的集合 名值对 属性值可以是数据或函数
@@ -281,7 +284,19 @@ void function() {
  *      注意不能重写原型 创建了实例的情况下重写原型 会切断现有实例与新原型间联系
  * 
  *  寄生构造函数模式
+ *      依赖于已有的构造函数来创建对象
  *      
+ *      返回的对象跟构造函数原型没有任何关系 不能通过instanceOf操作符来判断对象类型
+ *  
+ *  稳妥构造函数模式
+ *      没有公共属性 方法内部也不使用this 
+ *      适合安全生产环境中
+ *      
+ *      与寄生构造函数模式不同
+ *          新创建的实例方法不引用this
+ *          不使用new操作符号调用构造函数
+ * 
+ *  
 **/
 void function() {
     // 组合使用构造函数和原型模式
@@ -331,8 +346,30 @@ void function() {
         return o;
     }
 
-    var p5 = new Person('lxk', 23);
+    var p5 = new Person3('lxk', 23);
+
+    // 寄生构造函数模式
+    function SpecialArray() {
+        var values = new Array();
+
+        values.push.apply(values, arguments);
+        values.toPipedString = function() {
+            return this.join('|')
+        }
+        return values;
+    }
+    var arr = new SpecialArray('A', 'B', 'C');
+    console.log(arr.toPipedString());
     
 
-}();
 
+    // 稳妥构造函数模式
+    function Person5(name, age) {
+        var o = new Object();
+        // 可以定义一些私有变量或者函数
+        o.sayName = function() {
+            return name
+        }
+        return o;
+    }
+}();
