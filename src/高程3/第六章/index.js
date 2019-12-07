@@ -39,7 +39,8 @@
  *                  Object.defineProperties()
  * 
  *              读取属性的特性
- *                  Object.getOwnPropertyDescriptor(obj, property) 获取obj对象的property属性的特性
+ *                  Object.getOwnPropertyDescriptor(obj, property) 
+ *                      获取obj对象实例上(不支持原型上)的property属性的特性
  * 
 **/
 void function() { 
@@ -118,6 +119,7 @@ void function() {
  *          将构造函数的作用域赋给新对象(因此this指向这个新对象)
  *          执行构造函数中的代码(为这个新对象添加属性)
  *          返回新对象
+ *          调用构造函数会为实例添加一个指向最最初原型的[[prototype]]指针
  * 
 **/
 
@@ -180,4 +182,157 @@ void function() {
     //     this.sayName = sayName;
     // }
 }(); 
+/**
+ *  原型模式
+ *      我们创建的每个函数都有一个prototype属性，这个属性是一个指针 指向当前构造函数的原型对象 
+ *      默认情况下所有的原型对象都自动获得一个constructor属性，指向prototype所属的函数
+ *      原型对象包含可以由特定类型的所有实例共享的属性和方法
+ *      
+ *      A.isPrototypeOf(B) // A对象是B实例的原型吗
+ *      Object.getPrototypeOf(A) // 获取A的原型对象
+ * 
+ *      更简单的原型语法
+ *          使用对象字面量重写原型
+ *          每个函数都有一个prototype对象，自动获取一个constructor属性 原型被重写之后 会造成constructor丢失 会继续沿着原型链向上查找       
+ *          {} ===> new Object() ===> Object.prototype.constructor === Object
+ *          手动创建注意constructor的enumerable属性是false
+ *      
+ *      原型的动态性
+ *          先创建实例 后为原型添加属性 也能在实例上访问到该属性？
+ *              原型与实例间松散的连接 在实例中未找到属性 会搜索原型链 实例与原型间是一个指针 所以会访问修改之后原型属性
+ *          重写原型就不同了
+ *              调用构造函数会为实例添加一个指向最最初原型的[[prototype]]指针，重写原型切断了构造函数与最初原型之间的联系
+ *              实例中的指针仅指向原型，而不是构造函数
+ * 
+ *      原生对象的原型
+ *          原生的引用类型也是通过原型模式创建的 所以可以通过给原生对象的prototype添加新属性来增加方法
+ *          但是不推荐
+ * 
+ *      原型对象的问题
+ *          不支持传递参数
+ *          原型上的属性共享（引用类型会有问题）
+ * 
+ *      注意：
+ *          手动修改 constructor prototype toString() valueOf() hasOwnProperty() 时候要注意
+ *          手动创建的属性默认configurable enumerable writable 都是true
+ *          原型上的属性 enumerable特性默认设置为false
+ * 
+**/
+void function() {
+    function Person() {
+
+    }
+    Person.prototype.name = '原型name';
+    Person.prototype.sayName = function() {
+        return this.name
+    }
+    var p1 = new Person();
+    var p2 = new Person();
+
+    // console.log(
+    //     p1.name === p2.name, // true
+    //     p1.sayName === p2.sayName // true
+    // )
+
+    /**
+     *  prototype被重写后
+     *      constructor属性丢失 会继续沿着原型链向上查找
+     *          {} ===> new Object() ===> Object.prototype.constructor === Object
+     *      添加constructor属性注意 enumerable属性是false
+     *      
+     * 
+    **/
+    function Person2() {
+    }
+    Person2.prototype = {
+        name: '原型 p2',
+        friends: [],
+        sayName() {
+            return this.name
+        }
+    }
+
+    var p3 = new Person2();
+    var p4 = new Person2();
+
+    console.log(
+        p3 instanceof Person2,
+        p4 instanceof Person2,
+        p3.constructor === Person2,
+        p3.constructor === Object 
+    )
+
+    p3.friends.push('C');
+    p4.friends.push('B');   
+    console.log(p3.friends)
+
+    
+
+}();
+/**
+ *  组合使用构造函数和原型模式
+ *      构造函数模式用于定义实例属性
+ *      原型模式用于定义方法和共享属性
+ * 
+ *  动态原型模式
+ *      解决问题
+ *          其他oo语言经验的开发人员 看到独立的构造函数和原型会困惑
+ *      通过判断原型上是否存在某个方法来保证只初始化一次原型
+ *      注意不能重写原型 创建了实例的情况下重写原型 会切断现有实例与新原型间联系
+ * 
+ *  寄生构造函数模式
+ *      
+**/
+void function() {
+    // 组合使用构造函数和原型模式
+    function Person(name, age) {
+        this.name = name;
+        this.age  = age;
+    }
+    Person.prototype = {    
+        //  需要注意 ES5默认 constructor 是不可枚举的 这么写会变成可枚举的值
+        constructor: Person,
+        sayName() {
+            return this.name
+        }
+    }
+
+    var p1 = new Person('lxk', 18);
+    var p2 = new Person('lxk2', 22);
+
+
+    // 动态原型模式
+    function Person2(name, age) {
+        this.name = name;
+        this.age  = age;
+
+        if(typeof this.sayName !== 'function'){
+            // 通过判断 this.sayName 来初始化原型 保证仅初始化一次原型
+            Person2.prototype.sayName = function() {
+                return this.name
+            }
+        }
+    }
+
+    var p3 = new Person2('lxk', 18);
+    var p4 = new Person2('lxk2', 22);
+
+
+    // 寄生构造函数模式
+    function Person3(name, age) {
+        var o = new Object();
+
+        o.name = name;
+        o.age = age;
+        o.sayName = function() {
+            return this.name;
+        }
+
+        return o;
+    }
+
+    var p5 = new Person('lxk', 23);
+    
+
+}();
 
