@@ -44,6 +44,7 @@
  *              读取属性的特性
  *                  Object.getOwnPropertyDescriptor(obj, property) 
  *                      获取obj对象实例上(不支持原型上)的property属性的特性
+ *                      不能获取原型上的属性特性
  * 
 **/
 void function() { 
@@ -104,6 +105,7 @@ void function() {
  *              抽象了创建对象的过程 解决创建多个对象的问题
  *          缺点
  *              不能解决对象识别问题(没有constructor 不能知道当前构造函数是谁)
+ * 
  *      构造函数模式
  *          不同于工厂模式
  *              没有显示的创建对象
@@ -123,7 +125,7 @@ void function() {
  *          执行构造函数中的代码(为这个新对象添加属性)
  *          返回新对象
  *          调用构造函数会为实例添加一个指向最最初原型的[[prototype]]指针
- * 
+ *       
 **/
 
 void function() {
@@ -372,4 +374,4 @@ void function() {
         }
         return o;
     }
-}();
+}(); 
