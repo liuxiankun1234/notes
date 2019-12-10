@@ -24,7 +24,7 @@
      *      this.name name 是类的自有属性
      *      
      *      class 是ES5的语法糖 typeof PersonClass === 'function'
-     *      class的prototype不可以改写，只可以添加属性 等同于cosnt定义
+     *      class的prototype不可以改写，只可以添加属性
      *      
      *      为什么要使用类声明？
      *          类的prototype是一个只读属性，不可被修改
@@ -95,6 +95,7 @@
      * 
      *      命名类表达式
      *          命名不能改写  PersonClass2 不能被改写
+     *          同具名函数 函数名/类名 仅存在定义的函数/类内部 
      * 
     **/
     // 基本的类语法表达式
@@ -187,6 +188,45 @@
     })();
 })();
 (function() {
+    /**
+     *      生成器方法
+     *          类用来表示值得集合，为他创建默认迭代器更好
+    **/
+    class Foo {
+        *createIterator() {
+            yield 1;
+            yield 2;
+            yield 3;
+        }
+    }
+    var foo = new Foo();
+
+    var iterators = foo.createIterator();
+    console.log('iterators', [...iterators])
+
+    class Foo1{
+        constructor() {
+            this.values = []
+        }
+        // 创建默认迭代器
+        *[Symbol.iterator]() {
+            yield *this.values.values();
+        }
+    }
+
+    var foo1 = new Foo1();
+    foo1.values.push(1);
+    foo1.values.push(2);
+    foo1.values.push(3);
+
+    for(let k of foo1){
+        console.log(k);
+        
+    }
+
+
+})();
+(function() {
     console.log('******************  5  ******************');
     /**
      *      可计算成员名称
@@ -277,14 +317,15 @@
         return new F();
     }
     function inhertPrototype(SuperType, SubType) {
-        var prototype = object(SuperType.prototype);
+        // 高程上是Object 非object
+        var prototype = Object(SuperType.prototype);
         prototype.constructor = SuperType;
         SubType.prototype = prototype;
     }
     inhertPrototype(SuperType, SubType)
 
     /**
-     *  ES6继承
+     *  ES6继承(底层逻辑就是寄生组合继承)
      *      派生类：继承了其他类的类 （可以理解为子类）       
      *      派生类指定了构造器 就必需使用super() 否则会造成错误
      *      如果不实用构造器 则默认调用super()方法

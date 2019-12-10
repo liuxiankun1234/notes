@@ -4,7 +4,8 @@
 // import './高程3/第三章/index';
 // import './高程3/第四章/index';
 // import './高程3/第六章/index';
-import './高程3/第六章/inherit';
+// import './高程3/第六章/inherit';
+// import './高程3/第七章/index';
 
 /***************************** 你不知道的javascript 上卷 *****************************/
 // import './你不知道的Javascript上卷/第一部分 作用域和闭包/index';
@@ -48,7 +49,7 @@ import './高程3/第六章/inherit';
 // import './ES6/第六章 Symbol和Symbol属性/index' 
 // import './ES6/第七章 SET和MAP/index' 
 // import './ES6/第八章 迭代器与生成器/index'
-// import './ES6/第九章 js中的类/index' 
+import './ES6/第九章 js中的类/index' 
 // import './ES6/第十章 改进的数组功能/index' 
 // import './ES6/第十一章 Promise与异步编程/index'
 // import './ES6/第十二章 代理和反射API/index'
