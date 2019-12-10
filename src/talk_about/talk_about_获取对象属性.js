@@ -12,8 +12,8 @@
      *                                      
      *  ES3
      *  for-in                              获取当前对象（包含原型链上的）所有可以枚举的字符串属性
-     *  in (prop in obj)                    可枚举的字符串属性 或 Symbol属性 在obj或者原型上出现 返回true
-     *             
+     *  in (prop in obj)                    获取当前对象（包含原型链上的）所有可以枚举或不可枚举的属性 字符串或symbol属性
+     *                                      in 可以适用于 数组 字符串的索引 
      *  
      *  总结：
      *      Object.getOwnPropertyNames 和 Object.getOwnPropertySymbols 就可以获取对象（非原型链）所有的属性
