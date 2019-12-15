@@ -429,7 +429,7 @@
     console.log('******************  7  ******************');
     /**
      *  在类构造器中使用new.target(元属性)
-     *      new.target指向当前this的指向 仅能指 当前构造器 不同于 instanceof是父级就可以
+     *      new.target指向当前this的指向 仅指向当前实例的构造函数  不同于 instanceof是父级就可以
      *      new.target 在class中不能为 undefined 因为 class只能通过new调用
     **/
     class Rectangle {
