@@ -17,7 +17,8 @@
  *          属性初始值的简写
  *              当对象的属性和本地变量同名 可以简写
  *          对象方法的简写语法
- *              sayName(){ return this.name } 于es5区别 可以使用super关键字
+ *              sayName(){ return this.name } 
+ *              与es5区别 可以使用super关键字
  *          可计算属性
  *              []表示 可以传入变量
  *  
@@ -28,7 +29,7 @@
  *                  Object.is(+0, -0)   --> false
  *                  Object.is(NaN, NaN) --> true
  *          Object.assign()
- *              就是extends方法
+ *              浅复制 同 extends 方法
  *              Object.assign({}, common, {others: 'others'}) 这样common不会被修改
  *              同名后面的属性覆盖前面的属性
  *              访问器set属性会将值返回 给assign方法进行赋值
