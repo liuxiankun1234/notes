@@ -41,19 +41,19 @@
 
 /**************************** 深入理解ES6 读书笔记 ****************************/
 
-// import './ES6/第一章 块级作用域绑定/index'
-// import './ES6/第二章 字符串和正则表达式/index'
-// import './ES6/第三章 函数/index'
-// import './ES6/第四章 扩展对象的功能性/index'
-// import './ES6/第五章 解构：使数据访问更便捷/index'  
-// import './ES6/第六章 Symbol和Symbol属性/index' 
-// import './ES6/第七章 SET和MAP/index' 
-// import './ES6/第八章 迭代器与生成器/index'
-import './ES6/第九章 js中的类/index' 
-// import './ES6/第十章 改进的数组功能/index' 
-// import './ES6/第十一章 Promise与异步编程/index'
-// import './ES6/第十二章 代理和反射API/index'
-// import './ES6/第十三章 用模块封装代码/index'
+// import './深入理解ES6/第一章 块级作用域绑定/index'
+// import './深入理解ES6/第二章 字符串和正则表达式/index'
+// import './深入理解ES6/第三章 函数/index'
+// import './深入理解ES6/第四章 扩展对象的功能性/index'
+// import './深入理解ES6/第五章 解构：使数据访问更便捷/index'  
+// import './深入理解ES6/第六章 Symbol和Symbol属性/index' 
+// import './深入理解ES6/第七章 SET和MAP/index' 
+// import './深入理解ES6/第八章 迭代器与生成器/index'
+import './深入理解ES6/第九章 js中的类/index' 
+// import './深入理解ES6/第十章 改进的数组功能/index' 
+// import './深入理解ES6/第十一章 Promise与异步编程/index'
+// import './深入理解ES6/第十二章 代理和反射API/index'
+// import './深入理解ES6/第十三章 用模块封装代码/index'
 
 
 /**
