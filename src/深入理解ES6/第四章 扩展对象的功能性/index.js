@@ -53,14 +53,17 @@
  * 
  *          
  *          简化原型访问的super引用
- *              super 当前实例的原型对象
- *              可以记住当前对象的原型是谁 
+ *              super  === Object.getPrototypeOf(this)
+ *              super指向当前实例的原型 调用方法中的this指向当前对象
  *              super只可以用在 执行上下文中使用 sayName() {} 不能在 sayName: function() {}中使用
  *              为什么es6的sayName方法没有prototype方法 而es5定义的sayName有原型方法
  * 
  *          正式的方法定义
+ *              方法  sayName() {} 
+ *              函数  sayName: function()
+ * 
  *              es6中正式将方法定义为一个函数 他会内部有一个 [[HomeObject]]的属性来容纳这个方法从属的对象
- *              super 会根据 HomeObejct 来定位当前方法所属的对象是谁 再通过圆形链查找方法（等同于实例方法查找） 
+ *              super 会根据 HomeObejct 来定位当前方法所属的对象是谁 再通过原型链查找方法（等同于实例方法查找） 
 **/
 
 
@@ -192,7 +195,7 @@
     }
     let person = {
         getGeeting() {
-            console.log(super.getGeeting())
+            // console.log(super.getGeeting())
             return 'Hello'
         }
     }
@@ -201,15 +204,20 @@
             return 'Woof'
         }
     }
-    Object.setPrototypeOf(person, p)
+
     let friend = Object.create(person);
-    console.log( friend.getGeeting() );
-    console.log( friend );
-    console.log( Object.getPrototypeOf(friend) === person );
-    
+    console.log(
+        friend.getGeeting(),
+        Object.getPrototypeOf(friend) === person
+    );
+
     Object.setPrototypeOf(friend, dog);
-    console.log( friend.getGeeting() );
-    console.log( Object.getPrototypeOf(friend) === dog );
+
+
+    console.log(
+        friend.getGeeting(),
+        Object.getPrototypeOf(friend) === dog
+    );
 })();
 (function() {
     console.log('******************  5  ******************');
@@ -223,51 +231,52 @@
      * 
      * 
     **/
-    // let person = {
-    //     getGeeting() {
-    //         return 'Hello'
-    //     }
-    // }
-    
-    // // es5版本
-    // let friend = {
-    //     getGeeting() {
-    //         // 当前对象的原型对象上的 getGeeting 方法（this指针指向当前对象）
-    //         return Object.getPrototypeOf(this).getGeeting.call(this) + ' hi'
-    //     }
-    // }
-    // // es6版本
-    // let friend1 = {
-    //     getGeeting() {
-    //         // 当前对象的原型对象上的 getGeeting 方法（this指针指向当前对象）
-    //         return super.getGeeting() + ' hi'
-    //     }
-    // }
+
+   let person1 = {
+        name: 'person1',
+        getGeeting() {
+            console.log(22222)
+            return this.name;
+        }
+    }
 
     let person = {
+        name: 'person',
         getGeeting() {
-            return 'Hello'
+            return this.name;
         }
     }
+    
+    Object.setPrototypeOf(person, person1)
 
     let friend = {
+        name: 'friend',
         getGeeting() {
-            return Object.getPrototypeOf(this).getGeeting.call(this) + ' hi'
+            // friend hi
+            // 注意 this指向调用当前方法的实例
+            // return Object.getPrototypeOf(this).getGeeting.call(this) + ' hi'
+            // super指向当前对象的原型 this指向当前对象
+            return super.getGeeting() + ' hi'
         }
     }
+    Object.setPrototypeOf(friend, person)
 
-    Object.setPrototypeOf( friend, person )
+    console.log(
+        friend.getGeeting(), // friend hi
+    )
 
-    let relative = Object.create( friend )
-    console.log( person.getGeeting() )
-    console.log( friend.getGeeting() )
-    console.log( relative.getGeeting() ) // 递归 栈溢出
+
+    var p = Object.create(friend)
+    console.log(
+        p.getGeeting(), // friend hi
+    )
+
     // 解决方案
     // super super 可以清楚的知道 当前对象的原型是谁
 
     
     
-});
+})();
 
 (function() {
     console.log('******************  6  ******************');
