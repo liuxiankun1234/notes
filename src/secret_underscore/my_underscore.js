@@ -1,11 +1,3 @@
-/**
- *  名词解析
- *      identity    身份
- *      iteratee    迭代器
- *      shallow     浅
- *      match       n：比赛/火柴/相配的人  vt: 相同/适应/使较量/
- *      optimize    优化
-**/
 (function() {
     // 基础设置
     // -------------------------------------------------------------------------------------
@@ -14,22 +6,30 @@
 
     /**
      *  环境判断
-     *      判断 self是一个对象类型 并且self.self === self 将self赋值给root(window对象)
-     *      如果上条件false 则 
-     *      判断 global是一个对象类型 并且global.global === global 将global赋值给root(node对象)
-     *      如果上条件false 则 
-     *      如果this 有值的情况 将this赋值给root
-     *      如果上条件false 则 
+     *      浏览器环境判断
+     *          判断 self是一个对象类型 并且self.self === self 将self赋值给root(window对象)
+     *          如果上条件false 则 
+     *      服务端 node环境
+     *          判断 global是一个对象类型 并且global.global === global 将global赋值给root(node对象)
+     *          如果上条件false 则 
+     *      虚拟机
+     *          如果this 有值的情况 将this赋值给root
+     *          如果上条件false 则 
      *      将{}赋值给root
      * 
+     *      强烈推荐：使用分组运算符来区分优先级
     **/
-    var root = typeof self == 'object' && self.self === self && self ||
-        typeof global == 'object' && global.global === global && global ||
+    var root = (typeof self == 'object' && self.self === self && self) ||
+        (typeof global == 'object' && global.global === global && global) ||
         this || {};
+
+    // 保存上一个 '_' 值
+    var previousUnderscore = root._;
 
     /** 
      *  使用变量存原生方法有什么好处呢？
      *      减少了访问层级 减少了代码的冗余
+     *      使用局部变量缓存 减少了作用域链查找 提升性能
      *      使用变量存起来防止后面代码重写原型的方法，使框架内部出问题
      *          例子 _.trim = function(str){ return str.trim() } 
      *              框架后修改 String.protoype.trim = function(){return '大傻'}
