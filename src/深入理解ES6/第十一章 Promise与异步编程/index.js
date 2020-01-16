@@ -132,9 +132,9 @@
     let p5 = Promise.race(new Set([p2, p1, p3]))
     p5.then((value) => {
         console.log(`value: ${value}`)
-    }).catch(err => {
-        console.log(`err: ${err}`)
-    })
+    }).then(() => {
+
+    }).catch()
 })();
 
 
