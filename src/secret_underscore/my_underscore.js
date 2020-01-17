@@ -67,14 +67,25 @@
     // 暂时手动挂在到window上
     root._ = _;
 
-    // if (typeof exports != 'undefined' && !exports.nodeType) {
-    //     if (typeof module != 'undefined' && !module.nodeType && module.exports) {
-    //         exports = module.exports = _;
-    //     }
-    //     exports._ = _;
-    // } else {
-    //     root._ = _;
-    // }
+    //这里这个if else是为了确定当前环境是node环境还是浏览器环境
+    //typeof exports的结果必然是String类型，因此不使用严格不等于也可以
+    //至于为什么不使用隐式转换，应该是为了代码语义更明确，就是想判断不是undefined类型（存疑）
+    if (typeof exports != 'undefined' && !exports.nodeType) { 
+        //nodeType是为了确定该值不是html dom元素
+        if (typeof module != 'undefined' && !module.nodeType && module.exports) {
+        //node环境下exports = module.exports = {}，exports是对module.exports的引用
+        //module.exports = _ ,注意到_其实是个函数（这段代码上面定义了）
+        //这切断了exports和module.exports的联系，只能被module.exports输出，不能被exports输出
+        //所以需要exports = module.exports，重新建立起 exports 对 module.exports 的引用
+        exports = module.exports = _;
+        } 
+        //兼容对module.exports支持不好的旧的commonJS规范
+        //引用的时候可以 var _ = require("underscore")._
+        exports._ = _;
+    } else { 
+        //浏览器环境，_方法挂载到window上
+        root._ = _;
+    }
     
     /**
      *  optimizeCb函数
