@@ -575,7 +575,7 @@
             Math.max(0, array.length - (n == null || guard ? 1 : n))
         );
     };
-
+    
     // Get the last element of an array. Passing **n** will return the last N
     // values in the array.
     _.last = function(array, n, guard) {

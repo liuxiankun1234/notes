@@ -1,5 +1,9 @@
 (function() {
     /**
+     *  Array.isArray 与 arr instanceof Array 区别
+     *      创建一个iframes 会创建一个新的window对象及其Array对象 所以instanceof检测必须是当前window才生效 
+     *      Array.isArray 能检测iframes里的数组
+     *      instanceof 不能检测内嵌iframes数组
      *  数组
      *      参数
      *          new Array(element)
@@ -63,5 +67,15 @@
      *      
      *      
     **/
-
+   var iframe = document.createElement('iframe');
+   document.body.appendChild(iframe);
+   var win = window.frames[window.frames.length-1] // 返回一个window对象
+   xArray = win.Array;
+   var arr = new xArray(1,2,3); // [1,2,3]
+   
+   // Correctly checking for Array
+   Array.isArray(arr);  // true
+   // Considered harmful, because doesn't work though iframes
+   arr instanceof Array; // false
+   console.log(arr instanceof xArray, arr instanceof Array)
 })();

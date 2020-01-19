@@ -31,9 +31,9 @@
      *      减少了访问层级 减少了代码的冗余
      *      使用局部变量缓存 减少了作用域链查找 提升性能
      *      使用变量存起来防止后面代码重写原型的方法，使框架内部出问题
-     *          例子 _.trim = function(str){ return str.trim() } 
+     *          例子 _.trim = function(str){ return String.prototype.trim.call() } 
      *              框架后修改 String.protoype.trim = function(){return '大傻'}
-     *              _.trim() // 使用变量存起来的话 后文被修改没有问题
+     *              _.trim() // 使用变量存起来的话 后文被修改没有问题 StrProto.trim.call()
      * 
     **/
     var ArrayProto = Array.prototype,
@@ -67,25 +67,25 @@
     // 暂时手动挂在到window上
     root._ = _;
 
-    //这里这个if else是为了确定当前环境是node环境还是浏览器环境
-    //typeof exports的结果必然是String类型，因此不使用严格不等于也可以
-    //至于为什么不使用隐式转换，应该是为了代码语义更明确，就是想判断不是undefined类型（存疑）
-    if (typeof exports != 'undefined' && !exports.nodeType) { 
-        //nodeType是为了确定该值不是html dom元素
-        if (typeof module != 'undefined' && !module.nodeType && module.exports) {
-        //node环境下exports = module.exports = {}，exports是对module.exports的引用
-        //module.exports = _ ,注意到_其实是个函数（这段代码上面定义了）
-        //这切断了exports和module.exports的联系，只能被module.exports输出，不能被exports输出
-        //所以需要exports = module.exports，重新建立起 exports 对 module.exports 的引用
-        exports = module.exports = _;
-        } 
-        //兼容对module.exports支持不好的旧的commonJS规范
-        //引用的时候可以 var _ = require("underscore")._
-        exports._ = _;
-    } else { 
-        //浏览器环境，_方法挂载到window上
-        root._ = _;
-    }
+    // //这里这个if else是为了确定当前环境是node环境还是浏览器环境
+    // //typeof exports的结果必然是String类型，因此不使用严格不等于也可以
+    // //至于为什么不使用隐式转换，应该是为了代码语义更明确，就是想判断不是undefined类型（存疑）
+    // if (typeof exports != 'undefined' && !exports.nodeType) { 
+    //     //nodeType是为了确定该值不是html dom元素
+    //     if (typeof module != 'undefined' && !module.nodeType && module.exports) {
+    //     //node环境下exports = module.exports = {}，exports是对module.exports的引用
+    //     //module.exports = _ ,注意到_其实是个函数（这段代码上面定义了）
+    //     //这切断了exports和module.exports的联系，只能被module.exports输出，不能被exports输出
+    //     //所以需要exports = module.exports，重新建立起 exports 对 module.exports 的引用
+    //     exports = module.exports = _;
+    //     } 
+    //     //兼容对module.exports支持不好的旧的commonJS规范
+    //     //引用的时候可以 var _ = require("underscore")._
+    //     exports._ = _;
+    // } else { 
+    //     //浏览器环境，_方法挂载到window上
+    //     root._ = _;
+    // }
     
     /**
      *  optimizeCb函数
@@ -163,7 +163,7 @@
     /**
      *  isArrayLike（判断是否是一个伪数组）
      *      判断条件 
-     *          只要同数组 有length属性  并且length在 0 ～ (2^32 - 1) 之间就可以
+     *          只要有length属性  并且length在 0 ～ (2^32 - 1) 之间就可以
      * 
      *      适用于
      *          {0: 1, length: 1}
@@ -191,13 +191,13 @@
         // 统一使用optimizeCb方法处理iteratee函数
         iteratee = optimizeCb(iteratee, context);
         var i, length;
-        // 判断是否是 类数组对象 从而看是否可以使用for循环
+        // 鸭子类型 判断有length属性 执行if 
         if(isArrayLike(obj)) {
             for(i = 0, length = obj.length; i < length; i++){
                 iteratee(obj[i], i, obj)
             }
         }else{
-            // 非数组对象 循环keys处理
+            // 没有length属性 执行else
             var keys = _.keys(obj);
             for(i = 0, length = keys.length; i < length; i++){
                 iteratee(obj[ keys[i] ], keys[i], obj)

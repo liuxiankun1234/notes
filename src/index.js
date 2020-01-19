@@ -79,7 +79,7 @@ import './secret_underscore/index'
  *      深拷贝
  *      静态作用域（词法作用域）
  *      动态作用域
- *      call apply bind
+ *      call apply bind ????????
  *      浏览器渲染机制
  *      性能优化
  *      
