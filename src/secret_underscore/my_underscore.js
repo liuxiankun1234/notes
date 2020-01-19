@@ -197,7 +197,7 @@
                 iteratee(obj[i], i, obj)
             }
         }else{
-            // 没有length属性 执行else
+            // 没有length属性 执行else 
             var keys = _.keys(obj);
             for(i = 0, length = keys.length; i < length; i++){
                 iteratee(obj[ keys[i] ], keys[i], obj)
