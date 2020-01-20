@@ -131,11 +131,6 @@
         return _.property(value)
     }
 
-    // has 判断obj对象内是否含有path属性（不包括原型上的方法）
-    var has = function(obj, path) {
-        return obj != null && hasOwnProperty.call(obj, path);
-    }
-    
     /**
      * 
      *  deepGet方法
@@ -158,6 +153,11 @@
         return function(obj) {
             return obj == null ? void 0 : obj[key]
         }
+    }
+
+    // has方法判断当前对象（非null 非原型）上是否包含path属性
+    var has = function(obj, path) {
+        return obj != null && hasOwnProperty.call(obj, path);
     }
 
     /**
@@ -318,8 +318,10 @@
         // 支持原生方法 使用原生方法
         if(nativeKeys) return nativeKeys(obj)
         // 自定义方法实现_.keys
-        var list = []
+        var list = [];
+        // for in 返回当前对象及原型上的所有可枚举的字符串属性
         for(var key in obj) {
+            // 过滤掉原型上的可枚举字符串属性
             if(has(obj, key)) list.push(key)
         }
         return list
@@ -407,6 +409,8 @@
 
     /**
      *  判断是否是一个引用类型
+     *      JS中 数组 函数 对象 都是对象 一般场景下 null是一个无效的对象
+     * 
      *      typeof function() {} // 'function'  
      *      typeof /i/           // 'object'    new Regexp
      *      typeof null          // 'object'
@@ -414,9 +418,9 @@
      * 
     **/
     _.isObject = function(obj) {
-        var type = typeof obj;
+        var type = typeof obj; 
         // true条件 obj是一个函数 或者 obj是一个非null对象
-        return type === 'function' || type === 'object' && !!obj;
+        return type === "function" || (type === "object" && !!obj);
     }
 
     // 工具方法

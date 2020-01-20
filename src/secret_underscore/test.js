@@ -25,4 +25,12 @@ void function() {
     _.each(/12/, function() {
         console.log('sdfasdkfasdjfksajfdk')
     })
+};
+
+void function() {
+    console.log(
+        _.extend('123', {a: 1}),
+        _.defaults('123', {a: 1})
+    )
+    
 }();
