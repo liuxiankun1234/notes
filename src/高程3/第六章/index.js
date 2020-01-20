@@ -47,6 +47,7 @@
  *                      不能获取原型上的属性特性
  * 
 **/
+
 void function() { 
     'use strict'
     var symbol = Symbol('symbol');
