@@ -311,7 +311,12 @@
     // 对象的扩展方法
     // -------------------------------------------------------------------------------------
 
-    // 检索object拥有的所有可枚举属性的名称
+    /**
+     *  _.keys
+     *      获取当前对象上所有可枚举的字符串属性（不包括原型 不可枚举 Symbol属性）
+     *  
+     * 
+    **/
     _.keys = function(obj) {
         // 兼容处理 处理非引用类型
         if(!_.isObject(obj)) return []
@@ -326,22 +331,37 @@
         }
         return list
     }
+    /**
+     *  _.allKeys
+     *      获取当前对象及原型上的可枚举字符串属性（不包括 不可枚举 Symbol属性）
+     * 
+    **/
+    _.allKeys = function(obj) {
+        if (!_.isObject(obj)) return [];
+
+        var keys = [];
+        for(var key in obj) keys.push(key);
+        return keys;
+    }
 
     /**
      *  一个创建分配函数的内部函数
-     *      keysFunc  _.allKeys or _.keys
-     *      defaults Boolean类型 如果合并函数有的属性 不合并
+     *      keysFunc 获取属性方法
+     *          _.allKeys   获取所有可枚举的字符串属性（对象及原型属性）
+     *          _.keys      获取当前对象上可枚举的字符串属性
+     *      defaults Boolean类型 
+     *          true    不合并目标元素自身属性
+     *          false   合并目标元素自身属性
      * 
      *      注： 函数没有必要对assign的对象进行 类型检测 如果是基本类型 直接添加属性 也不会报错 
      *      
-     *      函数未完成
-     * 
     **/
     var createAssigner = function(keysFunc, defaults) {
         return function(obj){
-            // 容错处理 如果实参长度小于2 或者 obj == null 则返回当前对象
             var length = arguments.length;
-            if(length < 2 || obj == null) return obj
+            if (defaults) obj = Object(obj);
+            // 容错处理 如果实参长度小于2 或者 obj == null 则返回当前对象
+            if (length < 2 || obj == null) return obj
             // 进行assign处理
             for(var index = 1; index < length; index++){
                 var source = arguments[index],
@@ -350,12 +370,21 @@
 
                 for(var i = 0; i < l; i++) {
                     var key = keys[i];
-                    if(obj[key] === void 0) obj[key] = source[key]
+                    /**
+                     *  defaults
+                     *      false   默认合并自身属性
+                     *      true    合并自身不存在的属性
+                    **/
+                    if(!defaults || key === void 0) {
+                        key = source[i]
+                    }
                 }
             }
             return obj;
         }
     }
+
+    _.extend = createAssigner(_.allKeys);
 
     /**
      * 
