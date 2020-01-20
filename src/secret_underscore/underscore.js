@@ -100,12 +100,11 @@
 
     var builtinIteratee;
 
-    // An internal function to generate callbacks that can be applied to each
-    // element in a collection, returning the desired result — either `identity`,
-    // an arbitrary callback, a property matcher, or a property accessor.
+    // 一个内部方法 可以生成可以应用到集合中每个元素的回调，返回期望的结果 
+    // 即 dentity 任意回调 属性匹配器 属性访问器
     var cb = function(value, context, argCount) {
         if (_.iteratee !== builtinIteratee) return _.iteratee(value, context);
-        // undefined null 走默认函数
+        // undefined null 走默认迭代函数
         if (value == null) return _.identity;
         // 传入的是函数 直接走优化函数
         if (_.isFunction(value)) return optimizeCb(value, context, argCount);
@@ -575,7 +574,7 @@
             Math.max(0, array.length - (n == null || guard ? 1 : n))
         );
     };
-    
+
     // Get the last element of an array. Passing **n** will return the last N
     // values in the array.
     _.last = function(array, n, guard) {
