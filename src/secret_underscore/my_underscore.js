@@ -350,7 +350,7 @@
      *          _.allKeys   获取所有可枚举的字符串属性（对象及原型属性）
      *          _.keys      获取当前对象上可枚举的字符串属性
      *      defaults Boolean类型 
-     *          true    不合并目标元素自身属性
+     *          true    不合并目标元素自身属性 初始化对象
      *          false   合并目标元素自身属性
      * 
      *      注： 函数没有必要对assign的对象进行 类型检测 如果是基本类型 直接添加属性 也不会报错 
@@ -392,6 +392,9 @@
      * 
     **/
     _.extendOwn = _.assign = createAssigner(_.keys)
+
+    // 使用默认属性填充给定的对象
+    _.defaults = createAssigner(_.allKeys, true);
 
     /**
      *  _.isMatch(object, properties) 
