@@ -1290,7 +1290,6 @@
 
     // Returns whether an object has a given set of `key:value` pairs.
     _.isMatch = function(object, attrs) {
-        debugger;
         var keys = _.keys(attrs),
             length = keys.length;
         if (object == null) return !length;
