@@ -10,7 +10,7 @@
  *              iterator是Set Array      默认[Symbol.iterator]是 values()
  *              iterator是Map            默认[Symbol.iterator]是 entries()
  *              其它迭代器没有默认[Symbol.iterator]
- * 
+ *  
  *  第八章 迭代器与生成器
  *      迭代器
  *          为什么会有迭代器出现呢？
