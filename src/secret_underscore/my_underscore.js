@@ -212,7 +212,7 @@
      * 
     **/
     _.map = _.collect = function(obj, iteratee, context) {
-        iteratee = cb(iteratee, context);
+        iteratee = cb(iteratee, context); 
         /**
          *  小技巧
          * 
