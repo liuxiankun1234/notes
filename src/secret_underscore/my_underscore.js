@@ -410,6 +410,7 @@
     _.isMatch = function(object, attrs) {
         // 处理 attrs 参数，类型处理在_.keys函数内部完成
         var keys = _.keys(attrs), length = keys.length;
+        // 如果object = null attrs = {} 返回true不太好吧
         if (object == null) return !length;
         // 将基本类型处理成一个函数包装类
         var obj = Object(object);
@@ -477,7 +478,12 @@
             return deepGet(obj, path);
         };
     }
-    // 
+    /**
+     *  返回一个断言函数 用于检测是否含有给定的key:value键值对
+     *      var ready = _.matcher({selected: true, visible: true});
+     *      ready({selected: true, visible: true}) // true
+     *      var readyToGoList = _.filter(list, ready);
+     **/
     _.matcher = _.matches = function(attrs) {
         // 复制了非原型上的属性 同时也改变了引用
         attrs = _.extendOwn({}, attrs);

@@ -15,6 +15,8 @@
 /**
  *  疑惑
  *      为什么字符串的某个属性不能被修改 
+ *          var str = new String('123');
+ *          Object.getOwnPropertyDescriptor(str, '0') // {value: "1", writable: false, enumerable: true, configurable: false}
  *          因为字符串的属性是不可修改的 writable false
  *          var str = '123'; str[0] = 9; console.log(str) // 123
  *          str.a =  'a' // 不同这个
