@@ -221,7 +221,7 @@
 
     // Return the results of applying the iteratee to each element.
     _.map = _.collect = function(obj, iteratee, context) {
-        iteratee = cb(iteratee, context);
+        iteratee = cb(iteratee, context); 
 
         var keys = !isArrayLike(obj) && _.keys(obj),
             length = (keys || obj).length,
