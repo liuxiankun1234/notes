@@ -350,8 +350,8 @@
      *          _.allKeys   获取所有可枚举的字符串属性（对象及原型属性）
      *          _.keys      获取当前对象上可枚举的字符串属性
      *      defaults Boolean类型 
-     *          true    合并自身不存在的属性
-     *          false   默认合并自身属性
+     *          true    仅合并自身不存在属性
+     *          false   合并所有属性
      * 
      *      注： 函数没有必要对assign的对象进行 类型检测 如果是基本类型 直接添加属性 也不会报错 
      *      
@@ -375,8 +375,8 @@
                      *      false   默认合并自身属性
                      *      true    合并自身不存在的属性
                     **/
-                    if(!defaults || key === void 0) {
-                        key = source[i]
+                    if(!defaults || obj[key] === void 0) {
+                        obj[key] = source[key]
                     }
                 }
             }
