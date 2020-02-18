@@ -221,6 +221,7 @@
 
     // Return the results of applying the iteratee to each element.
     _.map = _.collect = function(obj, iteratee, context) {
+        // 绑定this
         iteratee = cb(iteratee, context); 
         
         var keys = !isArrayLike(obj) && _.keys(obj),

@@ -125,7 +125,7 @@
         if(value == null) return _.identity
         // value的值是一个函数 
         if(_.isFunction(value)) return optimizeCb(value, context, argCount)
-        // value的值是一个引用类型(非数组对象)
+        // value的值是一个引用类型(非数组对象) 返回一个断言函数
         if (_.isObject(value) && !_.isArray(value)) return _.matcher(value);
         // 处理数组类型 value = ['curly', 'fears'] 返回 obj['curly']['fears']属性值
         return _.property(value)
