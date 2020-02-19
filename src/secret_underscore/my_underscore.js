@@ -218,7 +218,7 @@
          * 
          *  obj 是类数组 keys是false值
          *      keys = false                length = obj.length
-         *  obj 是对象 keys是一个数组
+         *  obj 非类数组 keys是一个数组
          *      keys = true && _.keys(obj)  length = keys.length
          *  length 等于 keys = false       --->  obj.length
          *             keys = _.keys(obj)  ---> keys.length
