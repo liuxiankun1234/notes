@@ -232,7 +232,7 @@
         
         var keys = !isArrayLike(obj) && _.keys(obj),
             length = (keys || obj).length,
-            results = new Array(length);
+            results = Array(length);
 
         for(var i = 0; i < length; i++){
             var sourceKey = keys ? keys[i] : i
@@ -290,8 +290,15 @@
     // -------------------------------------------------------------------------------------
 
     var createPredicateIndexFinder = function(dir) {
-        return function() {
-            
+        return function(array, predicate, context) {
+            predicate = optimizeCb(predicate, context);
+
+            var length = getLength(array);
+            var index = dir > 0 ? 0 : length - 1;
+            for(; index >= 0 && index < length; index += dir) {
+                if(predicate(array[index], index, context)) return index;
+            }
+            return -1;
         }
     }
 
@@ -300,7 +307,8 @@
      *      通过真值检查后，返回第一个索引值；否则返回-1
      * 
     **/
-    _.findIndex = createPredicateIndexFinder(1)
+    _.findIndex = createPredicateIndexFinder(1);
+    _.findLastIndex = createPredicateIndexFinder(-1);
 
     // 函数的扩展方法
     // -------------------------------------------------------------------------------------

@@ -33,4 +33,7 @@ void function() {
         _.defaults('123', {a: 1})
     )
     
+
+
+    _.findIndex()
 }();

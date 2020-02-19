@@ -25,3 +25,15 @@
  *      公用的变量一定要提到作用域的最上端
  *          例： var i, length; if else里都用到了这个i length 就要放在if上面
 **/
+
+
+/**
+ *
+ *  小技巧
+ *      1. for循环可以通过传入的方向进行 正反方向循环
+ *          dir = [-1, 1]
+ *          var index = dir > 0 ? 0 : length - 1;
+ *          for (; index >= 0 && index < length; index += dir) {
+ * 
+ * 
+**/
