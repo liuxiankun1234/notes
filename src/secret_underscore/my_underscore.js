@@ -282,7 +282,9 @@
      * 
     **/
     _.find = _.detect = function(obj, predicate, context) {
-
+        var keyFinder = isArrayLike(obj) ? _.findIndex : _.findKey;
+        var key = keyFinder(obj, predicate, context);
+        if (key !== void 0 && key !== -1) return obj[key];
     }
 
 
@@ -401,6 +403,15 @@
     **/
     _.extendOwn = _.assign = createAssigner(_.keys)
 
+    _.findKey = function(obj, predicate, context) {
+        predicate = cb(predicate, context);
+        var keys = _.keys(obj),
+            key;
+        for (var i = 0, length = keys.length; i < length; i++) {
+            key = keys[i];
+            if (predicate(obj[key], key, obj)) return key
+        }
+    }
     /**
      *  _.isMatch(object, properties) 
      *      返回值布尔类型，告诉你properties中的键和值是否包含在object中
