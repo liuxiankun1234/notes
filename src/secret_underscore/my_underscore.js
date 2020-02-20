@@ -125,9 +125,9 @@
         if(value == null) return _.identity
         // value的值是一个函数 
         if(_.isFunction(value)) return optimizeCb(value, context, argCount)
-        // value的值是一个引用类型(非数组对象)
+        // value的值是一个引用类型(非数组对象) 返回一个断言函数
         if (_.isObject(value) && !_.isArray(value)) return _.matcher(value);
-        // 数组类型处理
+        // 处理数组类型 value = ['curly', 'fears'] 返回 obj['curly']['fears']属性值
         return _.property(value)
     }
 
@@ -212,13 +212,13 @@
      * 
     **/
     _.map = _.collect = function(obj, iteratee, context) {
-        iteratee = cb(iteratee, context);
+        iteratee = cb(iteratee, context); 
         /**
          *  小技巧
          * 
          *  obj 是类数组 keys是false值
          *      keys = false                length = obj.length
-         *  obj 是对象 keys是一个数组
+         *  obj 非类数组 keys是一个数组
          *      keys = true && _.keys(obj)  length = keys.length
          *  length 等于 keys = false       --->  obj.length
          *             keys = _.keys(obj)  ---> keys.length
@@ -232,7 +232,7 @@
         
         var keys = !isArrayLike(obj) && _.keys(obj),
             length = (keys || obj).length,
-            results = new Array(length);
+            results = Array(length);
 
         for(var i = 0; i < length; i++){
             var sourceKey = keys ? keys[i] : i
@@ -282,7 +282,9 @@
      * 
     **/
     _.find = _.detect = function(obj, predicate, context) {
-
+        var keyFinder = isArrayLike(obj) ? _.findIndex : _.findKey;
+        var key = keyFinder(obj, predicate, context);
+        if (key !== void 0 && key !== -1) return obj[key];
     }
 
 
@@ -290,8 +292,15 @@
     // -------------------------------------------------------------------------------------
 
     var createPredicateIndexFinder = function(dir) {
-        return function() {
-            
+        return function(array, predicate, context) {
+            predicate = optimizeCb(predicate, context);
+
+            var length = getLength(array);
+            var index = dir > 0 ? 0 : length - 1;
+            for(; index >= 0 && index < length; index += dir) {
+                if(predicate(array[index], index, context)) return index;
+            }
+            return -1;
         }
     }
 
@@ -300,7 +309,8 @@
      *      通过真值检查后，返回第一个索引值；否则返回-1
      * 
     **/
-    _.findIndex = createPredicateIndexFinder(1)
+    _.findIndex = createPredicateIndexFinder(1);
+    _.findLastIndex = createPredicateIndexFinder(-1);
 
     // 函数的扩展方法
     // -------------------------------------------------------------------------------------
@@ -350,8 +360,8 @@
      *          _.allKeys   获取所有可枚举的字符串属性（对象及原型属性）
      *          _.keys      获取当前对象上可枚举的字符串属性
      *      defaults Boolean类型 
-     *          true    不合并目标元素自身属性 初始化对象
-     *          false   合并目标元素自身属性
+     *          true    仅合并自身不存在属性
+     *          false   合并所有属性
      * 
      *      注： 函数没有必要对assign的对象进行 类型检测 如果是基本类型 直接添加属性 也不会报错 
      *      
@@ -375,8 +385,8 @@
                      *      false   默认合并自身属性
                      *      true    合并自身不存在的属性
                     **/
-                    if(!defaults || key === void 0) {
-                        key = source[i]
+                    if(!defaults || obj[key] === void 0) {
+                        obj[key] = source[key]
                     }
                 }
             }
@@ -396,6 +406,15 @@
     // 使用默认属性填充给定的对象
     _.defaults = createAssigner(_.allKeys, true);
 
+    _.findKey = function(obj, predicate, context) {
+        predicate = cb(predicate, context);
+        var keys = _.keys(obj),
+            key;
+        for (var i = 0, length = keys.length; i < length; i++) {
+            key = keys[i];
+            if (predicate(obj[key], key, obj)) return key
+        }
+    }
     /**
      *  _.isMatch(object, properties) 
      *      返回值布尔类型，告诉你properties中的键和值是否包含在object中
@@ -413,6 +432,7 @@
     _.isMatch = function(object, attrs) {
         // 处理 attrs 参数，类型处理在_.keys函数内部完成
         var keys = _.keys(attrs), length = keys.length;
+        // 如果object = null attrs = {} 返回true不太好吧
         if (object == null) return !length;
         // 将基本类型处理成一个函数包装类
         var obj = Object(object);
@@ -480,7 +500,12 @@
             return deepGet(obj, path);
         };
     }
-    // 
+    /**
+     *  返回一个断言函数 用于检测是否含有给定的key:value键值对
+     *      var ready = _.matcher({selected: true, visible: true});
+     *      ready({selected: true, visible: true}) // true
+     *      var readyToGoList = _.filter(list, ready);
+     **/
     _.matcher = _.matches = function(attrs) {
         // 复制了非原型上的属性 同时也改变了引用
         attrs = _.extendOwn({}, attrs);
