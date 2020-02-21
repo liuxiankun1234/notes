@@ -455,10 +455,13 @@
     _.sample = function(obj, n, guard) {
         if (n == null || guard) {
             if (!isArrayLike(obj)) obj = _.values(obj);
+            // obj是一个对象 n == null
             return obj[_.random(obj.length - 1)];
         }
+
         var sample = isArrayLike(obj) ? _.clone(obj) : _.values(obj);
         var length = getLength(sample);
+        // 兼容处理 保证n的范围 [0, length]
         n = Math.max(Math.min(n, length), 0);
         var last = length - 1;
         for (var index = 0; index < n; index++) {

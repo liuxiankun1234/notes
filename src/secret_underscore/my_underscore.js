@@ -204,7 +204,7 @@
             }
         }
     }
-    
+
     /**
      * 
      *  map方法描述
@@ -273,7 +273,6 @@
      *      反向累加
     **/ 
     _.reduce = _.foldl = _.inject = createReduce(1);
-
     _.reduceRight = _.foldr = createReduce(-1);
 
     /**
@@ -287,6 +286,38 @@
         if (key !== void 0 && key !== -1) return obj[key];
     }
 
+    // 返回一个的数组 值为符合过滤条件
+    _.filter = _.select = function(obj, predicate, context) {
+        var results = [];
+        // 为啥这块用了cb函数 find方法没有用cb函数
+        predicate = cb(predicate, context);
+        _.each(obj, function(value, index, list) {
+            if (predicate(value, index, list)) results.push(value);
+        });
+        return results;
+    }
+
+    // 
+    _.sample = function(obj, n) {
+        var sample = isArrayLike(obj) ? _.clone(obj) : _.values(obj);
+        var length = getLength(sample);
+        // 兼容处理 保证n的范围 [0, length]
+        n = Math.max(Math.min(n, length), 0);
+        var last = length - 1;
+        for (var index = 0; index < n; index++) {
+            var rand = _.random(index, last);
+            var temp = sample[rand];
+            sample[rand] = sample[index];
+            sample[index] = temp;
+        }
+    }
+
+    _.clone = function(obj) {
+        // 基本类型 直接返回
+        if (!_.isObject(obj)) return obj;
+        // 数组或对象 返回一个新引用
+        return _.isArray(obj) ? obj.slice() : _.extend({}, obj);
+    }
 
     // 数组的扩展方法
     // -------------------------------------------------------------------------------------
@@ -352,6 +383,16 @@
         var keys = [];
         for(var key in obj) keys.push(key);
         return keys;
+    }
+
+    _.values = function(obj) {
+        var keys = _.keys(obj),
+            length = keys.length,
+            values = Array(length);
+        for(var i = 0; i < length; i++) {
+            values[i] = obj[keys[i]];
+        }
+        return values
     }
 
     /**
@@ -513,4 +554,26 @@
             return _.isMatch(obj, attrs);
         };
     }
+
+    _.random = function(min, max) {
+        if (max == null) {
+            max = min;
+            min = 0;
+        }
+        /**
+         *  Math.random 取值范围 [0, 1)
+         * 
+         *  A ===> Math.ceil(Math.random() * (max - min))
+         *  B ===> Math.floor(Math.random() * (max - min + 1))
+         *  
+         *  假设 max - min = 2
+         *  A ===> [0, 2) ===> [0, 1, 2]
+         *  B ===> [0, 3) ===> [0, 1, 2]
+         * 
+         *  注意虽然 A B 方法得到的结果都是 [1, 2, 3] 但是范围是不同的 
+         *  A方法返回0的概率极小
+         *  B方法返回的概率相对均衡 返回0的概率稍微大一些 因为Math.random取值范围问题
+        **/
+        return min + Math.floor(Math.random() * (max - min + 1));
+    };
 })();
