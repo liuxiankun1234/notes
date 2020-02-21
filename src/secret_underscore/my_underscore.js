@@ -296,9 +296,23 @@
         });
         return results;
     }
+    _.shuffle = function(obj) {
+        return _.sample(obj, Infinity);
+    };
 
-    // 
-    _.sample = function(obj, n) {
+    /** 
+     *  使用现代版本的shuffle
+     *  [Fisher-Yates shuffle](http://en.wikipedia.org/wiki/Fisher–Yates_shuffle).
+     *  从集合中抽取n个随机值 如果未指定n返回一个随机元素 内部的guard参数允许它与map一起使用
+     * 
+     *  还是不懂 guard参数什么用
+    **/
+    _.sample = function(obj, n, guard) {
+        if (n == null || guard) {
+            // _.values --> _.keys --> _.isObject 非引用类型返回[]
+            if(!isArrayLike(obj)) obj = _.values(obj);
+            return obj[_.random(length - 1)]
+        }
         var sample = isArrayLike(obj) ? _.clone(obj) : _.values(obj);
         var length = getLength(sample);
         // 兼容处理 保证n的范围 [0, length]
