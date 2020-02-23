@@ -30,8 +30,11 @@ void function() {
 void function() {
     console.log(
         _.max([{a: 1}, {a :2}], (v) => {
-            v.a + 2
-            return v
+            return v.a
+        }),
+
+        _.max([{a: -Infinity}], (v) => {
+            return v.a
         })
     )
 }();

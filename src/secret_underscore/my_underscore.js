@@ -1,4 +1,5 @@
 (function() {
+    console.log('hello! guy')
     // 基础设置
     // -------------------------------------------------------------------------------------
 
@@ -296,8 +297,49 @@
         });
         return results;
     }
-    _.shuffle = function(obj) {
-        return _.sample(obj, Infinity);
+
+    _.max = function(obj, iteratee, context) {
+        var result = -Infinity,
+            lastComputed = -Infinity,
+            value,
+            computed;
+        // 这个typeof iteratee === 'number' && typeof obj[0] !== 'object' && obj != null 情况表示不懂
+        if(
+            iteratee == null || 
+            (typeof iteratee === 'number' && 
+             typeof obj[0] !== 'object' &&
+             obj != null)
+        ) {
+            var obj = isArrayLike(obj) ? obj : _.values(obj);
+            for(var i = 0, length = obj.length; i < length; i++) {
+                value = obj[i];
+                // 记得处理null
+                if(value != null && value > result) {
+                    result = value;
+                }
+            }
+        }else{
+            iteratee = cb(iteratee, context);
+            _.each(obj, function(v, index, list) {
+                computed = iteratee(v, index, list);
+                /**
+                 *  (computed === -Infinity && result === -Infinity)
+                 *  处理computed值为-Infinity情况
+                **/
+                if(
+                    computed > lastComputed ||
+                    (computed === -Infinity && result === -Infinity)
+                )  {
+                    result = v;
+                    lastComputed = computed;
+                }
+            })
+        }
+    }
+
+    // 随机洗牌 返回一个乱序的list副本
+    _.shuffle = function(list) {
+        return _.sample(list, Infinity);
     };
 
     /** 
@@ -402,8 +444,30 @@
     _.values = function(obj) {
         var keys = _.keys(obj),
             length = keys.length,
+            // 这块创建一个长度length的空数组
             values = Array(length);
         for(var i = 0; i < length; i++) {
+            /**
+             *  项赋值 
+             * 
+             *      console.time("timer");
+             *      var result = Array(1000000);
+             *      for(var i=0;i<1000000;i++){
+             *          result[i] = i
+             *      }
+             *      console.timeEnd("timer"); // 6.865966796875ms
+             *      
+             *      console.time("timer");
+             *      var result = Array();
+             *      for(var i=0;i<1000000;i++){
+             *          result.push(i);
+             *      }
+             *      console.timeEnd("timer"); // 13ms左右
+             *      
+             *  跟push相比性能确实更好 百万级差别不大
+             * 
+             * 
+            **/
             values[i] = obj[keys[i]];
         }
         return values
@@ -569,6 +633,7 @@
         };
     }
 
+    // 取值范围 [min, max]
     _.random = function(min, max) {
         if (max == null) {
             max = min;

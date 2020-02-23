@@ -3,6 +3,8 @@
  * 
  *  https://leetcode-cn.com/explore/interview/card/top-interview-questions-easy/1/array/29/
  *  
+ *  切记不要用嵌套循环
+ *  空间复杂度可以降低时间复杂度
  *  
  *  
 **/

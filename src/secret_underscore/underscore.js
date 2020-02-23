@@ -375,7 +375,6 @@
 
     // Return the maximum element (or element-based computation).
     _.max = function(obj, iteratee, context) {
-        debugger
         var result = -Infinity,
             lastComputed = -Infinity,
             value,
@@ -389,6 +388,7 @@
             obj = isArrayLike(obj) ? obj : _.values(obj);
             for (var i = 0, length = obj.length; i < length; i++) {
                 value = obj[i];
+                // 记得处理null
                 if (value != null && value > result) {
                     result = value;
                 }
@@ -397,6 +397,10 @@
             iteratee = cb(iteratee, context);
             _.each(obj, function(v, index, list) {
                 computed = iteratee(v, index, list);
+                /**
+                 *  (computed === -Infinity && result === -Infinity)
+                 *  处理computed值为-Infinity情况
+                **/
                 if (
                     computed > lastComputed ||
                     (computed === -Infinity && result === -Infinity)
