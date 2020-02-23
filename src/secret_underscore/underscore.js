@@ -375,6 +375,7 @@
 
     // Return the maximum element (or element-based computation).
     _.max = function(obj, iteratee, context) {
+        debugger
         var result = -Infinity,
             lastComputed = -Infinity,
             value,

@@ -17,23 +17,21 @@ void function() {
      *      Object      迭代处理
      *      
     **/
-    _.each([1,2,3], function(...arg) {
-        console.log(...arg, '---------')
-    })
-    _.each({a: 1, b: 2}, console.log, {})
+    // _.each([1,2,3], function(...arg) {
+    //     console.log(...arg, '---------')
+    // })
+    // _.each({a: 1, b: 2}, console.log, {})
 
-    _.each(/12/, function() {
-        console.log('sdfasdkfasdjfksajfdk')
-    })
+    // _.each(/12/, function() {
+    //     console.log('sdfasdkfasdjfksajfdk')
+    // })
 };
 
 void function() {
     console.log(
-        _.extend('123', {a: 1}),
-        _.defaults('123', {a: 1})
+        _.max([{a: 1}, {a :2}], (v) => {
+            v.a + 2
+            return v
+        })
     )
-    
-
-
-    _.findIndex()
 }();
