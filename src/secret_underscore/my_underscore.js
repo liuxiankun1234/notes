@@ -377,6 +377,35 @@
 
     // 数组的扩展方法
     // -------------------------------------------------------------------------------------
+    
+    // 排除数组中最后n个元素 n默认值为1
+    _.initial = function(array, n, guard) {
+        // 处理 n 默认值
+        n = n == null || guard ? 1 : n;
+        return slice.call(array, 0, Math.max(0,  array.length - n))
+    }
+
+    // 排除数组前面的n个元素 n默认值为1
+    _.rest = _.tail = _.drop = function(array, n, guard) {
+        n = n == null || guard ? 1 : n;
+        return slice.call(array, n)
+    }
+
+    // 返回数组的前n个元素 n默认值为1
+    _.first = _.head = _.take = function(array, n) {
+        // 注意first([]) || first([], 1) 返回值不同
+        if(array == null || array.length < 1) return n == null ? void 0 : []; 
+        // 兼容处理
+        if(n == null) return array[1];
+        return _.initial(array, array.length - n);
+    }
+    
+    // 返回数组后n个元素 n默认值为1
+    _.last = function(array, n) {
+        if (array == null || array.length < 1) return n == null ? void 0 : [];
+        if (n == null) return array[array.length - 1];
+        return _.rest(array, Math.max(0, array.length - n));
+    }
 
     var createPredicateIndexFinder = function(dir) {
         return function(array, predicate, context) {
