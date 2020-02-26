@@ -406,6 +406,40 @@
         if (n == null) return array[array.length - 1];
         return _.rest(array, Math.max(0, array.length - n));
     }
+    
+    // 返回一个除去了所有 falsy(假) 值的 array 副本
+    _.compact = function(array) {
+        // Boolean 构造函数 等同于 !!
+        return _.filter(array, Boolean)
+    }
+
+    var flatten = function(input, shallow, strict, output) {
+        output = output || [];
+        var idx = output.length;
+        for (var i = 0, length = getLength(input); i < length; i++) {
+            var value = input[i];
+            // 只有数组/类数组才会处理嵌套问题
+            if(isArrayLike(value) && (_.isArray(value) || _.isArguments(value))) {
+                if (shallow) {
+                    var j = 0,
+                        len = value.length;
+                    while(j < len) output[idx++] = value[j++];
+                }else{
+                    flatten(value, shallow, strict, output);
+                    // 更新计算之后的output索引
+                    idx = output.length;
+                }
+            } else if (!strict) {
+                output[idx++] = value;
+            }
+        }
+        return output;
+    }
+
+    // 将一个嵌套多层的数组 array（数组） (嵌套可以是任何层数)转换为只有一层的数组 如果你传递 shallow参数，数组将只减少一维的嵌套
+    _.flatten = function(array, shallow) {
+        return flatten(array, shallow, false);
+    };
 
     var createPredicateIndexFinder = function(dir) {
         return function(array, predicate, context) {
@@ -621,6 +655,35 @@
         var type = typeof obj; 
         // true条件 obj是一个函数 或者 obj是一个非null对象
         return type === "function" || (type === "object" && !!obj);
+    }
+
+    _.each(
+        [
+            "Arguments",
+            "Function",
+            "String",
+            "Number",
+            "Date",
+            "RegExp",
+            "Error",
+            "Symbol",
+            "Map",
+            "WeakMap",
+            "Set",
+            "WeakSet"
+        ],
+        function(name) {
+            _['is' + name] = function(obj) {
+                return toString.call(obj) === '[object ' + name + ']';
+            };
+        }
+    );
+
+    // IE9以下兼容处理
+    if (!_.isArguments(arguments)) {
+        _.isArguments = function(obj) {
+            return has(obj, "callee");
+        };
     }
 
     // 工具方法
