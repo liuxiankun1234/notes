@@ -29,12 +29,14 @@ void function() {
 
 void function() {
     console.log(
-        _.max([{a: 1}, {a :2}], (v) => {
-            return v.a
-        }),
+        // _.max([{a: 1}, {a :2}], (v) => {
+        //     return v.a
+        // }),
 
-        _.max([{a: -Infinity}], (v) => {
-            return v.a
-        })
+        // _.max([{a: -Infinity}], (v) => {
+        //     return v.a
+        // })
+
+        _.flatten({0: 1, length: 1})
     )
 }();

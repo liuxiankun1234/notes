@@ -1482,8 +1482,8 @@
             "WeakSet"
         ],
         function(name) {
-            _["is" + name] = function(obj) {
-                return toString.call(obj) === "[object " + name + "]";
+            _['is' + name] = function(obj) {
+                return toString.call(obj) === '[object ' + name + ']';
             };
         }
     );
