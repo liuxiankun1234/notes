@@ -337,7 +337,7 @@
             // 一个集合 ABC 组合方式 A，B，C，AB，AC，BC，ABC
             // 除了 A,B,C 就是AB,AC,BC,ABC
 
-            const regex1 = /^[0-9a-zA-Z]{6,12}$/;
+            const regex1 = /^[0-9a-zA-Z]{6,12}$/; // 长度6~12的数字 字母 大写字母
                 regex2 = /^[0-9]{6,12}$/,
                 regex3 = /^[A-Z]{6,12}$/,
                 regex4 = /^[a-z]{6,12}$/;
