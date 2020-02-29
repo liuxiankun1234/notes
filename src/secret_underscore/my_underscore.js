@@ -100,8 +100,7 @@
     var optimizeCb = function(func, context, argCount) {
         // 如果没有指定this的值 返回当前传入的函数
         if(context === void 0) return func;
-        argCount == null ? 3 : argCount
-        switch(argCount) {
+        switch(argCount == null ? 3 : argCount) {
             case 3: return function(value, key, collection) {
                 func.call(context, value, key, collection)
             };
@@ -141,7 +140,7 @@
      * 
     **/
     var deepGet = function(obj, path) {
-        var length = obj.length;
+        var length = path.length;
         for(var i = 0; i < length; i++){
             if(obj == null) return void 0;
             obj = obj[path[i]];
