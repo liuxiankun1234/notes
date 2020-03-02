@@ -141,6 +141,11 @@
      * 
     **/
     var restArguments = function(func, startIndex) {
+        /**
+         *  为啥 startIndex 默认等于 func.length - 1 ?
+         * 
+         *  因为调用参数问题 调用时最后一个参数为rest
+        **/
         startIndex = startIndex == null ? func.length - 1 : +startIndex;
         return function() {
             // length 等于 当前参数减去之前传入函数的形参
@@ -159,6 +164,7 @@
                 case 2:
                     return func.call(this, arguments[0], arguments[1], rest);
             }
+            // 长度加一 给rest留空间
             var args = Array[startIndex + 1];
             for (index = 0; index < startIndex; index++) {
                 args[index] = arguments[index];
@@ -334,6 +340,18 @@
         return results;
     }
 
+    // 检测list是否包含value 使用 ===
+    _.contains = _.includes = _.include = function(
+        obj,
+        item,
+        fromIndex,
+        guard
+    ) {
+        if (!isArrayLike(obj)) obj = _.values(obj);
+        if (typeof fromIndex != "number" || guard) fromIndex = 0;
+        return _.indexOf(obj, item, fromIndex) >= 0;
+    };
+
     _.max = function(obj, iteratee, context) {
         var result = -Infinity,
             lastComputed = -Infinity,
@@ -477,6 +495,15 @@
         return flatten(array, shallow, false);
     };
 
+    // 返回的值来自array参数数组，并且不存在于other数组
+    _.difference = restArguments(function(array, rest) {
+        // 扁平化一层数组
+        rest = flatten(rest, true, true);
+        return _.filter(array, function(value) {
+            return !_.contains(rest, value);
+        });
+    });
+
     var createPredicateIndexFinder = function(dir) {
         return function(array, predicate, context) {
             predicate = optimizeCb(predicate, context);
@@ -498,6 +525,16 @@
     _.findIndex = createPredicateIndexFinder(1);
     _.findLastIndex = createPredicateIndexFinder(-1);
 
+    // 
+    _.sortedIndex = function(){
+
+    }
+    
+    var createIndexFinder = function(dir, predicateFind, sortedIndex) {
+        
+    }
+    _.indexOf = createIndexFinder(1, _.findIndex, _.sortedIndex);
+    _.lastIndexOf = createIndexFinder(-1, _.findLastIndex);
     // 函数的扩展方法
     // -------------------------------------------------------------------------------------
 

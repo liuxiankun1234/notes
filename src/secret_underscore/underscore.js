@@ -699,6 +699,7 @@
     // Take the difference between one array and a number of other arrays.
     // Only the elements present in just the first array will remain.
     _.difference = restArguments(function(array, rest) {
+        console.log('rest', rest)
         rest = flatten(rest, true, true);
         return _.filter(array, function(value) {
             return !_.contains(rest, value);

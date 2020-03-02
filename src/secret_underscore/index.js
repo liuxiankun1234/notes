@@ -21,7 +21,7 @@
  *          var str = '123'; str[0] = 9; console.log(str) // 123
  *          str.a =  'a' // 不同这个
  * 
- *  
+ *     为什么好使用var array = Array(length); array[i] = i; 而非push
  *  规范
  *      函数和函数之间留空格
  *      函数内部逻辑不留空格
