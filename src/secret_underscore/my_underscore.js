@@ -130,6 +130,43 @@
         // 处理数组类型 value = ['curly', 'fears'] 返回 obj['curly']['fears']属性值
         return _.property(value)
     }
+    /**
+     *  返回 function 的一个版本，该函数版本在调用时接收来自 startIndex 的所有参数，并将其收集到单个数组中。 如果未传递显式的 startIndex ，则将通过查看 function 本身的参数数来确定。 与 ES6 的 rest参数语法类似
+     *  
+     *  function.length
+     *      返回函数形参的数量
+     *      形参数量不包括剩余参数(a,b,...rest ---> length = 2)个数，仅包括第一个具有默认值(a,b = 2 --> length = 1)之前的参数个数
+     *  arguments.length
+     *      返回实参的数量
+     * 
+    **/
+    var restArguments = function(func, startIndex) {
+        startIndex = startIndex == null ? func.length - 1 : +startIndex;
+        return function() {
+            // length 等于 当前参数减去之前传入函数的形参
+            var length = Math.max(arguments.length - startIndex, 0),
+                rest = Array(length),
+                index = 0;
+            for(; index < length; index++) {
+                rest[index] = arguments[index + startIndex];
+            }
+            // 优化处理 call性能优于apply
+            switch(startIndex) {
+                case 0:
+                    return func.call(this, rest);
+                case 1:
+                    return func.call(this, arguments[0], rest);
+                case 2:
+                    return func.call(this, arguments[0], arguments[1], rest);
+            }
+            var args = Array[startIndex + 1];
+            for (index = 0; index < startIndex; index++) {
+                args[index] = arguments[index];
+            }
+            args[startIndex] = rest;
+            return func.apply(this, args);
+        }
+    }
 
     /**
      * 
