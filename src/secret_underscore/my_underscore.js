@@ -420,6 +420,7 @@
             sample[rand] = sample[index];
             sample[index] = temp;
         }
+        return sample.slice(0, n);
     }
 
     _.clone = function(obj) {
