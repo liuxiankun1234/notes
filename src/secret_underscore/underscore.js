@@ -110,7 +110,7 @@
         if (_.isFunction(value)) return optimizeCb(value, context, argCount);
         // 如果是对象 非数组 走 matcher
         if (_.isObject(value) && !_.isArray(value)) return _.matcher(value);
-        
+        // 非对象 函数 null undefined 
         return _.property(value);
     };
 
@@ -216,7 +216,6 @@
                 iteratee(obj[keys[i]], keys[i], obj);
             }
         }
-        return obj;
     };
 
     // Return the results of applying the iteratee to each element.

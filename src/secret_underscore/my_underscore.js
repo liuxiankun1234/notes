@@ -1,5 +1,5 @@
 (function() {
-    console.log('hello! guy')
+    console.log('hello guy! this is my underscore! welcome')
     // 基础设置
     // -------------------------------------------------------------------------------------
 
@@ -125,9 +125,10 @@
         if(value == null) return _.identity
         // value的值是一个函数 
         if(_.isFunction(value)) return optimizeCb(value, context, argCount)
-        // value的值是一个引用类型(非数组对象) 返回一个断言函数
+        // value的值是一个引用类型(非数组对象) 返回一个断言函数 用于检测是否含有value(对象)键值对
         if (_.isObject(value) && !_.isArray(value)) return _.matcher(value);
-        // 处理数组类型 value = ['curly', 'fears'] 返回 obj['curly']['fears']属性值
+        // 非对象 函数 null undefined 
+        // 处理数组 字符串类型 value = ['curly', 'fears'] 返回 obj['curly']['fears']属性值
         return _.property(value)
     }
     /**
@@ -143,12 +144,10 @@
     var restArguments = function(func, startIndex) {
         /**
          *  为啥 startIndex 默认等于 func.length - 1 ?
-         * 
          *  因为调用参数问题 调用时最后一个参数为rest
         **/
         startIndex = startIndex == null ? func.length - 1 : +startIndex;
         return function() {
-            // length 等于 当前参数减去之前传入函数的形参
             var length = Math.max(arguments.length - startIndex, 0),
                 rest = Array(length),
                 index = 0;
@@ -690,7 +689,7 @@
         var keys = _.keys(attrs), length = keys.length;
         // 如果object = null attrs = {} 返回true不太好吧
         if (object == null) return !length;
-        // 将基本类型处理成一个函数包装类
+        // 将基本类型处理成一个函数包装类  详情见：talk_about/talk_about_包装类.js
         var obj = Object(object);
         for (var i = 0; i < length; i++) {
             var key = keys[i];

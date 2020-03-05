@@ -38,6 +38,7 @@ void function() {
         // })
 
         // _.flatten({0: 1, length: 1});
-        _.difference([1,2,3,4,5], [1], [2])
+        // _.difference([1,2,3,4,5], [1], [2])
+        _.each(true, alert)
     )
 }();
