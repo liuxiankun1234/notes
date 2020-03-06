@@ -106,7 +106,7 @@
         switch (argCount == null ? 3 : argCount) {
             case 3: return function (value, key, collection) {
                 func.call(context, value, key, collection)
-            };
+            }
             case 4: return function (accumulator, value, index, collection) {
                 return func.call(context, accumulator, value, index, collection);
             }
@@ -296,6 +296,13 @@
         return results
     };
 
+    /**
+     *  createReduce方法
+     *      创建一个左右迭代函数(内部代码类似map方法)
+     *      
+     *  小技巧
+     *      for循环可以通过传入dir来控制循环方向 通过 index >= 0 && index < length 约束循环
+    **/
     var createReduce = function (dir) {
         var reducer = function (obj, iteratee, memo, initial) {
             var keys = !isArrayLike(obj) && _.keys(obj),

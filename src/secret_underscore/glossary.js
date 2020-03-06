@@ -8,6 +8,6 @@
  *      establish   建立
  *      reference   参考
  *      cornerstone 基石
- *      
+ *      accumulator 累加器
  * 
 **/ 
