@@ -774,6 +774,7 @@
         return function(array, item, idx) {
             var i = 0,
                 length = getLength(array);
+            // 传入有效的 idx
             if (typeof idx == "number") {
                 if (dir > 0) {
                     i = idx >= 0 ? idx : Math.max(idx + length, i);
@@ -781,10 +782,11 @@
                     length =
                         idx >= 0 ? Math.min(idx + 1, length) : idx + length + 1;
                 }
-            } else if (sortedIndex && idx && length) {
+            } else if (sortedIndex && idx && length) { // 传入有效的 sortedIndex && idx && length
                 idx = sortedIndex(array, item);
                 return array[idx] === item ? idx : -1;
             }
+            // 引用类型 / Symbol
             if (item !== item) {
                 idx = predicateFind(slice.call(array, i, length), _.isNaN);
                 return idx >= 0 ? idx + i : -1;

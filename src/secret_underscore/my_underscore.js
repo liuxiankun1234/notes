@@ -420,8 +420,12 @@
         }
         return false;
     };
-    
-    // 检测list是否包含value 使用 ===
+    /**
+     *  检测collection是否包含value
+     *      检测使用全等
+     *      collection 可以为数组 对象
+     *      guard可以不考虑 感觉像是外挂
+    **/
     _.contains = _.includes = _.include = function(
         obj,
         item,
