@@ -180,6 +180,37 @@
     _.reduce = _.foldl = _.inject = createReduce(1);
     _.reduceRight = _.foldr = createReduce(-1);
 
+    _.find = _.detect = function(obj, predicate, context) {
+        var keyFinder = isArrayLike(obj) ? _.findIndex : _.findKey;
+        var key = keyFinder(obj, predicate, context);
+        if (key !== void 0 && key !== -1) return obj[key];
+    };
+
+    var createPredicateIndexFinder = function(dir) {
+        return function(array, predicate, context) {
+            predicate = cb(predicate, context);
+            var length = getLength(array),
+                index = dir > 0 ? 0 : length - 1;
+            for (; index >= 0 && index < length; index += dir) {
+                if (predicate(array[index], index, array)) return index;
+            }
+            return -1;
+        };
+    };
+
+    _.findIndex = createPredicateIndexFinder(1);
+    _.findLastIndex = createPredicateIndexFinder(-1);
+
+    _.findKey = function(obj, predicate, context) {
+        predicate = cb(predicate, context);
+        var keys = _.keys(obj),
+            key;
+        for (var i = 0, length = keys.length; i < length; i++) {
+            key = keys[i];
+            if (predicate(obj[key], key, obj)) return key;
+        }
+    };
+
     _.keys = function(obj) {
         if (!_.isObject(obj)) return [];
         if (nativeKeys) return nativeKeys(obj);

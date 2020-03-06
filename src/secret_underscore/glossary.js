@@ -9,5 +9,6 @@
  *      reference   参考
  *      cornerstone 基石
  *      accumulator 累加器
- * 
+ *      predicate   断言
+ *      negate      否定 
 **/ 
