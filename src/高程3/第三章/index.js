@@ -26,6 +26,8 @@
  *          typeof undefined  'undefined'
  *          Number(undefined) --> NaN
  * 
+ *  
+ *      toString(binary) 和 parseInt(binary) 可逆的进制操作 转过去 转过来
  *  注释中的**表示 tips
 **/
 
@@ -42,7 +44,7 @@
  *              第一个字母必须是一个字母 下划线 或者一个美元符
  *              其它字符可以是字母 下划线 美元符 数字
  *              标识符的字母包含 ASCII 或 unicode字母字符（不推荐）
- *              ** 推荐驼峰式写法 doSomething
+ *              ** 推荐驼峰式法 doSomething
  *              ** 不能把关键字 保留字 true false null 用作函数名/参数/变量 可以用作属性名(不推荐使用)
  *      严格模式
  *      语句
@@ -182,6 +184,7 @@
  *                      parseFloat()  
  *                          处理浮点数
  *                          从第一个非空有效字符开始， 一直解析到无效的浮点数值格式（包括 . ）为止 否则返回NaN
+ *                          不支持进制参数
  *                      
  *      String类型
  *          表示由零个或者多个16位Unicode字符组成的字符序列
