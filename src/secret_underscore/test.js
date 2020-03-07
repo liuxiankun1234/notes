@@ -39,6 +39,11 @@ void function() {
 
         // _.flatten({0: 1, length: 1});
         // _.difference([1,2,3,4,5], [1], [2])
-        _.each(true, alert)
+        // _.each(true, alert)
+        // _.contains([{a: 1}], 1)
+        // _.lastIndexOf([1,2,3], 3, -2)
+        _.sortedIndex([10, 20, 30, 40], {a: 30}, function(x) {
+            return x.a
+        })
     )
 }();

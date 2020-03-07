@@ -15,11 +15,13 @@ import _ from 'underscore'
      *  为什么使用void 0 代替 undefined？
      *      undefined是一个全局变量，防止被其他人重写
      *          低版本IE浏览器中 undefined 可以被重写 
-     *          使用局部变量(var undefined = 1) 也会重写undefined
+     *          在函数内部通过var声明一个局部变量会改变作用域查找 返回重新定义的值 如 var undefined = 1; console.log(undefined) // 1
      *      节省字节
      *      void 对给定的表达式进行求值 然后返回undefined    
-     *  
      *  null 是一个关键字 undefined是一个全局变量
+     *      JS不允许将关键字作为标识符使用 但是可以作为对象的属性名使用
+     *      var null = 12;// JS语法错误
+     *      var o = {null: 1} // 符合语法 不推荐
      *  
      *  正确获取undefined的方式
      *      jquery 不传实参  

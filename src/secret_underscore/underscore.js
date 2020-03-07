@@ -759,6 +759,7 @@
     _.sortedIndex = function(array, obj, iteratee, context) {
         iteratee = cb(iteratee, context, 1);
         var value = iteratee(obj);
+        debugger
         var low = 0,
             high = getLength(array);
         while (low < high) {
@@ -786,7 +787,7 @@
                 idx = sortedIndex(array, item);
                 return array[idx] === item ? idx : -1;
             }
-            // 引用类型 / Symbol
+            // 引用类型 / Symbol / NaN
             if (item !== item) {
                 idx = predicateFind(slice.call(array, i, length), _.isNaN);
                 return idx >= 0 ? idx + i : -1;

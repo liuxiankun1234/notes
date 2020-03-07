@@ -614,11 +614,21 @@
     _.findIndex = createPredicateIndexFinder(1);
     _.findLastIndex = createPredicateIndexFinder(-1);
 
+    _.sortedIndex = function(array, obj, iteratee, context) {
+        iteratee = cb(iteratee, context, 1);
+        var length = getLength(array);
+
+    }
+
     //
     _.sortedIndex = function() {};
 
     var createIndexFinder = function(dir, predicateFind, sortedIndex) {};
     _.indexOf = createIndexFinder(1, _.findIndex, _.sortedIndex);
+    /**
+     *  _.lastIndexOf([1,2,3,4,5], 2, -2) 
+     *  表示从数组中找到2的索引 开始位置是 array.length + (-2) + 1 结束位是 0
+    **/
     _.lastIndexOf = createIndexFinder(-1, _.findLastIndex);
     // 函数的扩展方法
     // -------------------------------------------------------------------------------------
