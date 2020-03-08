@@ -21,6 +21,8 @@
  *          不能把函数命名为eval/arguments
  *          不能把参数命名为eval/arguments
  *          不能出现两个参数同名
+ *          函数给arguments[x]赋值 不同步实参
+ *          函数重写arguments语法错误
  *      
 **/
 
