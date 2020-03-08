@@ -395,8 +395,11 @@
  *  
  *  函数
  *      命名的参数只提供便利 非必需
- *      arguments的length是第一个非默认参数的实参的长度
  *      传入实参跟arguments的对应数据进行同步 未传入的不同步
+ *      推荐：让函数始终都有返回值/或者始终没有返回值
+ * 
+ *      arguments.length    传入实参长度
+ *      function.length     第一个非默认形参之前的长度
 **/
 void function() {
     // JS区分大小写
