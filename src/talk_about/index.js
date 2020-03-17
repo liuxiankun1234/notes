@@ -1,6 +1,6 @@
 /**
  *  鲜为人知的事实：Array.prototype 是一个数组类型
- * 
+ *  补充字符串方法 replace
  * 
  * 
  * 

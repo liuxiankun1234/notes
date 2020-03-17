@@ -27,7 +27,8 @@
  *          访问arguments.caller（ES5定义的）属性会导致错误
  *          不能为函数的caller属性赋值
  *          this在未指定情况下指向undefined
- *          
+ *          eval()中创建的变量和函数不会被外部访问到
+ *          为eval赋值会导致错误
 **/
 
 (function() {
