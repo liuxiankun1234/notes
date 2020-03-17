@@ -23,7 +23,11 @@
  *          不能出现两个参数同名
  *          函数给arguments[x]赋值 不同步实参
  *          函数重写arguments语法错误
- *      
+ *          访问arguments.callee会导致错误
+ *          访问arguments.caller（ES5定义的）属性会导致错误
+ *          不能为函数的caller属性赋值
+ *          this在未指定情况下指向undefined
+ *          
 **/
 
 (function() {

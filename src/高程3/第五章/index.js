@@ -29,6 +29,7 @@
  *          instanceof
  *              页面中有其他iframe 存在两个Array构造函数 就有问题了 不同的引用
  *          Array.isArray()
+ *      
  *  提示：
  *      {(左花括号)出现在一个语句上下文中 表示一个代码块的开始
  *      {} + {} // "[object Object][object Object]"
@@ -38,7 +39,21 @@
  *      null + '' // "null"
  *      undefined + '' // "undefined"
  * 
- * 
- * 
- * 
+ *  Date类型
+ *      略
+ *  RegExp类型
+ *      详情：/talk_about/talk_about_正则表达式迷你书.js
+ *           /talk_about/talk_about_正则表达式.js
+ *  Function类型
+ *      函数是对象，函数名是指针
+ *      没有重载   
+ *          其他语言定义两个签名不同即可定义两个同名函数
+ *          JS不支持 可以通过传入参数类型 数量作出不同反应 模仿重载
+ *      函数内部属性
+ *          arguments.callee 一个指向当前arguments所属函数的指针
+ *          arguments.callee.caller 保存着调用当前函数的引用 全局调用指向null
+ *      函数属性和方法         
+ *          call/apply/bind
+ *              改变函数作用域
+ *          
 **/
