@@ -91,7 +91,12 @@
  *                      对发现的非标准字符进行编码
  *          eval()
  *              eval中创建的变量或对象不会被提升
- *              
- *      
+ *              影响性能/改变作用域 不建议使用
+ *          Math对象
+ *              Math.max/Math.min
+ *                  Math.max.apply(null, [1,2,3,4,5, {valueOf: () => 10}]) // 10 调用Number()方法 
+ *              Math.ceil
+ *              Math.floor
+ *              Math.round
  *              
 **/
