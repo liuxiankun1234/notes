@@ -7,9 +7,12 @@
  *          无序属性的集合 名值对 属性值可以是数据或函数
  * 
  *      理解对象
+ *          创建对象
+ *              创建Object实例
+ *              对象字面量
  *          属性类型
- *              Object.defineProperty方法可以修改默认属性
- *              可以多次调用Object.defineProperty给对象属性设置值，configurable属性设置false之后configurable属性就不可以修改了(改为true会报错)
+ *              Object.defineProperty方法可以修改属性默认的特性
+ *              可以多次调用Object.defineProperty给对象属性设置特性值，configurable属性设置false之后configurable属性就不可以修改了(改为true会报错)
  *              调用Object.defineProperty 如果不设置 configurable writable enumerable 默认设置为false
  *              数据属性
  *                  包含一个数据值的位置 这个位置可以读取和写入值
@@ -17,9 +20,10 @@
  *                      表示能够通过delete删除属性，能够修改属性的特性或者能否把属性修改为访问器属性 
  *                      设置成false 
  *                          属性不能被删除  严格模式delete属性会报错 
- *                          configurable 不能设置成true
- *                          enumerate不能被修改
- *                          writable可以将true修改false 其他都会报错
+ *                          configurable 不能再被设置成true
+ *                          Enumerable 不能再被修改
+ *                          writable 可以将true修改false 不可将false设置成true
+ *                          value 可以被修改
  *                  [[Enumerable]] 默认值 true
  *                      表示能否通过for-in循环返回属性 
  *                  [[Writable]] 默认 true
@@ -54,7 +58,7 @@ void function() {
     var o = {
         a: 1,
         b: 2,
-        symbol: 'Symbol'
+        [symbol]: 'Symbol'
     };
 
     delete o.a // 返回true 
@@ -67,6 +71,9 @@ void function() {
         value: 'c',
         enumerable: false
     })
+
+    // delete o.c  // 严格模式报错 非严格模式忽略
+    
     Object.defineProperty(o, 'c', {
         configurable: false,
         writable: false,
@@ -74,7 +81,7 @@ void function() {
         enumerable: false
     })
     for(var k in o){
-        console.log(k)
+        console.log(`o.k:${k}`)
     }
     console.log(o)
 

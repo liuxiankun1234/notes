@@ -29,6 +29,7 @@
  *          this在未指定情况下指向undefined
  *          eval()中创建的变量和函数不会被外部访问到
  *          为eval赋值会导致错误
+ *          删除Configurable：false的属性会报错
 **/
 
 (function() {

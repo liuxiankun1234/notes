@@ -3,7 +3,7 @@
 /***************************** JavaScript高级程序设计 上卷 *****************************/
 // import './高程3/第三章/index';
 // import './高程3/第四章/index';
-// import './高程3/第六章/index';
+import './高程3/第六章/index';
 // import './高程3/第六章/inherit';
 // import './高程3/第七章/index';
 
@@ -29,7 +29,7 @@
 
 /***************************** 揭秘underscore *****************************/
 
-import './secret_underscore/index'
+// import './secret_underscore/index'
 
 /***************************** leetcode *****************************/
 

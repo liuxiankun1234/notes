@@ -95,8 +95,9 @@
  *          Math对象
  *              Math.max/Math.min
  *                  Math.max.apply(null, [1,2,3,4,5, {valueOf: () => 10}]) // 10 调用Number()方法 
- *              Math.ceil
- *              Math.floor
- *              Math.round
+ *              Math.ceil 取高
+ *              Math.floor 取低
+ *              Math.round 四色五人
+ *              Math.random 
  *              
 **/

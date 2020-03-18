@@ -6,7 +6,7 @@
      *                                          返回数组顺序  1 --> 2 顺序返回 12内在顺序如下
      *                                              1 所有数字升序排序
      *                                              2 所有字符串按照加入顺序排序
-     *  Object.getOwnPropertySymbols(obj)   获取当前对象上(非原型链上)所有Symbol属性的数组
+     *  Object.getOwnPropertySymbols(obj)   获取当前对象上(非原型链上)所有可枚举和不可以枚举的Symbol属性的数组
      *  Object.keys(obj)                    获取当前对象(非原型链上)上的可枚举的字符串属性
      *  obj.hasOwnProperty(prop)            获取当前对象(非原型链上)是否含有prop字符串属性和Symbol属性(可枚举和不可枚举的属性)
      *                     
@@ -16,9 +16,10 @@
      *                                      in 可以适用于 数组 字符串的索引 
      *  
      *  总结：
-     *      Object.getOwnPropertyNames 和 Object.getOwnPropertySymbols 就可以获取对象（非原型链）所有的属性
-     *      Object.getOwnPropertyNames 是全部字符串属性
-     *      Object.keys                仅可枚举字符串属性 
+     *      Object.getOwnPropertyNames / Object.getOwnPropertySymbols 
+     *          当前对象（非原型链）可枚举和不可枚举的字符串属性/symbol属性
+     *      Object.getOwnPropertyNames / Object.keys
+     *          当前对象字符串属性全部属性 / 可枚举属性
      *      for-in 循环只检索可枚举的字符串属性
      *      hasOwnProperty  当前对象的可枚举和不可枚举的字符串属性和Symbol属性
      *      移动端兼容性都没问题 都可以使用
