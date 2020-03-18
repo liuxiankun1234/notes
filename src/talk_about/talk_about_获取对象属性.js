@@ -29,6 +29,10 @@
      *      
      *      let strObj = new String('abc'); '0' in strObj === true
      *      因为strObj的key是0,1,2
+     * 
+     *  
+     *  插：
+     *      Object.getOwnPropertyDescriptor(obj, prop)  获取实例上属性特征值
      *      
     **/
     class Person{

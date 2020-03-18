@@ -160,8 +160,11 @@ void function() {
 
     /**
      *  构造函数
-     * 
-     * 
+     *      优点 
+     *          能够通过construct将实例标识为特定的对象类型(p1 p2都是Person的实例 这个就标识了类型)
+     *      缺点
+     *          构造函数中的方法在每个实例上被重复创建
+     *              function === new Function
      * 
     **/
     function Person(name, age) {
@@ -198,12 +201,13 @@ void function() {
 /**
  *  原型模式
  *      我们创建的每个函数都有一个prototype属性，这个属性是一个指针 指向当前构造函数的原型对象 
- *      默认情况下所有的原型对象都自动获得一个constructor属性，指向prototype所属的函数
- *      原型对象包含可以由特定类型的所有实例共享的属性和方法
+ *      原型对象中包含可以由特定类型(constructor指向的构造函数)的所有实例共享的属性和方法
+ *      默认情况下所有的原型对象都自动获得一个constructor属性，指向原型所属的函数
  *      
  *      A.isPrototypeOf(B) // A对象是B实例的原型吗
  *      Object.getPrototypeOf(A) // 获取A的原型对象
- * 
+ *      
+ *      对象实例上的属性会屏蔽原型对象中保存的同名属性(找到了就返回 找不到进行原型链查找)
  *      更简单的原型语法
  *          使用对象字面量重写原型
  *          每个函数都有一个prototype对象，自动获取一个constructor属性 原型被重写之后 会造成constructor丢失 会继续沿着原型链向上查找       
