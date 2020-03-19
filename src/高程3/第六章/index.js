@@ -341,6 +341,7 @@ void function() {
                 return this.name
             }
 
+            // 重写原型会导致第一次创建的Person2实例与原型断开关联 等同于new一个实例之后重写原型(与之前创建实例失去关联)
             Person2.prototype = {
                 constructor: Person2,
                 sayName: function() {
