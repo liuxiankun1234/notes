@@ -336,12 +336,20 @@ void function() {
         this.age  = age;
 
         if(typeof this.sayName !== 'function'){
-            // 通过判断 this.sayName 来初始化原型 保证仅初始化一次原型
+            // 通过判断 this.sayName 来初始化原型 保证仅初始化一次原型 第二次执行 当前this的隐式原型已经存在sayName方法 所以不会再初始化
             Person2.prototype.sayName = function() {
                 return this.name
             }
+
+            Person2.prototype = {
+                constructor: Person2,
+                sayName: function() {
+                    return this.name; 
+                }
+            }
         }
     }
+    
 
     var p3 = new Person2('lxk', 18);
     var p4 = new Person2('lxk2', 22);

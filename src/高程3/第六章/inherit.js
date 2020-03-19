@@ -7,6 +7,7 @@
  * 
  *      原型链继承
  *          原型链是一个链表结构
+ *          原型链继承实现的本质是重写原型
  *          本质重写原型来 让一个引用类型继承另一个引用类型的属性和方法
  *          构造函数 原型 实例关系？
  *              每个构造函数都有一个原型对象 每个原型对象都自动获取一个constructor属性 指向当前构造函数 每个实例都有一个隐式原型 指向当前构造函数的原型
@@ -14,10 +15,10 @@
  *              所有函数的默认原型都是Object的实例 [[prototype]] ---> Object.prototype
  *          确定原型和实例的关系
  *              A instanceOf B    // A是B的实例吗
- *              A.isPropertyOf(B) // A是B的原型吗
+ *              A.prototype.isPropertyOf(B) // A.prototype是B的原型吗
  *          谨慎的定义方法
  *              给原型添加方法一定要放到继承(重写原型)之后 否则断开连接
- *              不能使用字面量方式添加方法 也会导致上一步继承无效
+ *              不能使用字面量添加方法 会重写原型
  *          原型链的缺点
  *              包含引用类型的原型
  *              不能向超类型传递参数
@@ -35,8 +36,8 @@
  *      原型式继承
  *          下 object()方法
  *          ES5 的Object.create()规范了原型式继承
- *          仅想让一个对象与另一个对象保持类似的情况下 可以使用原型式继承 
- *          注意原型上使用引用类型的时候 要注意
+ *          注意原型上使用引用类型值 赋值指针的副本
+ *          在没有必要兴师动众的使用构造函数，而只想让一个对象与另一个对象保持引用关系 可以使用原型式继承
  *          
  *          Object.create()
  *               使用规范链接：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/create
@@ -96,7 +97,16 @@ void function() {
     }
     var anotherPerson = object(obj);
     console.log('anotherPerson', anotherPerson)
-
+    
+    // 寄生式继承
+    function createAnthoer(origin) {
+        var clone = object(origin);
+        clone.sayHello = function() {
+            return 'hi!'
+        }
+        return clone;
+    }
+    var p = createAnthoer(obj); //返回一个新对象 有obj的属性和方法也有自己的方法
 
     /**
      *      寄生组合式继承
