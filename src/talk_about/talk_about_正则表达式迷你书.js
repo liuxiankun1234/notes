@@ -235,6 +235,7 @@
 
     // 将每个单词的首字母转换为大写
     function normalize(str) {
+        // /\b\w/g 也可以 
         return str.toLowerCase().replace(/(?:^|\s+)\w/g, function(match) {
             return match.toUpperCase();
         })
@@ -247,7 +248,7 @@
         })
     }
 
-    // HTML转译和反转译
+    // HTML转译和反转译 转义规则 以&开头;结尾
     function escapeHTML(html) {
         const escapeHTML = {
             '>': 'gt',
@@ -260,7 +261,7 @@
             return `&${escapeHTML[match]};`
         });
     }
-    // HTML反转译
+    // HTML反转译 转义规则 以&开头;结尾
     function unescapeHTML(html) {
         const htmlEntities = {
             nbsp: ' ',
