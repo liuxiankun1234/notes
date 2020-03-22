@@ -19,9 +19,11 @@
  *      /^\d{15}|\d{17}[xX\d]$/g
  *          分支结构将正则分为左右两部分表达式 
  *          匹配15位数字开头或17位数字...结尾
+ *      
+ *          test() 和 exec() 方法受到g标识影响，改变lastIndex，多次调用注意下
  * 
 **/
-(function(){
+(function () {
     /**
      *  第一章 正则表达式字符匹配攻略
      *      正则表达式是匹配模式，要么匹配字符，要么匹配位置
@@ -77,9 +79,9 @@
      *              /id="[^"]+"/ 会匹配 到 id="container" 条件限制
      * 
     **/
-   
-   '012345 666 6666666'.match(/\d{2,5}/g)
-   //  贪婪匹配  ["01234", "666", "66666", "66"]
+
+    '012345 666 6666666'.match(/\d{2,5}/g)
+    //  贪婪匹配  ["01234", "666", "66666", "66"]
 
     '012345 666 6666666'.match(/\d{2,5}?/g)
     //  非贪婪匹配  ["01", "23", "45", "66", "66", "66", "66"]
@@ -94,7 +96,7 @@
     str.match(/id=".+?"/);
     str.match(/id="[^"]+"/);
 })();
-(function() {
+(function () {
     /**
      *  第二章 正则表达式位置匹配攻略
      *  
@@ -138,7 +140,7 @@
 
     // 不匹配任何字符的正则
     /.^/ // 字符后面是开头位置  没有这样的字符
-    
+
     // 
     /**
      *  匹配千分位
@@ -155,7 +157,7 @@
     /**
      *  格式化数字
      *      1888 --> $ 1,888.00
-     *  为什么用 两个$$
+     *  $$ 表示美元符
     **/
 
     function format(num) {
@@ -194,7 +196,7 @@
     }
 
 })();
-(function() {
+(function () {
     /**
      *  第三章 正则表达式括号的作用 
      *      括号提供了分组，便于我们引用他们
@@ -225,7 +227,7 @@
      *      \1表示最后一次捕获到的数字 5
      * 
     **/
-    const reg1 = /(\d)+ \1/; 
+    const reg1 = /(\d)+ \1/;
     reg.test('12345 5'); // true
     reg.test('12345 1'); // false
 
@@ -245,14 +247,14 @@
     // 将每个单词的首字母转换为大写
     function normalize(str) {
         // /\b\w/g 也可以 
-        return str.toLowerCase().replace(/(?:^|\s+)\w/g, function(match) {
+        return str.toLowerCase().replace(/(?:^|\s+)\w/g, function (match) {
             return match.toUpperCase();
         })
     }
 
     // 驼峰化  'webkit-linear-gradient' ---> 'webkitLinearGradient'
     function camelize(str) {
-        return str.replace(/[-\s]+(\w)/g, function(a, match) {
+        return str.replace(/[-\s]+(\w)/g, function (a, match) {
             return match ? match.toUpperCase() : '';
         })
     }
@@ -266,7 +268,7 @@
             '&': 'amp',
             '\'': '#39'// 单引号
         }
-        return html.replace(new RegExp('[' + Object.keys(escapeHTML).join('') + ']', 'g'), function(match) {
+        return html.replace(new RegExp('[' + Object.keys(escapeHTML).join('') + ']', 'g'), function (match) {
             return `&${escapeHTML[match]};`
         });
     }
@@ -281,10 +283,10 @@
             apos: '\''
         }
 
-        return html.replace(/&x([^;]+);/g, function(match, key) {
+        return html.replace(/&x([^;]+);/g, function (match, key) {
             console.log(match, key);
             // if(htmlEntities[key]){} 不能用这个 因为htmlEntities[key] 为falsy就挂了
-            if(key in htmlEntities){
+            if (key in htmlEntities) {
                 return htmlEntities[key]
             }
             return match
@@ -330,7 +332,7 @@
     console.log(end - start);
 
 })();
-(function() {
+(function () {
     /**
      *  第四章 正则表达式回溯法原理
      *      没有回溯的匹配  
@@ -374,7 +376,7 @@
      *     .* 是很影响效率的
     **/
 })();
-(function() {
+(function () {
     /**
      *   第五章 正则表达式的拆分
      *      结构和操作符
@@ -412,7 +414,7 @@
      *              /^(\d{15}|\d{17}[\dxX])$/
     **/
 })();
-(function() {
+(function () {
     /**
      *  第六章 正则表达式的构建
      *      平衡法则
@@ -450,7 +452,7 @@
      *              /red|read/ 修改成 /rea?d/
      *              
     **/
-    (function() {  
+    (function () {
         // 正则 密码长度 6-12 位，数字、小写字符和大写字母组成，但必须至少包括 2 种字符
         // 将问题变成一个取反的问题处理 就很简单
         function checkPassWord(string) {
@@ -459,21 +461,23 @@
             // 除了 A,B,C 就是AB,AC,BC,ABC
 
             const regex1 = /^[0-9a-zA-Z]{6,12}$/; // 长度6~12的数字 字母 大写字母
-                regex2 = /^[0-9]{6,12}$/,
+            regex2 = /^[0-9]{6,12}$/,
                 regex3 = /^[A-Z]{6,12}$/,
                 regex4 = /^[a-z]{6,12}$/;
 
-                if (!regex1.test(string)) return false;
-                if (regex2.test(string)) return false;
-                if (regex3.test(string)) return false;
-                if (regex4.test(string)) return false;
-                return true;
+            if (!regex1.test(string)) return false;
+            if (regex2.test(string)) return false;
+            if (regex3.test(string)) return false;
+            if (regex4.test(string)) return false;
+            return true;
         }
     })();
 })();
-(function() {
+(function () {
     /**
      *  第七章 正则表达式编程
+     *      构造函数写正则 传入的字符串\需要反斜杠转移 '\\d' -表示-> \d
+     *      正则实例上source属性 动态创建正则时候可以看到new之后的正则
      *      正则表达式的四种操作
      *          正则主要做的工作就是匹配字符串或匹配位置 都是匹配
      *          有了匹配才有  
@@ -481,9 +485,118 @@
      *              切分 String.prototype.split
      *              提取 String.prototype.match
      *              替换 String.prototype.replace
+     *          字符串方法(参数是正则)
+     *              参数是正则 字符串被new RegExp转成正则
+     *                  search()
+     *                  match()
+     *                      使用g标志，则将返回一个完成匹配结果，但不会返回捕获组
+     *                      不适用g标志，返回结果同exec()
+     *              
+     *              参数是字符串或者正则
+     *                  replace() 第二个参数可以是字符串/函数
+     *                      第二个参数是字符串时
+     *                          $1,$2,...,$99 表示分组捕获的第n个文本
+     *                          $& 匹配到的子串文本
+     *                          $` 匹配到的子串的左边文本
+     *                          $' 匹配到的子串的右边文本
+     *                      第二个参数是函数时
+     *                          function(match, $1, $2, index, input) {}
+     *                          match 匹配字符串
+     *                          $1,$2 分组捕获文本
+     *                          index 开始索引
+     *                          input 原文本
+     *                      
+     *                  split(separator, limit) 参数可以是字符串 也可以是正则 第二个参数limit 返回数值的长度
+     *                      '2019-10-10'.split(/\D/g) // 也可以使用 '-'
+     *                      使用正则分组会返回分组内容
+     *                          var string = "html,css,javascript";
+     *                          string.split(/(,)/) // ["html", ",", "css", ",", "javascript"]
+     *          正则方法
+     *              test() 受g标识符影响
+     *                  
+     *              re.exec()
+     *                  匹配结果[匹配字符串, 匹配分组, 匹配分组, ..., 匹配到字符基于零的索引, 原始字符串]
+     *                  同时正则re更新lastIndex（下次开始匹配位置）
+     *                  
      *      相关API注意要点
      *          
      *      真实案例
      *          
+     * 
     **/
+
+    var re = /quick\s(brown).+?(jumps)/ig;
+    var str = 'The Quick Brown Fox Jumps Over The Lazy Dog';
+    var result = re.exec(str);
+    //  result === ["Quick Brown Fox Jumps", "Brown", "Jumps", index: 4, input: "The Quick Brown Fox Jumps Over The Lazy Dog", groups: undefined
+    // re 更新lastIndex
+
+    str.match(re);
+    // 使用g标识 返回结果同exec()
+    // 不使用g标识 ['Quick Brown Fox Jumps'] 返回所有匹配元素
+
+    var string = "2017.06.27";
+    var re1 = /\b(\d+)\b/;
+    var re2 = /\b(\d+)\b/g;
+
+    string.match(re1) // ['2017', '2017', index: 0, input: '2017.06.27'] 同re1.exec(string) 
+    string.match(re2) // ['2017', '06', '27']
+
+    re2.exec(string) // ['2017', '2017', index: 0, input: '2017.06.27']
+    re2.exec(string) // ['06', '06', index: 5, input: '2017.06.27']
+    re2.exec(string) // ['27', '27', index: 8, input: '2017.06.27']
+
+
+    // test()方法受到g标识影响
+    var re1 = /a/;
+    var re2 = /a/g;
+    var str = 'abababc';
+
+    re1.test(str); // true lastIndex: 0
+    re1.test(str); // true lastIndex: 0
+
+    re2.test(str); // true lastIndex: 1
+    re2.test(str); // true lastIndex: 3
+    re2.test(str); // true lastIndex: 0
+    re2.test(str); // false lastIndex: 0
+
+
+    // 优秀的replace(, string) 
+    var str = '2,3,5'
+    // 变成 5 = 2 + 3
+    str.replace(/(\d)\D(\d)\D(\d)/g, '$3 = $1 + $2')
+
+    // 变成 '222,333,555'
+    str.replace(/(\d)/g, '$&$&$&')
+
+    // '2+3=5' 变成 "2+3=2+3=5=5"
+    str.replace(/=/g, '$&$`$&$\'$&')
+
+    function getElementsByClassName(className) {
+        var elements = document.querySelector('*');
+        // /(^|\s*)className(\s*|$)/
+        var regex = new RegExp('(^|\\s*)' + className +'(\\s*|$)');
+        var list = []
+        elements.forEach(item => {
+            if(item.className.test(regex)) {
+                list.push(item);
+            }
+        })
+        return list;
+    }
+
+    // 'a=1&b=2&a=3&b=4' ----> 'a=1,3&b=2,4'
+    // 如果对URI参数做编解码 需要加encodeURIComponent
+    function compress(source) {
+        var obj = {};
+        source.replace(/([^&=]+)=([^&]+)/g, function(match, key, value) {
+            var ss = obj[key];
+            obj[key] = (ss ? ss + ',' : '') + value;
+        });
+        var result = [];
+        for(var k in obj) {
+            result.push(k + '=' + obj[k])
+        }
+        return result.join('&')
+    }
 })();
