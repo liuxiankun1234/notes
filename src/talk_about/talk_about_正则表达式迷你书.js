@@ -500,11 +500,11 @@
      *              提取 String.prototype.match
      *              替换 String.prototype.replace
      *          字符串方法(参数是正则)
-     *              参数是正则 字符串被new RegExp转成正则
+     *              参数是正则 字符串会被new RegExp转成正则
      *                  search()
      *                  match()
      *                      使用g标志，则将返回一个完成匹配结果，但不会返回捕获组
-     *                      不适用g标志，返回结果同exec()
+     *                      不适用g标志，返回结果同exec() 不同与exec(), 不会记录lastIndex
      *              
      *              参数是字符串或者正则
      *                  replace() 第二个参数可以是字符串/函数
@@ -530,7 +530,9 @@
      *                  
      *              re.exec()
      *                  匹配结果[匹配字符串, 匹配分组, 匹配分组, ..., 匹配到字符基于零的索引, 原始字符串]
-     *                  同时正则re更新lastIndex（下次开始匹配位置）
+     *                  受g标识符影响 
+     *                      有g标识符正则会自动更新lastIndex(下次匹配位置)
+     *                      没有g标识符 lastIndex每次都是0
      *                  
      *      相关API注意要点
      *          
