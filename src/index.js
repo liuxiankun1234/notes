@@ -48,8 +48,8 @@
 
 // import './深入理解ES6/第一章 块级作用域绑定/index'
 // import './深入理解ES6/第二章 字符串和正则表达式/index'
-import './深入理解ES6/第三章 函数/index'
-// import './深入理解ES6/第四章 扩展对象的功能性/index'
+// import './深入理解ES6/第三章 函数/index'
+import './深入理解ES6/第四章 扩展对象的功能性/index'
 // import './深入理解ES6/第五章 解构：使数据访问更便捷/index'  
 // import './深入理解ES6/第六章 Symbol和Symbol属性/index' 
 // import './深入理解ES6/第七章 SET和MAP/index' 

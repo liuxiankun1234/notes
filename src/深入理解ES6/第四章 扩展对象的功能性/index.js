@@ -218,7 +218,7 @@
         friend.getGeeting(),
         Object.getPrototypeOf(friend) === dog
     );
-})();
+});
 (function() {
     console.log('******************  5  ******************');
     /**
@@ -253,8 +253,8 @@
         name: 'friend',
         getGeeting() {
             // friend hi
-            // 注意 this指向调用当前方法的实例
-            // return Object.getPrototypeOf(this).getGeeting.call(this) + ' hi'
+            // 注意 this指向调用当前方法的实例 死循环
+            return Object.getPrototypeOf(this).getGeeting.call(this) + ' hi'
             // super指向当前对象的原型 this指向当前对象
             return super.getGeeting() + ' hi'
         }
@@ -283,13 +283,15 @@
     /**
      *      正式的方法定义
      *      es6中正式将方法定义为一个函数 他会内部有一个 [[HomeObject]]的属性来容纳这个方法从属的对象
-     *      super 会根据 HomeObejct 这个值去链式查找  
+     *      super 会根据 HomeObejct 调用getPrototypeOf()方法来检索原型的引用 然后搜索同名函数  
+     *      
     **/
 
     let person = {
         // 是方法
         getGeeting() {
-            return 'getGeeting'
+            // 此方法的[[homeObject]] 属性值是person 调用Object.getPrototypeOf(person).getGeeting.call(this);
+            return super.getGeeting() + 'hi'
         }
     }
     // 不是方法
