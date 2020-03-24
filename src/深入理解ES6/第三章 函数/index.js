@@ -51,6 +51,17 @@
  *              当调用函数的[[Call]]方法时 new.target 被赋值为undefined
 **/
 
+function a() {
+    b();
+}
+function b() {
+    c();
+}
+function c() {
+    console.log(c)
+}
+// a();
+
 
 ;(function() {
     function mixArgs(first, second) {
@@ -239,63 +250,81 @@
         }
         throw new Error('必需通过new关键字调用！')
     }
+    function AnPerson(name) {
+        // 报错 this不是Person构造函数实例
+        Person.call(this, name)
+    }
     var person = new Person('lxk');
-    var notAPerson = Person.call(person, 'zxy')
-    console.log(person)
+    var notAPerson = new AnPerson('lxk');
     /**
      *      es6解决方案
      *          new.target 元属性
      *          元属性：指非对象的属性  
      *          必须在函数内部使用
      *          当调用函数的[[Construct]]方法时 new.target 被赋值为new操作符的目标 通常是新创建的实例对象
-     *          当调用函数的[[Call]]方法时 new.target 被赋值为undefined
+     *          当调用函数的[[Call]]方法时 new.target 被赋值为undefined 
+     *          函数外使用new.target语法错误
      *          new.target === Person
      **/
-    // function Person(name) {
-    //     if(typeof new.target === 'undefined'){
-    //         throw new Error('必需通过new关键字调用！')
-    //     } 
-    // }
-    // function Person(name) {
-    //     console.log(new.target === Person) // true
-    //     if(new.target !== Person){
-    //         throw new Error('必需通过new关键字调用！')
-    //     }
-    // }
-    new Person()
+    function Person(name) {
+        if(new.target === Person){ // typeof new.target !== 'undefined'
+            this.name = name
+            return
+        }
+        throw new Error('必需通过new关键字调用！')
+    }
+    function AnPerson(name) {
+        // 报错 this不是Person构造函数实例
+        Person.call(this, name)
+    }
+    new AnPerson()
 });
 (function() {
     /**
      *  块级函数 
      *      ES3版本中，在代码块中声明一个函数声明是一个语法错误 （但是各个浏览器厂商支持这个特性，支持不同）
-     *      ES5中 会抛出错误
+     *      ES5中 也会抛出错误
      * 
      *      ES6中
      *          严格模式    函数在块级作用域内部提升
      *          非严格模式  函数在上一函数域中
+    **/
+    /**
+     *  ES5报错
+     *  ES6 严格模式下 在块作用域中声明函数
+     *      非严格模式下 在上一函数域中声明函数
+     * 
     **/
     'use strict'
     if(true){
         function f() {
             console.log(f)
         }
+        // 打印函数
+        console.log(`f---------------->${f}`)
     }
-    console.log(f)
+    // ReferenceError
+    console.log(`f---------------->${f}`)
 });
 
 (function() {
     /**
      *      箭头函数
-     *          没有this super arguments new.target 绑定 this的值由外围最近一层非箭头函数决定
-     *          没有构造器 所以不能通过new调用 不能通过 new 关键字调用
+     *          没有this super arguments new.target 绑定 这些值由外围最近一层非箭头函数决定
+     *          没有[[construct]]方法 不能被用作构造函数 new调用会报错
      *          没有原型 不存在prototype
      *          不可以改变this的指向 箭头函数的this值不受bind call apply 的影响
      *          不支持arguments对象 必需通过命名参数和不定参数这两种形式访问函数的参数
      *          不支持重复的命名参数 传统函数中 只有在严格模式下才不能有重复的命名参数
      * 
-     *          箭头函数同样也有一个name属性 
+     *          箭头函数name属性同其他函数规则相同
      *          
     **/ 
+    var reflect = () => {
+        // console.log(arguments.length) // 0
+        console.log(this)
+    };
+    reflect();
 
     // 箭头函数语法
     // 不支持重复的命名参数 
@@ -310,7 +339,7 @@
         console.log('new.target', new.target)
     };
     // 等同于
-    let reflect = function(value) {
+    let reflect2 = function(value) {
         console.log(arguments)
         return value
     }
@@ -324,7 +353,7 @@
     // 不可以改变this的绑定 this没有改变指向
     reflect1.bind({name: 1})()
 
-})();
+});
 (function() {
     // 创建立即执行函数表达式
     let person = function(){}('name');
@@ -333,12 +362,49 @@
 
     // 箭头函数只支持这一种写法
     let person3 = (() => {})('name');
-})();
+});
 (function() {
-    /**
+    /** 
      *  尾部调用优化
+     *      循环调用中，一个未完成的栈帧都会被保存在内存中，当调用栈变得过大时候会造成程序的问题
      *      尾部调用： 函数作为另一函数的最后一条语句被调用
-     * 
+     *      
+     *      ES6中的尾调用优化
+     *          缩减了严格模式下的尾调用栈的大小(非严格模式不受影响) 满足一下条件 尾调用不再创建新的栈帧，而是清除并重用当前栈帧
+     *              尾调用不再访问当前栈的变量（也就是说不是一个闭包）
+     *              函数内部尾调用是最后一条语句
+     *              尾调用的结果作为函数值返回
+     *      应用场景 
+     *          递归函数
     **/
+
+    // 尾调用不能在程序上表现出来 
+    function ff() {
+        console.log(1);
+    }
+    function f() {
+        return ff();
+    }
+    f();
+
+
+    function factorial(n) {
+        if(n  <= 1) {
+            return 1;
+        }else{
+            return n * factorial(n - 1);
+        }
+    }
+    // n足够大存在栈溢出风险
+
+    // 尾部优化 性能更好
+    function factorial(n, p = 1) {
+        if(n  <= 1) {
+            return n * p;
+        }else{
+            let result = n * p;
+            return factorial(n - 1, result)
+        }
+    }
 
 })();
