@@ -1,6 +1,6 @@
 /**
- *      解构：使数据访问更 便捷
- *      
+ *      解构：使数据访问更 便捷    
+ *  
  *      为何使用解构功能
  *          避免同质化代码，简化获取信息的过程
  * 
@@ -14,10 +14,18 @@
  *           const 声明必需提供初始化赋值
  *              
  *      解构赋值
- *           规定代码块不能出现在等号的左侧 所以解构赋值 需要放在()内变成一个表达式
+ *          规定代码块不能出现在等号的左侧 有时候需要使用分组()变成表达式
  *      嵌套对象解构
  *           let { loc: { end: { line: localLine = 12 } } } = node1
  *            对象解构过程中 loc end 表示对象中检索属性的位置 不会被解构  只有最内层的变量别解构
+ * 
+ * 
+ * 
+ * 
+ *      注意
+ *          结构引用类型值 等同于复制指针 
+ *          代码块不可以出现在赋值语句的左侧 {} = node 不可以 ({} = node) 表达式可以
+ *          结构值为null/undefined是报错 场景是结构参数，实参传入undefined/null
  * 
 **/
 
@@ -88,7 +96,7 @@
      *  
      *      嵌套对象解构
      *          let { loc: { end: { line: localLine = 12 } } } = node1
-     *          对象解构过程中 loc end 表示对象中检索属性的位置 不会被解构  只有最内层的变量别解构
+     *          对象解构过程中 loc end 表示对象中检索属性的位置 不会被解构  只有最内层的变量被解构
      * 
     **/
     let node = {
@@ -120,6 +128,7 @@
     /**
      *      数组解构
      *          如果想只解构第n个索引的值 可以在前面写逗号
+     *          通过逗号来区分位置进行结构
     **/
     let colors = [ 'red', 'green', 'blue' ];
     let [ firstColor, , thirdColor ] = colors;
@@ -133,10 +142,8 @@
     /**
      *      解构赋值
      *          同对象解构赋值 如果被要解构的值 是undefined 那么本地的变量会被赋值为undefined
+     *          交换两个变量的值 [a, b] = [b, a] 互换位置
      * 
-     *      应用 交换两个变量的值
-     * 
-     *      
      *      嵌套数组解构
      * 
      *      不定元素
@@ -258,6 +265,12 @@
         domain: 'example.com',
         expires: new Date( Date.now() + 360000000 )
     }
-    function setCookie(name, value, {secure, path, domain, expires} = setCookieDefault) {
-    }
+    function setCookie(name, value, 
+        {
+            secure = setCookieDefault.secure, 
+            path = setCookieDefault.path, 
+            domain = setCookieDefault.domain, 
+            expires = setCookieDefault.expires
+        } = setCookieDefault || {} // 默认值为{}也可以 只不过多了一步计算默认值的情况
+    ) {}
 })();

@@ -1,6 +1,7 @@
 /**
  *      未解之谜
  *          Object.assign() 访问器属
+ * 
  *          为什么es6的sayName方法没有prototype方法 而es5定义的sayName有原型方法
  *              es6中正式将方法定义为一个函数 他会内部有一个 [[HomeObject]]的属性来容纳这个方法从属的对象
  *              super 会根据 HomeObejct 来定位当前方法所属的对象是谁 再通过原型链查找方法（等同于实例方法查找）
