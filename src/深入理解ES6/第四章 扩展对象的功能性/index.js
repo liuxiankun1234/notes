@@ -2,6 +2,9 @@
  *      未解之谜
  *          Object.assign() 访问器属
  *          为什么es6的sayName方法没有prototype方法 而es5定义的sayName有原型方法
+ *              es6中正式将方法定义为一个函数 他会内部有一个 [[HomeObject]]的属性来容纳这个方法从属的对象
+ *              super 会根据 HomeObejct 来定位当前方法所属的对象是谁 再通过原型链查找方法（等同于实例方法查找）
+ *              
  *      对象类别
  *          普通(Ordinary)对象
  *              具有JS对象所有的默认内部行为
@@ -17,6 +20,7 @@
  *          属性初始值的简写
  *              当对象的属性和本地变量同名 可以简写
  *          对象方法的简写语法
+ *              没有原型prototype属性
  *              sayName(){ return this.name } 
  *              与es5区别 可以使用super关键字
  *          可计算属性
@@ -95,10 +99,10 @@
      *      箭头函数
      *          内部没有this，arguments，new.target, super
      *          没有内部[Construct]构造器方法 不能new调用
+     *          没有原型prototype属性
      *          不能修改this指向 包括call bind apply
      *          没有arguments 只能通过命名参数和不定参数访问
      *          不支持重复命名参数
-     *          没有原型
      *  
     **/
    
