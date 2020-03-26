@@ -100,6 +100,13 @@
     // Symbol.keyFor('firstName')
     console.log(Symbol.keyFor(firstName))
 
+    // Symbol.hasInstance方法
+    
+
+
+
+
+
 
     // Symbol.isConcatSpreadable
     var collection = {

@@ -232,6 +232,11 @@
      *              数组 返回数字类型的键 数组本身的其它属性不会被返回
      *              Set 由于键与值相同 所以返回值与 values()相同 
      *              Map 返回独立的键
+     *  
+     *  默认迭代器 (for-of ...指定就调用默认迭代器[Symbol.iterator])
+     *      数组/Set的默认迭代器   values()
+     *      Map默认迭代器         entries()
+     *      
     **/ 
     let colors = ['red', 'green'];
     let tracking = new Set([123, 456, 789])
@@ -249,6 +254,7 @@
     for( let entry of colors.entries()){
         console.log(entry);
     }
+    // Set集合 集合中的值同时被当做key value 使用
     for( let entry of tracking.entries()){
         console.log(entry);
     }
