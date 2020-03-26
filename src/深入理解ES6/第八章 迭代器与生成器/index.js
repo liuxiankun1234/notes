@@ -24,6 +24,7 @@
  *          yield 只能在生成器内部使用，不能穿透函数边界（同 return）即便是生成器函数作用域中的function也不行
  *          不能用箭头函数来创建生成器
  *          yield value 和 iterator.next(value) 可以双向传递value
+ *          注意 如果next没有回传参数 let first = yield 1; 这个时候再执行 将let 赋值为 undefined;
  *   
  *      在委托生成器内部
  *          yield *createIterator();
@@ -236,7 +237,8 @@
      *  默认迭代器 (for-of ...指定就调用默认迭代器[Symbol.iterator])
      *      数组/Set的默认迭代器   values()
      *      Map默认迭代器         entries()
-     *      
+     *  
+     *  for-of 同结构一起使用效果更好
     **/ 
     let colors = ['red', 'green'];
     let tracking = new Set([123, 456, 789])
@@ -271,13 +273,13 @@
      /**
      * 
      *  字符串迭代器
-     *      for循环不能准确的打印
-     *      for-of可以
+     *      for循环不能准确的打印双字节字符
+     *      ES6语法目标全面支持unicode 可以调用默认迭代器来解决 比如for-of
      * 
      *  NodeList迭代器
      *      ES5 循环NodeList forEach在移动端方法有问题（伪数组不支持NodeList循环）
      *      ES5 Array.prototype.slice.call(nodeList)
-     *      ES6 for-of
+     *      ES6 NodeList添加了默认迭代器 可以通过for-of循环
      *      
     **/
 
@@ -297,10 +299,13 @@
      *  高级迭代器功能
      *      如果给迭代器的next()方法传递参数 
      *          这个参数值会替代生成器内部  上一条  yeild语句的返回值     
-     *          第一次调用无意义  
-     *   
+     *          第一次调用无意义 
+     *  
+     *      it.throw(new Error('终结'))
+     *          如果内部做了try-catch捕获错误 依然会执行yield
+     *          如果没做异常处理 将done置为ture
      *    
-     *      
+     *      如果执行 it.next(throw new Error('哈哈)) 当代码执行了 不会抛异常
     **/
     function *createIterator() {
         let first = yield 1;
@@ -319,6 +324,23 @@
         iterators.next(2).value, // 4
         iterators.next(3).value // 6
     );
+
+    // 在迭代器中抛出错误
+    function *createIterator() {
+        let first = yield 1;
+        let second;
+        try{
+            second = yield first + 2;
+        }catch(e) {
+            second = '哈哈'
+        }
+        
+        let third = yield second + 3;
+    }
+    var it = createIterator();
+    it.next(); // 仅执行yield 1
+    it.next(5); // 执行first = 5, yield 5 + 2
+    it.throw(new Error()); // 执行second = new Error() 程序错误 走catch
 })();
 (function() {
     console.log('******************  6  ******************');
