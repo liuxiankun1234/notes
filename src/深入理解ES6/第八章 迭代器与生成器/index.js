@@ -349,10 +349,13 @@
      *      生成器也是函数 可以通过return语句提前退出函数执行
      *      return语句可以提前退出函数执行 
      *      
+     *      
      *      注意
+     *          默认return undefined done置为true
      *          return 返回之后 通知done为true 不执行之后的yield
+     *          
      *          return 一个值的时候 只在第一次done为ture的时候返回 之后再调用next() value还是undefined
-     *          展开运算符和for-of会直接忽略return语句指定的任何返回值
+     *          展开运算符和for-of会直接忽略return值 停止读取其他值
      *    
      *      
     **/
@@ -373,11 +376,10 @@
 
     /**
      *  委托生成器
+     *      yield 后加星号就可以委托给其他生成器(含有Symbol.iterator函数的任何生成器 如字符串/数组)
+     *          yield *createIterator()
+     *          yield *'HELLO' // 字符串也是默认迭代器
      *      将两个迭代器合二为一 可以执行复杂的任务
-     *      可以创建一个生成器 再给yeild语句添加星符号就  可以将生成数据的过程委托给其他迭代器
-     *  
-     *  yield * 也可以用在 字符串上 委托给 字符串默认迭代器
-     *  yield *'HELLO' 
     **/
     // 例子一
     function *createNumberIterator() {
