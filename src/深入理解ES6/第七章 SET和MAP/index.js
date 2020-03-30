@@ -61,10 +61,15 @@
     console.log('******************  2  ******************');
     /**
      *      ES6中的set
+     *          接受所有可迭代对象作为参数来初始化set集合
      *          无重复值的有序列表
-     *          不会使用强制类型转换来判断是否重复（ 字符串的5和数字类型的5是不同的）
-     *          set 认为 +0 === -0 NaN只能存在一次 其他同Object.is()判断标准相同，
-     *          可以使用数组初始化一个set列表
+     *          不会对加入的值进行类型转换
+     *          set通过Object.is()进行判断(NaN只能存在一次) 不同点是set认为 +0 === -0
+     *          重复添加同一个变量 会忽略掉(去重)
+     *          不能通过索引访问set
+     *      
+     *          将set集合转成数组
+     *              展开运算符 ... 原理是set有默认迭代器 展开运算符会调用默认迭代器
      * 
      *          创建 new Set() 
      *          追加 add()
@@ -77,6 +82,8 @@
      * 
      * 
     **/
+    let set1 = new Set('small');
+    // set1 {"s", "m", "a", "l"}
    let set = new Set(),
        small = Symbol('small')
    set.add(1);
@@ -121,7 +128,10 @@
 (function(){
     console.log('******************  4  ******************');
     /** 
-     *      weak Set集合
+     *  Set集合和Weak Set集合区别
+     *      将对象存储在Set的实例与存储在变量中一样 只要Set实例中的引用存在 垃圾回收机制就不能释放该对象的内存
+     *      Weak Set集合 只存储对象的弱引用 并且不可以存储原始值 集合中的弱引用如果是对象的唯一引用 则会被回收并释放相应内存
+     *  Weak Set集合(弱引用Set集合) 
      *      仅支持三个方法
      *      add()
      *      has()
@@ -131,9 +141,10 @@
      *      WeakSet 和 set区别
      *      主要的区别在于 set是强引用 weakSet是弱类型引用 如果引用的值清空 则weakSet的应用也销毁
      *      WeakSet仅支持传入对象 不支持基本类型 
-     *      不支持迭代 for-of forEach 
+     *      不支持迭代器接口 不能被 for-of ... forEach 
      *      不支持size属性
     **/
+
     const weakSet = new WeakSet(),
         set = new Set();
     let key = {};
@@ -146,12 +157,19 @@
 (function() {
     console.log('******************  5  ******************');
     /**
-     *      Map
-     *      存储着许多键值对的有序列表 键名和键值支持所有类型
-     *      键名的等价是通过Object.is()实现的 === 全等
-     *      
-     * 
-     * 
+     *  WeakMap同Map选择
+     *      仅用引用类型做key时候，首选WeakMap
+     *      其他使用Map
+     *  Map
+     *      键名/键值支持所有类型
+     *      键名相等比较是通过 Object.is()实现的
+     *      可以用数组初始化Map [['key', 'value'], ['name', 'nicholas']] 因为数组不会将元素类型转换
+     *  支持方法
+     *      has(key)    // 检测指定键是否存在
+     *      delete(key) // 删除指定键/值
+     *      set(key, value) // 设置键值
+     *      clear() // 移除所有键值对
+     *  支持forEach方法
     **/
     let map = new Map();
     map.set('title', 'es6');
@@ -166,11 +184,58 @@
 (function() {
     console.log('******************  6  ******************');
     /**
-     *      WeakMap
-     *          键值必需是一个对象
-     *          集合中保存的是这些对象的弱引用 如果弱引用之外不存在其他的强引用，引擎的垃圾回收机制自动回收这个对象
-     *          
-     * 
-     * 
+     *  WeakMap
+     *      键名必需是一个对象
+     *      集合中保存的是这些对象的弱引用 如果弱引用之外不存在其他的强引用，引擎的垃圾回收机制自动回收这个对象
+     *      同Map相同支持数组初始化 
+     *      不支持clear()方法
+     *      
+     *      
     **/
+
+    /**
+     *  私有对象数据
+     *      容易被改写
+    **/ 
+    class Person{
+        constructor() {
+            this._name = name;
+        }
+        getName() {
+            return this._name
+        }
+    }
+    // 闭包实现私有变量
+    var Person1 = function() {
+        var privateData = {},
+            privateId = 0;
+
+        function Person1(name) {
+            Object.defineProperty(this, '_id', {value: privateId++});
+            privateData[this._id] = {
+                name: name
+            }
+        }
+        Person1.prototype.getName = function() {
+            return privateData[this._id].name;
+        }
+        return Person1;
+    }();
+    /**
+     *  WeakMap 实现私有变量
+     *  this被销毁 相关消息也被销毁 保证信息隐私
+    **/
+    var Person2 = function() {
+        var privateData = new WeakMap();
+
+        function Person2(name) {
+            privateData.set(this, {
+                name: name
+            })
+        }
+        Person1.prototype.getName = function() {
+            return privateData.get(this).name;
+        }
+        return Person1;
+    }();
 })();
