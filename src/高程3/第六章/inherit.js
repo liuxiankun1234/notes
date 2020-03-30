@@ -46,6 +46,14 @@
  *      寄生组合式继承(最优解)
  *          Object() 方法等同与 new Object() 包装器
  *              参数为 null undefined 时候 返回一个 {}
+ * 
+ *      寄生组合式继承同原型式继承对比
+ *          原型式继承      : 将原型赋值给函数来创建一个实例 作为子函数的原型
+ *          寄生组合式继承   : 直接将原型拷贝，修正constructor指针 给子函数原型赋值
+ *          
+ *          相比较 继承组合继承少了一层原型链
+ * 
+ *      
 **/
 
 void function() {
@@ -109,14 +117,15 @@ void function() {
     var p = createAnthoer(obj); //返回一个新对象 有obj的属性和方法也有自己的方法
 
     /**
-     *      寄生组合式继承
+     *      寄生组合式继承 最优解 
+     *          
      *      SubType     子类
      *      SuperType   超类
-     *      
+     *          
      *      步骤
      *          创建对象 （创建一个超类的副本 同一个指针引用）
      *          增强对象  （修正constructor指针）
-     *          指定对象 
+     *          指定对象
      *          Object(SuperType.prototype) === SuperType.prototype 指针相同
     **/
     function inheritPrototype(subType, superType) {

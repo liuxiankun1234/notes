@@ -48,8 +48,8 @@
  *          es5解决方案 instanceof 关键字
  *          es6解决方案 new.target === Person
  *              元属性：指非对象的属性
- *              元属性的指针指向 当前this对应的构造函数 同 instanceof不同的是 instanceof 是可以原型链查找 new.target 是指定一个构造器
- *              当调用函数的[[Construct]]方法时 new.target 被赋值为new操作符的目标 通常是新创建的实例对象的构造函数
+ *              元属性的指针指向 当前this对应的构造函数 同 instanceof不同的是 instanceof 是可以原型链逐层查找 new.target 是指定一个构造器
+ *              当调用函数的[[Construct]]方法时 new.target 被赋值为new操作符的目标 新创建的实例对象的构造函数
  *              当调用函数的[[Call]]方法时 new.target 被赋值为undefined
 **/
 

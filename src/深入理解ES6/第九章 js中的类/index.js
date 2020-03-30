@@ -42,42 +42,29 @@
      *              } // new Foo() 报错 内部的是一个常量
      * 
     **/
-    class PersonType {
-        constructor(name) {
-            this.name = name
-        }
+    // ES5中模拟类  
 
-        sayName() {
-            return this.name
-        }
-    }
-    const person = new PersonType('lxk')
-    console.log(
-        person instanceof PersonType,
-        person instanceof Object
-    )
-
-    // ES5中模拟类
+    // 1 类声明不能被变量声明提升 (函数可以函数声明提升)
     let PersonType2 = (function() {
-        // 1 类代码是执行在严格模式下
+        // 2 自动运行在严格模式下 无法退出
         'use strict'
-        // 2 类内部不能修改类名
+        // 3 类内部不能修改类名(外部是let定义 可以修改)
         const PersonType2 = function(name) {
-            // 3 只能通过new调用
+            // 4 只能通过new调用
             if(new.target !== PersonType2) {
                 throw new Error('大傻 使用new操作符试试呀')
             }
             this.name = name
         }
-        // 4 方法不能枚举出来
+        // 5 原型上所有方法都是不可枚举的 
+        // 0 类的prototype是一个只读属性，不可被修改
         Object.defineProperty(PersonType2.prototype, 'sayName', {
             enumerable: false,
             writable: true,
             configurable: true,
             value: function() {
-                // 5 方法不能通过new调用
+                // 6 方法不能通过new调用
                 if(typeof new.target !== 'undefined') {
-                    // 证明通过new调用的
                     throw new Error('大傻 你是不是通过new调用这个函数啦')
                 }
                 return this.name
