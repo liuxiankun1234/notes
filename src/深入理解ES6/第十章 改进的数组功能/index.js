@@ -31,6 +31,8 @@
      *              参数是初始化数组的值 即使是一个数值类型 也当作初始化的元素
      *              Array.of()方法不通过Symbol.species属性确定返回值的类型，他使用当前构造函数（也就是of()方法中的this值）来确定正确的返回数据的类型
      *          Array.from() 代替es5中将arguments对象转为数组对象 
+     *              将类数组/可迭代对象转为数组(类数组对象又是可迭代对象 则按照可迭代对象转换)
+     *              第二个参数 是一个函数 同map方法
      *              Array.form(new Set([1,2,3])) 
      *              Array.prototype.slice.call(arguments)
      *             

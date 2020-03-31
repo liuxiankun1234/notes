@@ -313,6 +313,7 @@ function c() {
     /**
      *      箭头函数
      *          没有this super arguments new.target 绑定 这些值由外围最近一层非箭头函数决定
+     *          call/apply/bind 绑定值会被忽略
      *          没有[[construct]]方法 不能被用作构造函数 new调用会报错
      *          没有原型 不存在prototype
      *          不可以改变this的指向 箭头函数的this值不受bind call apply 的影响
