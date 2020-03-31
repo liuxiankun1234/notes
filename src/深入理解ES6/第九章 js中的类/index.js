@@ -2,7 +2,7 @@
  *  第九章 JS中的类 未读 生成器方法 Symbol.species属性
  *      未解之谜？
  *           类的所有方法内部都没有[[Construct]] 因此使用new来调用的时候会抛错 怎么模拟没有Construct呢？     
- *               
+ *               typeof new.target === 'undefined' ---> [[call]]
  * 
  *      类中支持可以算成员名称
  * 
@@ -24,17 +24,17 @@
      *      this.name name 是类的自有属性
      *      
      *      class 是ES5的语法糖 typeof PersonClass === 'function'
-     *      class的prototype不可以改写，只可以添加属性
-     *      
+     *      class的prototype不可以重写，只可以添加属性
+     *          Object.getOwnPropertyDescriptor(PersonClass, 'prototype')
+     *              {writable: false, enumerable: false, configurable: false, value: {constructor: PersonClass}}
      *      为什么要使用类声明？
      *          类的prototype是一个只读属性，不可被修改
      *          类声明不会被提升，同let声明 会存在暂时性死区（函数声明会声明提升）
      *          类声明中的所有代码都自动运行在严格模式下 并且也无法退出严格模式
-     *          在类中不能修改类名 因为内部是const定义的常量，外部是let声明，内部是const声明
      *          类的所有方法都是不可以枚举的 es5中的方法都是可以枚举的（除非使用Object.defineProperty定义一个不可以枚举的方法）
      *          类的所有方法内部都没有[[Construct]] 因此使用new来调用的时候会抛错
      *          调用类构造器时不使用new 会抛错
-     *          试图在类的方法内部重写类名 会抛错
+     *          在类中不能重写类名 因为内部是const定义的常量，外部是let声明，内部是const声明
      *              class Foo{
      *                  constructor() {
      *                      Foo = 'foo'
@@ -303,16 +303,16 @@
         F.prototype = o;
         return new F();
     }
-    function inhertPrototype(SuperType, SubType) {
+    function inhertPrototype(SubType, SuperType) {
         // 高程上是Object 非object
         var prototype = Object(SuperType.prototype);
-        prototype.constructor = SuperType;
+        prototype.constructor = SubType;
         SubType.prototype = prototype;
     }
     inhertPrototype(SuperType, SubType)
 
     /**
-     *  ES6继承(底层逻辑就是寄生组合继承)
+     *  ES6继承(底层逻辑就是构造函数继承 + 原型式继承)
      *      派生类：继承了其他类的类 （可以理解为子类）       
      *      派生类指定了构造器 就必需使用super() 否则会造成错误
      *      如果不实用构造器 则默认调用super()方法
@@ -327,7 +327,7 @@
      *      第一个...args 是将参数作为不定参数 将args变成一个数组
      *      第二个...args 是展开运算符 将数组打散后作为各自独立的参数传入函数
      *      这两步的思想就是 将参数-->数组-->数组变成独立参数
-     *      在es5中的实现方式  super.apply(this, arguments)
+     *      在es5中的实现方式  super--> SuperType.apply(this, arguments)
      * 
      * 
      *      super注意事项
@@ -416,7 +416,7 @@
     console.log('******************  7  ******************');
     /**
      *  在类构造器中使用new.target(元属性)
-     *      new.target指向当前this的指向 仅指向当前实例的构造函数  不同于 instanceof是父级就可以
+     *      new.target指向当前实例的构造函数  不同于 instanceof是父级就可以
      *      new.target 在class中不能为 undefined 因为 class只能通过new调用
     **/
     class Rectangle {
