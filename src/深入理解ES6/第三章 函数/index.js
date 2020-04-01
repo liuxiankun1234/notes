@@ -1,11 +1,5 @@
 /**
  *          
- *      杂谈
- *          call apply bind
- *          Object.prototype.toString.call(12) 
- *              // 强制将Object.prototype.toString的this指向12
- *              // (12).toString() 这个方法是Number类重写了Object类上的方法 所以不会返回 "[object Number]"
- *          
  *          Math.max.apply(Math, [1,2,3,4,4]) // 查找最大数
  * 
  *      默认参数
@@ -17,12 +11,12 @@
  *              // 传入undefined走默认值
  *              timeout = typeof timeout !== 'undefined' ? timeout : 2000;
  *          ES6默认参数
- *              仅传入undefined(包括不传值 默认参数undefined)时候才会走默认值 
+ *              仅传入undefined(包括不传值 默认参数undefined)时候才会走默认值 (区别于flasy值)
  *              function f(timeout = 2000) {}
  *      
  *      非严格模式下 
  *          传入的参数 和 arguments绑定 （相当于同一个引用 值改变 都变）
- *          没有传入的参数 不和 arguments绑定 
+ *          没有传入的参数 不和 arguments绑定 (形参和arguments改变不做关联)
  * 
  *      严格模式下
  *          arguments不可以重写

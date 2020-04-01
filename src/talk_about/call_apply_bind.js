@@ -3,6 +3,13 @@
  *  Function.apply.bind(fn, null)
  *      重点：理解bind和apply
  *
+ * 
+ *      杂谈
+ *          call apply bind
+ *          Object.prototype.toString.call(12) 
+ *              // 强制将Object.prototype.toString的this指向12
+ *              // (12).toString() 这个方法是Number类重写了Object类上的方法 所以不会返回 "[object Number]"
+ *          
  *
  *
  *

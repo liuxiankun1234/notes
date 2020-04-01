@@ -3,7 +3,6 @@
  *  补充字符串方法 replace
  * 
  * 
- * 
 **/
 
 // import './talk_about_严格模式'
