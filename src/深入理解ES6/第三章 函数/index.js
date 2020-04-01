@@ -1,7 +1,7 @@
 /**
- *          
- *          Math.max.apply(Math, [1,2,3,4,4]) // 查找最大数
+ *          尾调用优化了解一下
  * 
+ *          Math.max.apply(Math, [1,2,3,4,4]) // 查找最大数
  *      默认参数
  *          ES6中使用了默认参数 函数会自动严格模式下执行 
  *          默认参数只可以引用前面的，不允许引用后面的(暂时性死区)
@@ -15,8 +15,8 @@
  *              function f(timeout = 2000) {}
  *      
  *      非严格模式下 
- *          传入的参数 和 arguments绑定 （相当于同一个引用 值改变 都变）
- *          没有传入的参数 不和 arguments绑定 (形参和arguments改变不做关联)
+ *          arguments同实参进行绑定(相当于同一个值的引用，互相关联 如果arguments重写脱离关系)
+ *          arguments同未传入的实参不进行绑定(相当于不同值的引用，不做关联)
  * 
  *      严格模式下
  *          arguments不可以重写
@@ -306,12 +306,13 @@ function c() {
 (function() {
     /**
      *      箭头函数
+     *          不可以改变this的指向 
+     *              箭头函数的this值不受bind call apply 的影响
+     *              call/apply/bind 绑定值会被忽略
+     *          不支持arguments对象 必需通过命名参数和不定参数这两种形式访问函数的参数
      *          没有this super arguments new.target 绑定 这些值由外围最近一层非箭头函数决定
-     *          call/apply/bind 绑定值会被忽略
      *          没有[[construct]]方法 不能被用作构造函数 new调用会报错
      *          没有原型 不存在prototype
-     *          不可以改变this的指向 箭头函数的this值不受bind call apply 的影响
-     *          不支持arguments对象 必需通过命名参数和不定参数这两种形式访问函数的参数
      *          不支持重复的命名参数 传统函数中 只有在严格模式下才不能有重复的命名参数
      * 
      *          箭头函数name属性同其他函数规则相同
