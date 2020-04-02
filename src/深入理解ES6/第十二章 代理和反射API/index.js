@@ -1,4 +1,92 @@
 /**
+ *  严格模式下 deleteProperty报错 看下 delete proxy.name 又返回值为啥还报错？？？
+ * 
+ *  代理(Proxy)和反射(Reflection)API
+ *      拦截器内部一定要返回反射方法 Reflect[property]
+ * 
+ * 
+ *      数组问题
+ *          给数组特定元素赋值时，影响该数组的长度，相反，通过改变length属性也可修改数组元素
+ *      代理程序
+ *          参数(target, handler)
+ *              target 代理的目标对象
+ *              handler 定义一个/多个陷阱对象
+ *      使用set陷阱验证属性
+ *          拦截写入的操作
+ *          参数(trapTarget, key, value, receiver)
+ *              trapTarget 代理的目标对象
+ *              key 写入键
+ *              value 写入值
+ *              receiver 代理对象
+ *      使用deleteProperty陷阱防止删除属性
+ *          delete操作符删除属性
+ *              尝试删除不可配置属性(configurable: false) 非严格模式 返回false 严格模式报错
+ *          
+**/
+(function() {
+    'use strict'
+    /**
+     *  通过改变数组元素 影响数组长度
+     *  通过该改变数组长度 改变数组元素
+    **/
+    var arr = [1, 2, 3, 4];
+    arr[4] = 5;
+    console.log(arr) // [1, 2, 3, 4, 5];
+    arr.length = 2;
+    console.log(arr) // [1, 2]
+
+
+    var target = {
+        name: 'target'
+    }
+    var proxy = new Proxy(target, {
+        //  拦截写入操作
+        set(target, key, value, receiver) {
+            // 非自身属性 如果设置的值是非数字类型 则报错
+            if(!target.hasOwnProperty(key)) {
+                if(typeof value !== 'number') {
+                    throw new Error(`属性${key}必须是个Number类型`)
+                }
+            }
+            return Reflect.set(target, key, value, receiver);
+        },
+        // 拦截读取操作
+        get(target, key, receiver) {
+            // 读取对象及原型上没有的属性 则报错
+            if(!(key in target)) {
+                throw new Error(`属性${key}不存在`)
+            }
+            return Reflect.get(target, key, receiver);
+        },
+        // 拦截 in 检测 (prop in object)
+        has(target, key) {
+            // 隐藏某种类型属性
+            if(typeof target[key] !== 'number') {
+                return false;
+            }
+            return Reflect.has(target, key);
+        },
+        // 拦截delete属性
+        deleteProperty(target, key) {
+            if(key === 'name') {
+                return false;
+            }
+            return Reflect.deleteProperty(target, key); 
+        },
+        
+    });
+    // proxy.age = '18'; // 报错 
+    console.log(
+        delete proxy.name
+    )
+    
+})();
+
+
+
+
+
+/**
  *  hasOwnProperty 和 in
  *      hasOwnProperty 会忽略掉从原型上继承来的属性
  *      in 属性可以来自原型链上
@@ -58,7 +146,7 @@
 
     
 
-})();
+});
 (function() {
     console.log('******************  2  ******************');
     /**
@@ -143,7 +231,7 @@
     // 通过代理改变返回值
     console.log(`'value' in proxy3 ------> ${'value' in proxy3}`);
     console.log(`'toString' in proxy3 ------> ${'toString' in proxy3}`); 
-})();
+});
 (function() {
     console.log('******************  3  ******************');
     /**
@@ -185,7 +273,7 @@
     })
     console.log(`value in proxy ----> ${'value' in proxy}`);
     // console.log(`delete proxy.value ----> ${delete proxy.value}`);
-})();
+});
 (function() {
     console.log('******************  4  ******************');
     /**
@@ -271,7 +359,7 @@
     let result3 = Object.setPrototypeOf(target3, {})
     result3 === result3 // false
     result3 // true
-})();
+});
 
 (function() {
     console.log('******************  5  ******************');
@@ -281,4 +369,4 @@
      * 
     **/
     
-})();
+});
