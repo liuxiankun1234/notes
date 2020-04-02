@@ -1,6 +1,13 @@
 /**
  *  严格模式下 deleteProperty报错 看下 delete proxy.name 又返回值为啥还报错？？？
- * 
+ *     
+ *  Object.preventExtensions(obj)
+ *      将obj对象变为不可扩展对象 不能给自身添加属性
+ *      原型不可重写
+ *      可以删除自身属性
+ *      可以给原型添加属性     
+ *  Object.isExtensible(obj)
+ *      返回obj对象是否是可扩展属性
  *  代理(Proxy)和反射(Reflection)API
  *      拦截器内部一定要返回反射方法 Reflect[property]
  * 
@@ -21,10 +28,16 @@
  *      使用deleteProperty陷阱防止删除属性
  *          delete操作符删除属性
  *              尝试删除不可配置属性(configurable: false) 非严格模式 返回false 严格模式报错
- *          
+ *      setPrototypeOf/getPrototypeOf
+ *          Object.setPrototypeOf/Object.getPrototypeOf 方法底层 是 Reflect.setPrototypeOf/Reflect.getPrototypeOf
+ *          在内部做了一层数据兼容处理
+ *          Reflect.getPrototypeOf(1) // 报错
+ *          Object.getPrototypeOf(1) // 做了一个包装操作 不会报错
+ *      defineProperty
+ *          会忽略传入的非法描述符 
 **/
 (function() {
-    'use strict'
+    // 'use strict'
     /**
      *  通过改变数组元素 影响数组长度
      *  通过该改变数组长度 改变数组元素
@@ -73,13 +86,47 @@
             }
             return Reflect.deleteProperty(target, key); 
         },
-        
+        getPrototypeOf(target) {
+            return null
+        },
+        setPrototypeOf(target, proto) {
+            // return false // 报错 不可修改原型
+            if(proto == null) {
+                throw new Error('原型不能为${proto}');
+            }
+            return Reflect.setPrototypeOf(target, proto);
+        },
+        isExtensible(target) {
+            return Reflect.isExtensible(target);
+        },
+        preventExtensions(target) {
+            // return false // 表示未调用 Reflect.preventExtensions 没有效果
+            return Reflect.preventExtensions(target);
+        },
+        defineProperty(target, key, descriptor) {
+            // 拦截Symbol属性
+            if(typeof key === 'symbol') {
+                return false
+            }
+            return Reflect.defineProperty(target, key, descriptor)
+        },
+        getOwnPropertyDescriptor(target, key) {
+            return Reflect.getOwnPropertyDescriptor(target, key);
+        }
     });
-    // proxy.age = '18'; // 报错 
+    proxy.age = 18; // 报错 
+    proxy[Symbol('AAAA')] = 12; 
     console.log(
-        delete proxy.name
-    )
-    
+        // delete proxy.name // 为啥报错了
+        // Object.getPrototypeOf(proxy),
+        // Object.setPrototypeOf(proxy, {a: 2})
+        Object.preventExtensions(proxy),
+        Object.isExtensible(proxy),
+        proxy
+    )  
+    // Object.defineProperty(proxy, 'sayName', {
+    //     value: Symbol('哈哈')
+    // })
 })();
 
 
