@@ -1,6 +1,6 @@
 /**
  *  严格模式下 deleteProperty报错 看下 delete proxy.name 又返回值为啥还报错？？？
- *     
+ *   
  *  Object.preventExtensions(obj)
  *      将obj对象变为不可扩展对象 不能给自身添加属性
  *      原型不可重写
@@ -112,17 +112,66 @@
         },
         getOwnPropertyDescriptor(target, key) {
             return Reflect.getOwnPropertyDescriptor(target, key);
+        },
+        /**
+         *  ownKeys拦截的方法有
+         *      Object.keys()
+         *      Object.getOwnPropertyNames()
+         *      Object.getOwnPropertySymbols()
+         *      Object.assign()
+         * 
+        **/
+        ownKeys(target) {
+            return Reflect.ownKeys(target).filter(key => {
+                // 可以用于过滤私有属性
+                return typeof key === 'string' && key[0] !== '_'
+            })
         }
     });
-    proxy.age = 18; // 报错 
-    proxy[Symbol('AAAA')] = 12; 
+
+    /**
+     *  函数的代理 apply和construct
+     *      函数有两个内部方法 [[call]] [[constuct]]
+     *      apply拦截 [[call]] 方法
+     *      construct拦截 [[constuct]] 方法
+     * 
+     *  不用new调用构造函数
+     *      要绕过new操作 并且还不能控修改行为的函数 可以用代理
+     *      可以通过在 apply代理函数里调用construct代理 来
+     *  可调用的类构造函数
+     *      // 重写[[call]]方法
+     *      apply: function(target, thisArgs, argumentList) { return new target(...argumentList) }
+     *      
+    **/
+    var target = function(...values) {
+        values.reduce((prev, current) => prev + current, 0);
+    };
+    var proxy = new proxy(target, {
+        apply: function(target, thisArgs, argumentList) {
+            // 验证函数参数
+            argumentList.forEach(num => {
+                if(typeof num !== 'number') {
+                    throw new Error('参数必须全部是数字啊 同学!')
+                }
+            })
+            return Reflect.apply(target, thisArgs, argumentList)
+        },
+        construct: function(target, argumentList) {
+            // 可以做拦截不可以使用new调用
+            return Reflect.construct(target, argumentList)
+        }
+    })
+
+
+    // proxy.age = 18; // 报错 
+    // proxy[Symbol('AAAA')] = 12; 
     console.log(
         // delete proxy.name // 为啥报错了
         // Object.getPrototypeOf(proxy),
         // Object.setPrototypeOf(proxy, {a: 2})
-        Object.preventExtensions(proxy),
-        Object.isExtensible(proxy),
-        proxy
+        // Object.preventExtensions(proxy),
+        // Object.isExtensible(proxy),
+        // proxy
     )  
     // Object.defineProperty(proxy, 'sayName', {
     //     value: Symbol('哈哈')
