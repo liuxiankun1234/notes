@@ -1,3 +1,5 @@
+console.log(`this:${this}`);
+
 function sum(a, b){
     return a + b;
 }
