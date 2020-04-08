@@ -1,8 +1,15 @@
 /**
  *  第十一章 Promise与异步编程
- * 
- * 
- * 
+ *  
+ *  创建已处理的Promise
+ *      向Promise.resolve 或 Promise.reject 传入一个Promise 那么这个Promise会直接被返回
+ *      Promise.resolve() 
+ *          不表示fulfilled 表示已解决(不知道fulfilled or rejected)
+ *          返回一个完成态的Promise
+ *      Promise.reject()
+ *          返回一个拒绝态的Promise
+ *  执行器错误
+ *      Promise.reject()拒绝程序被调用 等价于catch捕获异常执行Promise.reject()
  * 
 **/
 (function() {
