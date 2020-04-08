@@ -1,6 +1,10 @@
 /**
  *  第十一章 Promise与异步编程
  *  
+ *  拒绝处理 没整明白 待观察
+ *      unhandlerejection
+ *      rejectionhandled
+ *      
  *  创建已处理的Promise
  *      向Promise.resolve 或 Promise.reject 传入一个Promise 那么这个Promise会直接被返回
  *      Promise.resolve() 
@@ -10,133 +14,100 @@
  *          返回一个拒绝态的Promise
  *  执行器错误
  *      Promise.reject()拒绝程序被调用 等价于catch捕获异常执行Promise.reject()
- * 
+ *  
+ *  务必在promise链尾留有一个拒绝处理程序保证能够正确处理所有可能发生错误
+ *  Promise链的返回值
+ *      return 可以将值传递给下一个then函数
+ *      返回promise 同Promise.resolve/Promise.reject中传入promise
+ *  响应多个Promise
+ *      Promise.all()
+ *          返回值是一个数组 返回值按传入顺序返回
+ *          如果失败 catch返回第一个失败的原因 返回值不是数组
+ *      Promise.race() 
+ *          看哪个fulfilled的函数执行的快
+ *          如果失败 catch返回第一个失败的原因
 **/
-(function() {
-    console.log('******************  1  ******************');
+(function () {
     /**
-     *  异步编程的背景
-     *      JS是建立在单线程事件循环的概念上的
-     *      单线程意味着同一时刻只能执行一段代码
-     *      
-     * 
-     * 
-     *  解决异步编程问题
-     *      事件模型
-     *          绑定点击事件之类
-     *      回调模式
-     *         node读文件
-     *         回调地狱
-     * 
-     *      promise
+     *  模拟同步
+     *      yield之后的代码 必须通过调用task.next()才能执行
+     *      通过注册函数 resolve/reject 等待完成之后 在run函数内部监听完成之后 调用task.next()函数 模拟同步
     **/
+    function run(taskDef) {
+        let task = taskDef(),
+            result = task.next();
 
-
-    /**
-     *      Promise 基础
-     *          Promise是为异步操作的结果所准备的占位符，promise承诺将来在某个时刻完成
-     *     
-     *      Promise 生命周期
-     *         初始挂起态（pending state） 表示异步操作尚未结束
-     *         已经完成（fulfilled）       表示异步操作已成功结束
-     *         已决绝（rejected）          表示异步操作未成功结束 可能是一个错误或其他原因导致
-     * 
-     * 
-     *      thenable是一个拥有then方法的对象或者方法
-     *      所有的promise对象都是thenable 反之未必成立
-     * 
-    **/
-
-    /**
-     *      创建未完成的promise对象 
-     *          promise使用Promise构造器来创建 改构造器接受一个执行器函数 包含初始化代码
-     *          该执行器会被传入两个名为 resolve 和 reject的函数作为参数
-     *          resove表示执行器成功时被回调 reject表示执行器失败后被回调
-     * 
-     *      创建已处理的promise对象
-     *          创建未处理的Promise的最好方法是使用Promise的构造函数，Promise执行器具有动态性
-     *          想用Promise表示一个已知值
-     *              Promise.resolve()
-     *                  接收一个参数 返回一个完成态的Promise 
-     *                  
-     *              Promise.reject()
-     *  
-    **/
-
-    /**
-     *      Promise.resolve
-     *          接收一个参数 返回一个完成态度的Primise 不会有任务编排的过程 需要向promise添加一个完成处理程序来获取值
-     *          该处理程序永远不会调用拒绝处理程序
-     * 
-     *      Promise.reject
-     *          同Promise.resolve
-     * 
-     *      向Promise.resolve 或 Promise.reject 传入一个Promise 那么这个Promise会直接被返回
-     * 
-    **/
-    let promise = Promise.resolve('over')
-    promise.then(res => {
-        console.log(res)
-    })
-
-    // 非Promise的thenable对象 
-    const thenable = {
-        then(resolve, reject) {
-            resolve(12)
+        function step() {
+            if (!result.done) {
+                var p = Promise.resolve(result.value);
+                p.then(data => {
+                    result = task.next(data);
+                    step();
+                }).catch(err => {
+                    result = task.throw(err)
+                    step();
+                })
+            }
         }
+        step();
     }
-    /**
-     *      执行器错误
-     *          执行器抛错 走catch
-     *          执行器会捕获所有的抛出的错误 处理程序存在时 才会记录执行器中抛出的错误 否则错误会被忽略掉
-     * 
-     **/ 
-    let p1 = new Promise((resolve, reject) => {
-        throw new Error('哈哈')
+    function readFile() {
+        return new Promise((resolve, reject) => {
+            var n = Math.random();
+            if (n > .1) {
+                resolve({ code: 0, data: [1, 2, 3, 4] })
+            } else {
+                reject({ code: 1, message: 'err' })
+            }
+        })
+    }
+    run(function* () {
+        const data = yield readFile();
+        // 模拟同步
+        console.log(data);
+        console.log(1);
     })
-    p1.catch(err => {
-        console.log(err);
-    })
-})();
-(function() {
-    console.log('******************  2  ******************');
-    /**
-     *      Promise.all
-     *      入参 一个含有多个受监视的promise的可迭代的对象
-     *      
-     *      当所有的promise都完成时候 返回一个 数组里面是 resolve的数组 按照入参的顺讯 排列
-     *      如果报错的话 直接就catch 不继续执行
-     * 
-    **/
-    let p1 = new Promise((resolve, reject) => {
-        resolve(42)
-    });
-    let p2 = new Promise((resolve, reject) => {
-        reject(43)
-    });
-    let p3 = new Promise((resolve, reject) => {
-        resolve(44)
-    });
-    
-    let p4 = Promise.all(new Set([p1, p2, p3]))
-    p4.catch(err => {
-        // console.log(err);
-    })
-
-    /**
-     *      Promise.race()
-     *          入参同上
-     *          看哪个跑的快 跑的快的就返回
-     * 
-     * 
-    **/
-    let p5 = Promise.race(new Set([p2, p1, p3]))
-    p5.then((value) => {
-        console.log(`value: ${value}`)
-    }).then(() => {
-
-    }).catch()
 })();
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+// script start
+// async1 start
+// async2
+// async1 end
+// promise1
+// script end
+// promise2
+// setTimeout
+async function async1() {
+    await async2();
+    console.log('async1 end')
+}
+
+async function async2() {
+    console.log('async2')
+}
+
+setTimeout(function () {
+    console.log('setTimeout')
+}, 0)
+
+new Promise(function (resolve) {
+    resolve();
+}).then(function () {
+    console.log('promise2')
+})
+console.log('script end')
