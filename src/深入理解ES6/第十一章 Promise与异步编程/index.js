@@ -13,6 +13,7 @@
  *      Promise.reject()
  *          返回一个拒绝态的Promise
  *  执行器错误
+ *      then() catch() executor() 函数内部执行错误 都会返回一个拒绝的promise 等同于 Promise.reject()
  *      Promise.reject()拒绝程序被调用 等价于catch捕获异常执行Promise.reject()
  *  
  *  务必在promise链尾留有一个拒绝处理程序保证能够正确处理所有可能发生错误
@@ -68,46 +69,31 @@
         console.log(1);
     })
 })();
+(function () {
+    // 测试题
+    async function async1() {
+        console.log('async1 start')
+        await async2();
+        console.log('async1 end')
+    }
 
+    async function async2() {
+        console.log('async2')
+    }
 
+    console.log('script start')
 
+    setTimeout(function () {
+        console.log('setTimeout')
+    }, 0)
 
+    async1();
 
-
-
-
-
-
-
-
-
-
-
-
-// script start
-// async1 start
-// async2
-// async1 end
-// promise1
-// script end
-// promise2
-// setTimeout
-async function async1() {
-    await async2();
-    console.log('async1 end')
-}
-
-async function async2() {
-    console.log('async2')
-}
-
-setTimeout(function () {
-    console.log('setTimeout')
-}, 0)
-
-new Promise(function (resolve) {
-    resolve();
-}).then(function () {
-    console.log('promise2')
-})
-console.log('script end')
+    new Promise(function (resolve) {
+        console.log('promise1')
+        resolve();
+    }).then(function () {
+        console.log('promise2')
+    })
+    console.log('script end')
+})();
