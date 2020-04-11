@@ -56,21 +56,16 @@ void function() {
              *  事件复杂度 O(n2) 
              * 
             **/
-            const arr = this.list.concat();
-            let minIndex = -1;
-
-            for(let i = 0, length = arr.length; i < length; i++){
-                minIndex = i;
-                for(let j = i + 1; j < length; j++){
-                    if(arr[minIndex] > arr[j]){
-                        minIndex = j;
+            var arr = this.arr.concat(),
+                min;
+            for(var i = 0, len = arr.length - 1; i < len; i++) {
+                min = i;
+                for(var j = i + 1; j <= len; j++) {
+                    if(arr[min] > arr[j]) {
+                        swap(arr, min, j);
                     }
                 }
-                if(minIndex !== i){
-                    swap(arr, i, minIndex)
-                }
             }
-
             return arr;
         }
 
@@ -184,58 +179,3 @@ void function() {
 
 
 }();
-
-
-function swap(arr, i, j) {
-    var temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
-} 
-class Sort{
-    constructor(arr) {
-        this.arr = arr;
-    }
-    bubbleSort() {
-        const arr = this.arr.concat(),
-              len = arr.length;
-        for(var i = 0; i < len; i++) {
-            for(var j = 0; j < len - i - 1; j++) {
-                if(arr[j] > arr[j + 1]) {
-                    swap(arr, j, j + 1)
-                }
-                
-            }
-        }
-        return arr;
-
-    }
-    selectionSort() {
-        let arr = this.arr.concat(),
-            len = arr.length,
-            min;
-        for(var i = 0; i < len - 1; i++) {
-            min = i;
-            for(var j = i + 1; j < len; j++) {
-                if(arr[min] > arr[j]) {
-                    swap(arr, min, j)
-                }
-            }
-        }
-        return arr;
-    }
-    insertionSort() {
-        let arr = this.arr.concat(),
-        len = arr.length,
-        temp, inner;
-        for(let i = 1; i < len; i++) {
-            temp = arr[i];
-            inner = i;
-            while(inner >= 0 && arr[inner - 1] > temp) {
-                arr[inner] = arr[inner - 1];
-                inner--;
-            }
-            arr[inner] = temp;
-        }
-        return arr;
-    }
-}
