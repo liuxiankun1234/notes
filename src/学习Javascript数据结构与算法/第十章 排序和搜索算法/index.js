@@ -2,9 +2,12 @@
  * 
  *  排序小型数组时，插入排序优于冒泡排序和选择排序
  *  
- *  由于性能问题，成产中不适合使用插入/冒泡/选择排序
+ *  由于性能问题，生产中不适合使用插入/冒泡/选择排序
  * 
  * 
+ *  冒泡排序和选择排序很像
+ *      冒泡排序是依次对比两个元素，找到最大
+ *      选择排序是依次对比两个元素，找到最小的
  * 
  * 
 **/
@@ -24,7 +27,10 @@ void function() {
         bubble() {
             /**
              *  冒泡排序
-             *      比较任何两个相邻的项，如果第一个数比第二个数字大，则交换他们 
+             *      依次比较相邻的两个元素，将大的放大最后
+             *          第一次找到最大的 
+             *          第二次找到倒数第二大的
+             *          ...
              *      优化 内部循环 减去 i 后面的已经是确定最大数
              *      
              *      时间复杂度 O(n2)
@@ -178,3 +184,58 @@ void function() {
 
 
 }();
+
+
+function swap(arr, i, j) {
+    var temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+} 
+class Sort{
+    constructor(arr) {
+        this.arr = arr;
+    }
+    bubbleSort() {
+        const arr = this.arr.concat(),
+              len = arr.length;
+        for(var i = 0; i < len; i++) {
+            for(var j = 0; j < len - i - 1; j++) {
+                if(arr[j] > arr[j + 1]) {
+                    swap(arr, j, j + 1)
+                }
+                
+            }
+        }
+        return arr;
+
+    }
+    selectionSort() {
+        let arr = this.arr.concat(),
+            len = arr.length,
+            min;
+        for(var i = 0; i < len - 1; i++) {
+            min = i;
+            for(var j = i + 1; j < len; j++) {
+                if(arr[min] > arr[j]) {
+                    swap(arr, min, j)
+                }
+            }
+        }
+        return arr;
+    }
+    insertionSort() {
+        let arr = this.arr.concat(),
+        len = arr.length,
+        temp, inner;
+        for(let i = 1; i < len; i++) {
+            temp = arr[i];
+            inner = i;
+            while(inner >= 0 && arr[inner - 1] > temp) {
+                arr[inner] = arr[inner - 1];
+                inner--;
+            }
+            arr[inner] = temp;
+        }
+        return arr;
+    }
+}
