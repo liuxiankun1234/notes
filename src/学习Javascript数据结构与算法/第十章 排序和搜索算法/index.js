@@ -135,16 +135,12 @@ void function() {
                         ret.push(left.shift())
                     }
                 }
-
                 while(left.length){
                     ret.push(left.shift())
                 }
-
-
                 while(right.length){
                     ret.push(right.shift())
                 }
-
                 return ret;
             }
 
