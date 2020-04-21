@@ -134,3 +134,74 @@ void function() {
         subType.prototype = prototype // 指定对象
     }
 }();
+(function() {
+    /**
+     *  总结 构造函数原型式继承 寄生组合式继承 ES6 extends
+     *      构造函数原型式继承 同 ES6继承方式相同
+     *          将子类原型指向一个继承对象的实例
+     *      寄生组合式继承
+     *          将子类原型指向父类原型 造成了少一层原型链关系 更简洁
+    **/
+    var A = function() {
+        this.name = 'name'
+    }
+    A.prototype.sayName = function() {
+        return this.name;
+    };
+    var B = function() {
+        A.call(this);
+        this.age = 'age'
+    }
+    B.prototype = Object.create(A.prototype);
+    B.prototype.constructor = 'B'
+    B.prototype.sayAge = function() {
+        return this.age;
+    }
+
+    var b = new B();
+
+
+    function C() {
+        this.name = 'name'
+    }
+    C.prototype.sayName = function() {
+        return this.name;
+    };
+    function D() {
+        C.call(this);
+        this.age = 'age'
+    }
+    function inheritPrototype(subType, superType) {
+        var proto = Object(superType.prototype);
+        proto.constructor = subType;
+        subType.prototype = proto;
+    }
+    inheritPrototype(D, C);
+    D.prototype.sayAge = function() {
+        return this.age;
+    }
+    var d = new D();
+
+
+
+    class E {
+        constructor() {
+            this.name = 'name'
+        }
+        sayName() {
+            return this.name;
+        }
+    }
+    class F extends E{
+        constructor() {
+            super();
+            this.age = 'age'
+        }
+        sayAge() {
+            return this.age;
+        }
+    }
+    var f = new F()
+    
+    console.log(b,d,f)
+})();
