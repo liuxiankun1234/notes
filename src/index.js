@@ -4,7 +4,7 @@
 // import './高程3/第三章/index';
 // import './高程3/第四章/index';
 // import './高程3/第六章/index';
-// import './高程3/第六章/inherit';
+import './高程3/第六章/inherit';
 // import './高程3/第七章/index';
 
 /***************************** 你不知道的javascript 上卷 *****************************/
