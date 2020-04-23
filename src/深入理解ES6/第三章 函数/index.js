@@ -22,15 +22,16 @@
  *          arguments不可以重写
  *          arguments不跟实参绑定 内部修改实参不改变arguments
  *      
- *      不定参数 ...keys(将不定参数整合成数组)
+ *      剩余参数 ...keys(将不定参数整合成数组)
  *          限制
+ *              function.length的不包括不定参数
  *              不定参数只能在形参列表的最后
  *              不定参数最多只能声明一个
  *              不可以在对象字面量的setter中使用(set() {}参数只能有一个)
- * 
+ *          
  *      展开运算符
  *          指定一个数组 将他们打散后作为各自独立的参数传入函数
- *          展开运算符同for-of一样 仅处理有[Symbol.iterator]属性的对象
+ *          展开运算符同for-of一样 仅处理有[Symbol.iterator]属性的对象(迭代器对象)
  *          
  * 
  *      
@@ -42,7 +43,7 @@
  *          es5解决方案 instanceof 关键字
  *          es6解决方案 new.target === Person
  *              元属性：指非对象的属性
- *              元属性的指针指向 当前this对应的构造函数(注意继承) 同 instanceof不同的是 instanceof 是可以原型链逐层查找 new.target 是指定一个构造器
+ *              元属性的指针指向 当前this对应的构造函数(注意继承) 同 instanceof不同的是 instanceof 是可以原型链逐层查找 new.target 是指当前实例的构造函数
  *              当调用函数的[[Construct]]方法时 new.target 被赋值为new操作符的目标 新创建的实例对象的构造函数
  *              当调用函数的[[Call]]方法时 new.target 被赋值为undefined
 **/

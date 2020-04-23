@@ -381,7 +381,7 @@
  *          重写arguments语法错误
  * 
  *      arguments.length    传入实参长度
- *      function.length     第一个非默认形参之前的长度
+ *      function.length     第一个非默认形参之前的参数数量,不包括剩余参数的数量
  * 
  *      没有重载
  *          其他语言定义两个签名不同即可定义两个同名函数
