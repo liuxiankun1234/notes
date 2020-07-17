@@ -7,28 +7,16 @@
  * @return {number}
  * 
  */
-
-var cache = (function() {
-    var cache = {};
-
-    return function(key, value) {
-        if(value !== undefined) {
-            cache[key] = value;
-            return value
-        }else{
-            return cache[key]
-        }
-    }
-})();
-
- var cache = {};
+var cache = {};
 var climbStairs = function(n) {
-    if(cache[n] == null) {
-        cache[n] = 
+    debugger
+    if(cache[n] != null) {
+        return cache[n] 
     }
 
-    if(n === 1) return 1;
-    if(n === 2) return 2;
+    if(n === 1 || n === 2) {
+        return cache[n] = n
+    };
 
-    return climbStairs(n - 1) + climbStairs(n - 2)
+    return cache[n] = climbStairs(n - 1) + climbStairs(n - 2)
 };
