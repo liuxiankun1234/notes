@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     entry: './src/index.js',
@@ -29,5 +30,12 @@ module.exports = {
         contentBase: path.join(__dirname, './dist'), // 根目录
         open: true, // 浏览器自动打开
         port: 8001 // 端口
+    },
+    optimization: {
+        minimizer: [
+            new UglifyJsPlugin({
+                test: /\.js(\?.*)?$/i,
+            })
+        ],
     }
 }
