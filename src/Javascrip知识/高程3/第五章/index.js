@@ -5,8 +5,16 @@
  *      创建对象方式
  *          new Object()
  *          对象字面量 {}
+ *      花括号出现在一个语句的上下文中，例如跟在一个if语句后面、或者代码块的开头，则表示则表示一个语句块的开始
+ *          {console.log(1)} + [] ---> {console.log(1)}; + [] ---> 此处{}当做一个代码块解析 打印1并且执行数组的隐式转换
+ *          [] + {console.log(1)} --> 报错 此处{}当做一个对象解析出错
  *      对象属性都是字符串/Symbol 
  *          Number Boolean undefined null Object 类型会转成字符串类型(toString)
+ *          var a = {a: 1}, b = {b: 1}, o = null;
+ *          o = {[a]: 'a', [b]: 'b', a: 'str a', b: 'str b'};
+ *          [a] 和 [b]在当成对象o的属性的时，做了一次隐式转换，Object -> String
+ *          a.valueOf().toString() === b.valueOf().toString() ---> '[object Object]'
+ *          所以[a]、[b]属性值都是'[object Object]'
  *      对象字面量也是参数的首选类型
  *          必需值使用命名参数 非必须值使用对象字面量封装
  *      访问
@@ -27,7 +35,7 @@
  *      数组最大长度 Math.pow(2, 32) - 1 
  *      检测数组
  *          instanceof
- *              页面中有其他iframe 存在两个Array构造函数 就有问题了 不同的引用
+ *              页面中有其他iframe 存在两个Array构造函数,将数组从一个页面传到另一个页面，instanceof检测就会出现问题
  *          Array.isArray()
  *      
  *  提示：
@@ -45,14 +53,17 @@
  *      详情：/talk_about/talk_about_正则表达式迷你书.js
  *           /talk_about/talk_about_正则表达式.js
  *  Function类型
- *      函数是对象，函数名是指针
+ *      函数是对象，函数名是指向函数对象的指针
  *      没有重载   
  *          其他语言定义两个签名不同即可定义两个同名函数
  *          JS不支持 可以通过传入参数类型 数量作出不同反应 模仿重载
  *      函数内部属性
  *          arguments.callee 一个指向当前arguments所属函数的指针
  *          arguments.callee.caller 保存着调用当前函数的引用 全局调用指向null
- *      函数属性和方法         
+ *      函数属性和方法   
+ *          length
+ *              返回函数形参的数量
+ *              形参数量不包括剩余参数(a,b,...rest ---> length = 2)个数，仅包括第一个具有默认值(a,b = 2 --> length = 1)之前的参数个数     
  *          call/apply/bind
  *              改变函数作用域
  *  基本包装类型

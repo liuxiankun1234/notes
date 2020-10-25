@@ -30,8 +30,9 @@
             可以把参数想象成局部变量
         检测类型  
             instanceof
-            result = variable instanceof constructor
-            variable.__proto__  === constructor.prototype 即为相等
+                instanceof 检测基本类型返回false 因为基本类型不是对象
+                result = variable instanceof constructor
+                variable.__proto__  === constructor.prototype 即为相等
 
     执行环境及作用域
         词法作用域 词法分析时被定义的作用域

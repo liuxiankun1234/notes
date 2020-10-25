@@ -10,11 +10,15 @@
  *  
  *  语法
  *      区分大小写
+ *          ECMAScript中的一切变量、函数名、操作符、参数...都区分大小写
+ *              test和TEST是两个不同的变量
+ *              typeof是一个操作符、而typeOf可以是一个合法的变量
  *      关键字不能当作函数名
+ *          this、try、while...不能被用作标识符
  *      标识符
  *          什么是标识符?
  *              变量 函数 属性的名字 或者函数的参数
- *          标识符规则
+ *          标识符定义规则
  *              第一个字母必须是一个字母 下划线 或者一个美元符
  *              其它字符可以是字母 下划线 美元符 数字
  *              标识符的字母包含 ASCII 或 unicode字母字符（不推荐）
@@ -124,24 +128,26 @@
  *                      }
  *              检测NaN
  *                  isNaN()
+ *                      参数值先变为Number类型，然后再判断是否是NaN
  *                      var isNaN = function(value) {
  *                          var n = Number(value);
  *                          return n !== n;
  *                      };
  *                  Object.is()
  *                  自定义函数 var isNaN = number => typeof number === 'number' && number !== number
+ *                  ** 这个方法是有漏洞的，非Number类型的值,isNaN方法会将其转为Number类型，再进行NaN比较
  *          数值转换
  *              非数值转成数值
- *                  用于任何数据类型
- *                      var a; +a; 强制类型转换
- *                      + === Number()
- *                      Number()  
- *                          Number(true) --> 1 Number(false) --> 0
- *                          Number(number) 简单的传入传出
- *                          Number(null) --> 0 
- *                          Number(undefined) --> NaN
- *                          字符串
- *                              仅包含有效数值 转为十进制数值(八进制也当十进制处理)
+ *                  Number()
+ *                      用于任何数据类型
+ *                      加号(+)运算符等同于Number方法 + === Number()
+ *                      转换规则
+ *                          Number  
+ *                          Boolean true --> 1 false --> 0
+ *                          Undefined NaN
+ *                          null    0
+ *                          string
+ *                              仅包含有效数值(前导符号 科学计数法) 转为十进制数值(八进制也当十进制处理)
  *                              十六进制数字字面量 转为十进制数值
  *                              空字符串 转为 0
  *                              其他 NaN
@@ -156,6 +162,9 @@
  *                          强烈推荐使用第二个进制参数
  *                              处理其他进制数值 ES3或ES5有区别
  *                              parseInt('070') // ES3 --> 56  ES5 --> 70
+ *                              十六进制可以不加前导0x
+ *                                  parseInt('AF') NaN
+ *                                  parseInt('AF', 16) 175
  *                      parseFloat()  
  *                          处理浮点数
  *                          从第一个非空有效字符开始， 一直解析到无效的浮点数值格式（包括 . ）为止 否则返回NaN
@@ -322,14 +331,20 @@
  *          相等/不相等 强制转型
  *              一个操作数是布尔值，转成数值进行比较        Number(boolean)
  *              一个操作数是字符串 另一个操作数是数值       Number(string)与数值比较
- *              null undefined 不进行转换 
- *                  null != 0 undefined != NaN
- *                  +null --> Number(null) --> 0 但是 null != 0 可恶
  *              一个操作数是对象 转成基本类型(valueOf() toString()) 进行比较
+ *              null undefined 
+ *                  null和undefined相等，但是没有进行任何类型转换
+ *                      null == undefined 
+ *                  null和undefined进行相等比较，不进行任何类型转换
+ *                      null == 0 // false 
+ *                      undefined == NaN // false
+ *                  
+ *                  +null --> Number(null) --> 0 但是 null != 0 可恶
  *              两个操作数都是对象 看是否是同一个引用 是返回true 否返回false
  *              null == undefined // true
  *              null != 0 // true
  *              undefined == 0 // false
+ *              
  *          全等/不全等
  *              类型相等 并且值也相等
  *      
