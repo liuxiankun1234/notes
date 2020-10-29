@@ -205,8 +205,8 @@ void function() {
  *      原型对象中包含可以由特定类型(constructor指向的构造函数)的所有实例共享的属性和方法
  *      默认情况下所有的原型对象都自动获得一个constructor属性，指向原型所属的函数
  *      
- *      A.isPrototypeOf(B) // A对象是B实例的原型吗
- *      Object.getPrototypeOf(A) // 获取A的原型对象
+ *      A.isPrototypeOf(B) // A对象是B实例的原型吗 同 instanceof 方法
+ *      Object.getPrototypeOf(A) // 获取A的原型对象 (具体的一个原型对象)
  *      
  *      对象实例上的属性会屏蔽原型对象中保存的同名属性(找到了就返回 找不到进行原型链查找)
  *      更简单的原型语法
