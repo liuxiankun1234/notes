@@ -11,8 +11,36 @@
  *              必须先赋值 再调用
  *  递归
  *      可以使用 arguments.callee 调用自身
+ *      也可以使用命名函数表达式代替arguments.callee
+ *  
+ *  闭包
+ *      使用闭包注意释放内存
+ *      将变量置为null，释放内存
 **/
 
 void function() {
-    
+    // f是一个全局变量
+    if(f = function() {}) {}
+    console.log(f) // function 
+
+    // 这个是一个函数表达式，而非函数声明 所以function.name 只能在内部可以访问
+    if(function ff() {}) {}
+    console.log(ff); // ReferenceError 
+
+
+
+    var factorial = (function f(num) {
+        if(num <= 1) return 1;
+        return num * f(num - 1);
+    });
+
+    var  factorial = function (num) {
+        if(num <= 1) return 1;
+        return num * arguments.callee(num - 1);
+    };
+
+
+
+
+
 }();
