@@ -64,12 +64,55 @@
  *                              script、style、注释元素
  *              outerHTML
  *                  返回/重写调用它的元素及其所有子节点的HTML标签
- *              insertAdjacentHTML()方法
- *                         
- * 
- * 
- * 
- * 
+ *              insertAdjacentHTML(type, element)方法
+ *                  type值
+ *                      beforebegin 
+ *                          在该元素本身的前面
+ *                      afterend
+ *                          在该元素本身的后面.
+ *                      afterbegin
+ *                          只在该元素当中, 在该元素第一个子孩子前面
+ *                      beforeend
+ *                          只在该元素当中, 在该元素最后一个子孩子后面
+ *                  element
+ *                      必须是dom元素，不能是字符串 
+ *                      document.createElement('p') 不能是'<p></p>'
+ *              内存与性能问题
+ *                  删除dom元素要取消事件程序
+ *                  避免频繁赋值、尽量一次性插入       
+ *          scrollIntoView(boolean)
+ *              调用元素就可以出现在视口中
+ *              可以在所有dom上调用，通过滚动浏览器窗口或者某一个容器元素
+ *              boolean
+ *                  true    调用元素的顶部与视口尽肯能 平齐
+ *                  false   调用元素会尽可能全部出现在视口中(可能的化元素底部会与视口顶部平齐)
+ *      专有扩展
+ *          文档模型
+ *          children属性
+ *          contains()方法
+ *              A.contains(B) A是否包含B
+ *              compareDocumentPosition()
+ *                  返回值
+ *                      1   无关
+ *                      2   位于参考节点前
+ *                      4   位于参考节点后
+ *                      8   包含
+ *                      16  被包含
+ *          插入文本
+ *              innerText属性
+ *              outerText属性
+ *          滚动 
+ *              scrollIntoViewIfNeed(alignCenter)
+ *                  用来将不在浏览器窗口的可见区域内的元素滚动到浏览器窗口的可见区域
+ *                  如果该元素已经在浏览器窗口的可见区域内，则不会发生滚动
+ *                  alignCenter
+ *                      如果为true，则元素将在其所在滚动区的可视区域中居中对齐
+ *                      如果为false，则元素将与其所在滚动区的可视区域最近的边缘对齐
+ *              scrollByLines(lines)
+ *                  将元素内容滚动指定行高
+ *                  lines 可正、负
+ *              scrollByPages(page)
+ *                  将元素内容滚动到指定页面高度
  * 
  * 
  * 
