@@ -108,9 +108,7 @@
  *              id title class这种可以直接通过DOM访问
  *          attributes属性
  *          创建元素
- *              
- * 
- * 
+ *              document.createElement()
  *                  
  *  
 **/
