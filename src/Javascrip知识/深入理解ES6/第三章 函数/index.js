@@ -28,11 +28,10 @@
  *      
  *      剩余参数 ...keys(将不定参数整合成数组)
  *          限制
- *              function.length的不包括不定参数
+ *              function.length不包括剩余参数 详情搜索 function.length
  *              不定参数只能在形参列表的最后
  *              不定参数最多只能声明一个
  *              不可以在对象字面量的setter中使用(set() {}参数只能有一个)
- *          
  *          
  *      展开运算符
  *          指定一个数组 将他们打散后作为各自独立的参数传入函数
@@ -261,10 +260,9 @@ function c() {
      *      es6解决方案
      *          new.target 元属性
      *          元属性：指非对象的属性  
-     *          必须在函数内部使用
+     *          必须在函数内部使用 函数外使用new.target语法错误
      *          当调用函数的[[Construct]]方法时 new.target 被赋值为new操作符的目标 通常是新创建的实例对象
      *          当调用函数的[[Call]]方法时 new.target 被赋值为undefined 
-     *          函数外使用new.target语法错误
      *          new.target === Person
      **/
     function Person(name) {
