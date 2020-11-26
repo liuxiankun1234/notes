@@ -149,7 +149,8 @@
      *
      *  function.length
      *      返回函数形参的数量
-     *      形参数量不包括剩余参数(a,b,...rest ---> length = 2)个数，仅包括第一个具有默认值(a,b = 2 --> length = 1)之前的参数个数
+     *      形参数量不包括剩余参数(a,b,...rest ---> length = 2)个数
+     *      仅包括第一个具有默认值(a,b = 2 --> length = 1)之前的参数个数
      *  arguments.length
      *      返回实参的数量
      *
