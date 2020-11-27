@@ -44,7 +44,7 @@
      *          value 表示下一个将要返回的值
      *          done Boolean类型 表示是否完成 没有更多可返回的数据时候 返回true
      * 
-     *      感觉createIterator函数就是利用闭包封装一个变量
+     *      createIterator函数就是利用闭包封装一个变量
      *  
      **/
     function createIterator(items){ 
