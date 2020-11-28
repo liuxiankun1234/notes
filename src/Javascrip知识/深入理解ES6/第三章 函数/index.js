@@ -317,6 +317,7 @@ function c() {
      *          没有this super arguments new.target 绑定 这些值由外围最近一层非箭头函数决定
      *          没有[[construct]]方法 不能被用作构造函数 new调用会报错
      *          没有原型 不存在prototype
+     *          不能用于创建生成器函数 
      *          不支持重复的命名参数 传统函数中 只有在严格模式下才不能有重复的命名参数
      * 
      *          箭头函数name属性同其他函数规则相同
