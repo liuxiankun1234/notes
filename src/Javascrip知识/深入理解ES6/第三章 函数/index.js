@@ -261,6 +261,7 @@ function c() {
      *      es6解决方案
      *          new.target 元属性
      *          元属性：指非对象的属性  
+     *          new.target指向当前实例的构造函数 如果在继承构造函数中中被访问 也是指向当前实例的构造函数
      *          必须在函数内部使用 函数外使用new.target语法错误
      *          当调用函数的[[Construct]]方法时 new.target 被赋值为new操作符的目标
      *          当调用函数的[[Call]]方法时 new.target 被赋值为undefined 
