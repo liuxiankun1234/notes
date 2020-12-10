@@ -45,13 +45,28 @@
  *                  thenable对象会被包装成一个已处理的Promise对象返回
  *                  Promise.resolve()和resolve.reject()方法接收非Promise的thenable对象并且返回一个已处理的Promise对象
  *      执行器错误
- *                     
- *  
- *    
- *              
- *  拒绝处理 没整明白 待观察
- *      unhandlerejection
- *      rejectionhandled
+ *          执行器内部报错，则会调用Promise的拒绝程序来处理
+ *          每个执行器中都隐含一个try-catch 捕获异常则调用reject处理程序处理
+ *      全局的Promise拒绝处理
+ *          Promise争议问题是如果没有拒绝处理程序的情况下拒绝一个Promise，那么不会提示失败信息
+ *          Promise的特性决定了很难检测一个Promise是否被处理过              
+ *          Node.js环境的拒绝处理
+ *              处理Promise拒绝时会触发process对象上的两个事件
+ *                  unhandledRejection
+ *                      在一个事件循环中，当Promise被拒绝，并且没有提供拒绝处理程序时，触发该事件
+ *                  rejectionHandled
+ *                      在一个事件循环后，当Promise被拒绝，若拒绝处理程序被调用，触发该事件
+ *          浏览器环境的拒绝处理
+ *              通过监听两个事件来识别未处理的决绝 （safari浏览器支持 部分chrome浏览器不支持）
+ *                  unhandledrejection 
+ *                      在一个事件循环中，当Promise被拒绝，并且没有提供拒绝处理程序时 触发该事件
+ *                  rejectionhandled
+ *                      在一个事件循环后，当Promise被拒绝，如拒绝处理程序被调用，触发该事件
+ *                      在一个事件循环中 拒绝处理程序被调用的话就不会触发该事件
+ *              事件处理程序接受一个有以下属性的事件对象作为参数
+ *                  type        事件名称 unhandledrejection或rejectionhandled
+ *                  promise     被拒绝的Promise对象
+ *                  reason      来自Promise的拒绝值
  *      
  *  创建已处理的Promise
  *      向Promise.resolve 或 Promise.reject 传入一个Promise 那么这个Promise会直接被返回
@@ -147,6 +162,20 @@
     var p2 = Promise.resolve(o)
     var p3 = Promise.resolve(o1)
 
+
+    window.addEventListener('unhandledrejection', function(e) {
+        console.log(e.type)
+        console.log(e.reason)
+        console.log(e.promise === p4)
+    })
+    window.addEventListener('rejectionhandled', function(e) {
+        console.log(e.type)
+        console.log(e.reason)
+        console.log(e.promise === p4)
+    })
+
+    var p4 = Promise.reject(new Error('12'))
+    p4.catch(e=>e)
 })();
 (function () {
     // 测试题
