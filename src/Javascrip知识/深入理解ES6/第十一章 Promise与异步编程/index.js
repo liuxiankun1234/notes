@@ -1,6 +1,54 @@
 /**
  *  第十一章 Promise与异步编程
+ *      重要
+ *          事件循环机制很重要
+ *          如果向Promise.resolve()和Promise.reject()方法传入一个Promise，那么这个Promise会直接被返回
+ *  异步编程知识背景
+ *      事件模型
+ *          遇到错误不主动触发
+ *      回调模式
+ *          必须每次都检查错误参数
+ * Promise基础知识
+ *      Promise生命周期
+ *          每个Promise都会经历一个短暂的生命周期
+ *              运行中状态(pending)，此时操作尚未完成，所以它是未处理的(unsettled)
+ *              一旦异步操作执行结束，Promise则变为已处理(setted)状态
+ *              操作结束之后Promise可能进入到以下两个状态中的一个
+ *                  Fulfilled   Promise异步操作成功完成
+ *                  Rejected    由于程序错误或其他原因，Promise异步操作未能成功完成
+ *          内部属性[[PromiseState]]被用来表示Promise的3种状态
+ *              pending
+ *              fulfilled
+ *              rejected
+ *          Promise的then方法 
+ *              接收两个参数 参数可选择传递
+ *                  第一个参数是Promise状态变为fulfilled状态时候的回调函数
+ *                  第二个参数是Promise状态变为rejected状态时候的回调函数
+ *              如果一个对象实现了then方法，那么这个对象我们称为thenable对象
+ *              所有的promise对象都是thenable对象，但是并非所有的thenable对象都是promise
+ *          Promise的catch方法
+ *              相当于then方法传递的第二个回调函数
+ *          如果一个Promise处于已处理状态，在这之后添加到任务队列里的处理程序仍然执行 无论何时你都可以添加新的处理程序，并且保证这些处理程序会被调用
+ *      创建未完成的Promise
+ *          通过构造函数的方式创建未完成的Promise
+ *              new Prmoise
+ *              接收一个执行器函数为参数，执行器函数接收两个参数 resolve reject 完成时调用resolve函数 失败时调用reject函数
+ *              执行器函数立即执行 并且返回一个promise对象
+ *      创建已处理的Promise    
+ *          如果想用Promise表示一个已知值，可以用已处理的Promise来表示
+ *              Promise.resolve()
+ *                  仅接收一个参数并返回一个完成态的Promise
+ *              Promise.reject()
+ *                  仅接收一个参数并返回一个拒绝态的Promise
+ *              如果向Promise.resolve()和Promise.reject()方法传入一个Promise，那么这个Promise会直接被返回
+ *              非Promise的thenable对象
+ *                  thenable对象会被包装成一个已处理的Promise对象返回
+ *                  Promise.resolve()和resolve.reject()方法接收非Promise的thenable对象并且返回一个已处理的Promise对象
+ *      执行器错误
+ *                     
  *  
+ *    
+ *              
  *  拒绝处理 没整明白 待观察
  *      unhandlerejection
  *      rejectionhandled
@@ -68,6 +116,37 @@
         console.log(data);
         console.log(1);
     })
+
+
+    var p = readFile();
+    // promise变成已处理状态依然可以添加事件处理程序，并且保证程序能被调用
+    p.then(res => {
+        console.log(res);
+        p.then(res => {
+            console.log(res);
+        })
+    }, err => {
+        console.log(err);
+        p.catch(err => {
+            console.log(err);
+        })
+    })
+
+    // Promise.resolve()和resolve.reject()方法接收非Promise的thenable对象并且返回一个已处理的Promise对象
+    var o = {
+        then: function(resolve, reject) {
+            resolve(42)
+        }
+    }
+    var o1 = {
+        then: function(resolve, reject) {
+            reject(42)
+        }
+    }
+
+    var p2 = Promise.resolve(o)
+    var p3 = Promise.resolve(o1)
+
 })();
 (function () {
     // 测试题
