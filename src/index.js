@@ -6,7 +6,7 @@
 // import './高程3/第六章/index';
 // import './高程3/第六章/inherit';
 // import './高程3/第七章/index';
-import './Javascrip知识/高程3/13 第十三章/index'
+// import './Javascrip知识/高程3/13 第十三章/index'
 
 /***************************** 你不知道的javascript 上卷 *****************************/
 // import './你不知道的Javascript上卷/第一部分 作用域和闭包/index';
@@ -61,6 +61,9 @@ import './Javascrip知识/高程3/13 第十三章/index'
 // import './深入理解ES6/第十二章 代理和反射API/index'
 // import './深入理解ES6/第十三章 用模块封装代码/index'
 
+
+/***************************** TypeSciprt  *****************************/
+import './TypeScript/1/index'
 
 /**
  *  webpack打包默认按照严格模式编译文件 可以配置.babelrc文件忽略某文件按照严格模式编译
