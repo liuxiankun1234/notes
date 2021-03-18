@@ -43,6 +43,9 @@ vscode技巧操作
     暴力解法
     基本问题 找 最近的重复子问题 计算机做的大部分都是简单的重复操作
 
+https://leetcode-cn.com/problems/sum-of-all-odd-length-subarrays/solution/
+https://leetcode.com/problems/sum-of-all-odd-length-subarrays/solution/
+看中文站、国际站
 
 
 代办事项
@@ -50,3 +53,4 @@ vscode技巧操作
     制作一个思维导图
     自上而下的编程模式 
     先搭主逻辑架构 再编写代码
+
