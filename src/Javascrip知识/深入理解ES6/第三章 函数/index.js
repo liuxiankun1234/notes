@@ -13,6 +13,10 @@
  *          ES6默认参数
  *              仅传入undefined(包括不传值 默认参数undefined)时候才会走默认值 (区别于flasy值)
  *              function f(timeout = 2000) {}
+ *          function.length 
+ *              形参的长度
+ *                  形参数量不包括剩余参数(a,b,...rest ---> length = 2)个数
+ *                  仅包括第一个具有默认值(a,b = 2 --> length = 1)之前的参数个数
  *      默认参数的暂时性死区
  *          不可以情况
  *              function f(first = second, second) {}
