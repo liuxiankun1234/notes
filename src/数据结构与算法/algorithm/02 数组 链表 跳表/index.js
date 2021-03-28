@@ -32,7 +32,8 @@
 // 实现一个单链表
 class Node{
     constructor(element) {
-        this.node = element;
+        this.element = element;
+        this.prev = null;
         this.next = null;
     }
 }
@@ -61,13 +62,15 @@ class LinkedList{
     }
 
     removeAt(position) {
-        if(position < -1 || position >= this.length) {
+        if(position < 0 || position >= this.length) {
             return null;
         }
 
-        let previous = null;
+        let previous = null,
+            current = null;
 
         if(position === 0) {
+            current = this.head;
             this.head = this.head.next
         }else{
             // position === 0 表示找到目标元素 
@@ -81,11 +84,12 @@ class LinkedList{
                 position--;
                 
             }
+            current = previous.next;
             previous.next = previous.next.next
         }
 
         this.length--
-        return 
+        return current.element;
     }
 
     insert(position, element) {
@@ -115,5 +119,137 @@ class LinkedList{
         return true;
     }
 }
+
+class DoubleLinkedList{
+    constructor() {
+        this.head = null;
+        this.tail = null;
+        this.length = 0
+    }
+
+    append(element) {
+        const lastNode = new Node(element);
+
+        if(this.head === null) {
+            this.tail = this.head = lastNode;
+        } else {
+            let prevNode = this.head;
+            
+            while(prevNode.next) {
+                prevNode = prevNode.next
+            }
+            lastNode.prev = prevNode;
+            prevNode.next = lastNode;
+            this.tail = lastNode
+        }
+
+        this.length++;
+    }
+
+    insert(position, element) {
+        if(position < 0 || position > this.length) {
+            return false;
+        }
+
+        const node = new Node(element);
+
+        if(position === 0) {
+            let current = this.head;
+
+            current.prev = node;
+            node.next = current;
+            this.tail = this.head = node;
+        }else{
+            let previous = null,
+                next = null;
+
+            while(position > 0) {
+                if(previous === null) {
+                    previous = this.head
+                }else{
+                    previous = previous.next;
+                }
+                position--;
+            }
+            /**
+             *  previous 插入位置的前一个节点
+             *  previous 插入位置的后一个节点
+             *      node的前指针指向前节点
+             *      node的后指针指向后节点
+             *      前节点的next指针指向node
+             *      后节点的prev指针指向node
+             * 
+             *      如果next === null 证明是尾指针 不需要进行 next.prev = node;
+            */
+            next = previous.next;
+            node.prev = previous
+            node.next = next;
+            if(next) {
+                next.prev = node
+            }else{
+                this.tail = node
+            }
+            previous.next = node;
+        }
+        this.length++;
+        return true;
+    }
+
+    removeAt(position) {
+        if(position < 0 || position >= this.length) {
+            return null;
+        }
+
+        let current = null;
+
+        if(position === 0) {
+            current = this.head;
+            
+            this.head = this.head.next;
+            this.head.prev = null;
+            this.head.next === null && (this.tail = null)
+        }else{
+            let previous = null;
+            while(position > 0) {
+                if(previous === null) {
+                    previous = this.head
+                }else{
+                    previous = previous.next
+                }
+                position--;
+            }
+            current = previous.next;
+            let next = current.next;
+
+            previous.next = next;
+            if(next) {
+                next.prev = previous
+                next.next === null && (this.tail = current)
+            }else{
+                this.tail = previous
+            }
+        }
+
+        this.length--;
+        return current.element;
+    }
+}
+
+const doubleLinkedList = new DoubleLinkedList();
+
+doubleLinkedList.append(1);
+doubleLinkedList.append(2);
+doubleLinkedList.append(3);
+console.log(doubleLinkedList)
+
+// doubleLinkedList.insert(0, 0)
+
+// doubleLinkedList.insert(4, 4)
+// doubleLinkedList.insert(4, 5)
+
+console.log(doubleLinkedList.removeAt(0))
+console.log(doubleLinkedList.removeAt(1))
+
+
 
 
