@@ -1,6 +1,5 @@
 /**
- * 
- *  题目
+s *  题目
  *      移动零
  *  地址
  *      https://leetcode-cn.com/problems/move-zeroes/

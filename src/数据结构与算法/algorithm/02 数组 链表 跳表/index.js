@@ -256,6 +256,28 @@ console.log(doubleLinkedList)
 console.log(doubleLinkedList.removeAt(0))
 console.log(doubleLinkedList.removeAt(1))
 
+const linkedList = new LinkedList();
+linkedList.append(1)
+linkedList.append(2)
+linkedList.append(3)
+linkedList.append(4)
+linkedList.append(5)
 
 
+console.log(linkedList)
 
+
+var swapPairs = function(head) {
+    if(head === null || head.next === null) {
+        return head;
+    }
+    const newHead = head.next;
+
+    head.next = swapPairs(newHead.next)
+    newHead.next = head;
+
+    return newHead;
+    
+};
+
+swapPairs(linkedList.head)

@@ -67,8 +67,8 @@ import './TypeScript/1/index'
 
 
 /***************************** 算法  *****************************/
-import './数据结构与算法/algorithm/02 数组 链表 跳表/index'
-import './数据结构与算法/algorithm/02 数组 链表 跳表/9 三数之和'
+// import './数据结构与算法/algorithm/02 数组 链表 跳表/index'
+import './数据结构与算法/algorithm/02 数组 链表 跳表/13'
 
 /**
  *  webpack打包默认按照严格模式编译文件 可以配置.babelrc文件忽略某文件按照严格模式编译
