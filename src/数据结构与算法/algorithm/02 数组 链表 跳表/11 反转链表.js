@@ -21,13 +21,17 @@
  * @return {ListNode}
  */
 var reverseList = function(head) {
+        // 新返回的链表
     let linkList = null,
         current = head;
 
     while(current) {
         const next = current.next;
+        // 修改当前引用的指针
         current.next = linkList;
+        // 修正链表
         linkList = current;
+        // 更新当前引用
         current = next;
     }
     return linkList

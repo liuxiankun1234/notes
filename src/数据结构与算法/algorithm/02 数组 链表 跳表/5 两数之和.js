@@ -26,3 +26,14 @@ var twoSum = function(nums, target) {
         keys[target - n] = i; 
     }
 };
+
+var twoSum = function(nums, target) {
+    var map = new Map();
+
+    for(let i = 0; i < nums.length; i++) {
+        if(map.has(nums[i])) {
+            return [map.get(nums[i]), i]
+        }
+        map.set(target - nums[i], i)
+    }
+};

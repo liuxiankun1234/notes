@@ -19,13 +19,12 @@
  * @return {number}
  */
 var removeDuplicates = function(nums) {
+    if(nums.length < 1) return nums;
     var i = 0;
- 
-    for(var j = 1; j <= nums.length - 1; j++) {
+    for(var j = 1; j < nums.length; j++) {
         if(nums[j] !== nums[i]) {
             nums[++i] = nums[j]
         }
     }
- 
-    return i + 1;
+    return i + 1
 };

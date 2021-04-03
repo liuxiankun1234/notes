@@ -33,6 +33,17 @@
  *      做一下具体区分吧 看
  *      
  *      9 三数之和的hashmap有问题
+ *  二刷卡壳题目
+ *      数组
+ *      https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/
+ *      https://leetcode-cn.com/problems/merge-sorted-array/
+ *      https://leetcode-cn.com/problems/rotate-array/
+ *      https://leetcode-cn.com/problems/3sum/submissions/
+ * 
+ *      链表
+ *      https://leetcode-cn.com/problems/swap-nodes-in-pairs/submissions/
+ *      https://leetcode-cn.com/problems/reverse-linked-list/
+ *      
 */
 
 // 实现一个单链表

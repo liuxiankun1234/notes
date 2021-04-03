@@ -32,7 +32,7 @@ var swapPairs = function(head) {
         return head;
     }
 
-    const newHead = head.next();
+    const newHead = head.next;
 
     /**
      * 注意执行顺序
