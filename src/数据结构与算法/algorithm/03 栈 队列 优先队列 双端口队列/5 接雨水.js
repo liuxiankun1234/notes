@@ -4,7 +4,7 @@
  *  地址
  *      https://leetcode-cn.com/problems/trapping-rain-water/
  *  解题思路
- *      1、
+ *      1、单调递减栈
 */
 /**
  * @param {number[]} height
