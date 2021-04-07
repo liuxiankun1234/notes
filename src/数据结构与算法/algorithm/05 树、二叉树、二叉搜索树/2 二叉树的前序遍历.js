@@ -43,52 +43,28 @@ var preorderTraversal = function(root) {
 
 
 
-/**
- * Definition for a binary tree node.
- * function TreeNode(val, left, right) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.left = (left===undefined ? null : left)
- *     this.right = (right===undefined ? null : right)
- * }
- */
-/**
- * @param {TreeNode} root
- * @return {number[]}
- */
-var inorderTraversal = function(root) {
-    // 中序 左 根 右
-    var stack = [],
-        tree = []
-
-    while(root || stack.length) {
-        while(root) {
-            stack.push(root)
-            root = root.left;
-        }
-        let root = stack.pop();
-        tree.push(root.val);
-        root = root.right;
+var preorderTraversal = function(root) {
+    const tree = [],
+        stack = [];
+    // 一直遍历一条线
+    while(root) {
+        tree.push(root.val)
+        if(root.right) stack.push(root.right)
+        root = root.left
     }
+
+    while(stack.length) {
+        root = stack.pop();
+
+        while(root) {
+            tree.push(root.val)
+            if(root.right) stack.push(root.right)
+            root = root.left
+        }
+    }
+
+    return tree;
 };
 
-/**
- * @param {TreeNode} root
- * @return {number[]}
- */
-var inorderTraversal = function(root) {
-    // 中序 左 根 右
-    var stack = [],
-        tree = []
-
-    while(root || stack.length) {
-        while(root) {
-            stack.push(root)
-            root = root.left;
-        }
-        let root = stack.pop();
-        tree.push(root.val);
-        root = root.right;
-    }
-};
 
 
