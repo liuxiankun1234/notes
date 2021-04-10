@@ -45,16 +45,26 @@ var postorderTraversal = function(root) {
  */
 var postorderTraversal = function(root) {
     const tree = [];
+    const stack = [];
+    let prev = null;
 
-    const postorder = (root) => {
-        if(!root) return;
+    while(root !== null || stack.length) {
+        while(root) {
+            stack.push(root)
+            root = root.left;
+        }
 
-        postorder(root.left)
-        postorder(root.right)
-        tree.push(root.val)
+        root = stack.pop();
+
+        if(root.right === null) {
+            tree.push(root.val);
+            prev = root;
+            root = null
+        }else{
+
+        }
     }
-
-    postorder(root)
+    
 
     return tree;
 };
