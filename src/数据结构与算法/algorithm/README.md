@@ -34,6 +34,7 @@ vscode技巧操作
     option      +   top/bottom                      上下移动一行
     command     +   X                               剪切当前行
     command     +   delete                          删除当前行
+    command     +   option          + D             debugger
     
 算法刻意练习
     需要多次反复练习

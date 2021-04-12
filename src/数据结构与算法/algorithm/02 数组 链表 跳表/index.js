@@ -31,8 +31,8 @@
  *      量表的删除都需要查找一遍元素啊 
  *      数组和链表的基础知识没啥了 
  *      做一下具体区分吧 看
- *      
- *      9 三数之和的hashmap有问题
+ *      sort 为啥要传 a - b呢
+ *     
  *  二刷卡壳题目
  *      数组
  *      https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/
@@ -43,6 +43,10 @@
  *      链表
  *      https://leetcode-cn.com/problems/swap-nodes-in-pairs/submissions/
  *      https://leetcode-cn.com/problems/reverse-linked-list/
+ *  
+ *  三刷卡壳题目
+ *      https://leetcode-cn.com/problems/rotate-array/
+ *      https://leetcode-cn.com/problems/3sum/
  *      
 */
 

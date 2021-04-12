@@ -95,3 +95,21 @@ var rotate = function(nums, k) {
     _reverse(nums, 0, k - 1)
     _reverse(nums, k, n - 1)
 };
+
+
+var rotate = function(nums, k) {
+    var prevNum = nums[0],
+        curIndex = 0;
+
+    k %= nums.length;
+    for(var i = 0; i < nums.length; i++) {
+        do{
+            curIndex = (curIndex + k) % nums.length;
+            var temp = nums[curIndex]
+            nums[curIndex] = prevNum
+            prevNum = temp
+        }while(i !== curIndex)
+    }
+};
+
+rotate([1,2,3,4,5,6,7], 3)
