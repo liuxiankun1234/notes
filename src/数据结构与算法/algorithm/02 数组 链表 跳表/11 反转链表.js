@@ -21,10 +21,15 @@
  * @return {ListNode}
  */
 var reverseList = function(head) {
-        // 新返回的链表
     let linkList = null,
         current = head;
-
+    /**
+     *  链表循环
+     *      保存当前指针的指向
+     *      然后将当前指针指向新的链表
+     *      更新新的链条
+     *      再恢复之前的指针指向 继续循环
+    */
     while(current) {
         const next = current.next;
         // 修改当前引用的指针

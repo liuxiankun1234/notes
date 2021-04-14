@@ -11,7 +11,6 @@
  * @return {number}
  */
 var trap = function(height) {
-    debugger
     var len = height.length,
     area = 0,
     stack = [];
@@ -34,4 +33,26 @@ var trap = function(height) {
     }
     return area;
 };
+
+
+var trap = function(height) {
+    var stack = [],
+         sum = 0;
+ 
+    for(var i = 0; i < height.length; i++) {
+        while(stack.length && height[i] > height[stack[stack.length - 1]]) {
+            var top = stack.pop();
+             if(stack.length === 0 ) break;
+            var left = stack[stack.length - 1];
+            var width = i - left - 1;
+            var curHeight = Math.min(height[left], height[i]) - height[top];
+            sum += width * curHeight
+        }
+        stack.push(i)
+    }
+ 
+    return sum; 
+ };
+
+
 trap([0,1,0,2,1,0,1,3,2,1,2,1])

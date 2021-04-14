@@ -41,12 +41,15 @@
  *      https://leetcode-cn.com/problems/3sum/submissions/
  * 
  *      链表
- *      https://leetcode-cn.com/problems/swap-nodes-in-pairs/submissions/
+ *      https://leetcode-cn.com/problems/swap-nodes-in-pairs
  *      https://leetcode-cn.com/problems/reverse-linked-list/
  *  
  *  三刷卡壳题目
  *      https://leetcode-cn.com/problems/rotate-array/
  *      https://leetcode-cn.com/problems/3sum/
+ * 
+ *      https://leetcode-cn.com/problems/reverse-linked-list/
+ *      https://leetcode-cn.com/problems/linked-list-cycle/submissions/
  *      
 */
 

@@ -37,5 +37,4 @@ var isValid = function(s) {
     }
     return arr.length === 0
 };
-
 isValid('(]]]]]')
