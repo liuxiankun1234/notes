@@ -39,15 +39,15 @@ class BinaryHeap {
     constructor() {
         /**
          *  d           n叉堆
-         *  head        堆的实现
-         *  headSize    堆的容积
+         *  heap        堆的实现
+         *  heapSize    堆的容积
         */
         this.d = 2;
         this.heap = [];
-        this.heapSize = 0;
     }
 
     getParent(i) {
+        if(i === 0) return 0;
         return Math.floor((i - 1) / this.d)
     }
 
@@ -55,26 +55,63 @@ class BinaryHeap {
         return this.d * i + k
     }
 
+    maxChild(index) {
+        var childs = []
+        var maxChildIndex = this.kthChild(index, 1),
+            maxChild = this.heap[maxChildIndex];
+        for(var i = 2; i <= this.d; i++) {
+            var index = this.kthChild(index, i)
+
+            maxChildIndex = 
+                this.heap[index] > maxChild 
+                ? index
+                : maxChildIndex
+        }
+
+        return maxChildIndex
+    }
+
     insert(x) {
-        this.heap[this.headSize++] = x;
-        this.heapifyUp(this.headSize - 1)
+        this.heap.push(x)
+        this.heapifyUp(this.heap.length - 1)
+    }
+
+    /**
+     * index: element pos
+     * Complexity: O(log N)
+    */
+    delete(index) {
+        var key = this.heap[index];
+        this.heap[index] = this.heap[this.heap.length - 1]
+        this.heap.length--
+        this.heapDown(index)
+        return key
     }
 
     heapifyUp(index) {
         let current = this.heap[index];
-        let parentIndex = this.getParent(index);
-        let parent = this.head[parentIndex];
 
-        while(parentIndex >= 0 && parent < current) {
-            this.heap[index] = parent
-
-            parentIndex = this.getParent(parentIndex);
-            parent = this.head[parentIndex];
+        // index === 0 不能继续了 因为0就是根元素了 直接替换根元素的值即可
+        while(index > 0 && this.heap[this.getParent(index)] < current) {
+            this.heap[index] = this.heap[this.getParent(index)]
+            index = this.getParent(index)
         }
 
-        this.head[parentIndex] = current
+        this.heap[index] = current
+    }
+
+    heapDown(index) {
+        var temp = this.heap[index];
+        let maxChildIndex = index;
+        while(this.kthChild(index, this.d) < this.heap.length && this.heap[this.maxChild(index)] > temp) {
+            maxChildIndex = this.maxChild(index)
+            this.heap[index] = this.heap[maxChildIndex];
+            index = maxChildIndex
+        }
+        this.heap[maxChildIndex] = temp
     }
 }
+
 
 var heap = new BinaryHeap();
 
