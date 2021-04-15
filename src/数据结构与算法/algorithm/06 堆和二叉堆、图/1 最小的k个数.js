@@ -7,8 +7,6 @@
  *      1、sort slice
  *      2、快排
  *      3、小顶堆
- *  辅助网站
- *      https://visualgo.net/zh/bst
 */
 /**
  * @param {number[]} arr

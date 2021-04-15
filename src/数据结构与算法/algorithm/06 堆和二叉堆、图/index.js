@@ -32,6 +32,9 @@
  *          二叉堆是堆的一种形式，由于实现简单而常见，并不是最优解
  *          工程上使用严格斐波那契堆更优
  *          https://en.wikipedia.org/wiki/Heap_(data_structure)
+ * 
+ *  堆相关的题还没做
+ *  
  *          
 **/
 
@@ -56,7 +59,6 @@ class BinaryHeap {
     }
 
     maxChild(index) {
-        var childs = []
         var maxChildIndex = this.kthChild(index, 1),
             maxChild = this.heap[maxChildIndex];
         for(var i = 2; i <= this.d; i++) {
