@@ -92,37 +92,34 @@ var threeSum = function(nums) {
  *  3、双指针
  */
 var threeSum = function(nums) {
-    nums = nums.sort((a,b) => a - b);
-
-    const indexArr = [];
-    for (let i = 0; i < nums.length; i++) {
-        if(nums[i] > 0) break;
-        if((i !== 0) && (nums[i] === nums[i - 1])) continue;
-        
-        let j = i + 1,
+    nums = nums.sort((a, b) => a - b);
+    const sums = [];
+    // 去重判断  i j k去重
+    // 边界条件判断 i 大于0不处理
+    for(var i = 0; i < nums.length; i++) {
+        var j = i + 1,
             k = nums.length - 1;
-        
+        if(nums[i] > 0) break;
+        if(i !== 0 && nums[i] === nums[i - 1]) continue
         while(j < k) {
-            const sum = nums[i] + nums[j] + nums[k];
-            if(sum === 0) {
-                indexArr.push([
-                    nums[i],
-                    nums[j],
-                    nums[k]
+            var total = nums[i] + nums[j] + nums[k];
+            if(total === 0) {
+                sums.push([
+                    nums[i], nums[j], nums[k]
                 ])
                 while(j < k && nums[j] === nums[j + 1]) j++
-                while(j < k && nums[k] === nums[k - 1]) k--
+                while(j < k && nums[k] === nums[k - 1]) k-- 
                 j++
                 k--
-            }else if(sum < 0) {
-                j++
+            }else if(total > 0) {
+                k--
             }else{
-                k--
+                j++
             }
         }
     }
 
-    return indexArr;
+    return sums
 };
 
 threeSum([1,2,-2,-1])

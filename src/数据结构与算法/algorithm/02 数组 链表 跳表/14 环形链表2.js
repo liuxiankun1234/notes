@@ -83,26 +83,3 @@ var detectCycle = function(head) {
     }
     return null;
 };
-
-
-
-
-
-
-
-
-
-
-function C1(name) {
-    if(name) this.name = name
-}
-function C2(name) {
-    this.name = name
-}
-function C2(name) {
-    this.name = name || 'A'
-}
-
-C1.prototype.name = 'TOM'
-C2.prototype.name = 'TOM'
-C3.prototype.name = 'TOM'
