@@ -80,6 +80,15 @@
  *          HTML5事件
  *              
 **/
+/**
+ *  stopPropagation
+ *      当前DOM绑定的其他事件可以被执行
+ *      阻止事件进一步传播
+ *  stopImmediatePropagation
+ *      当前DOM绑定的其他事件被阻止执行
+ *      阻止事件进一步传播 
+ *      **当前DOM之前注册的事件是不可以被阻止执行的
+*/
 (function() {
     // demo1 跨浏览器的事件处理程序
     var EventUtil = {
