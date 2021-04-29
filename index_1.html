@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title></title>
-    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap-grid.css" rel="stylesheet">
+    <title>读书笔记</title>
+    <!-- <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap-grid.css" rel="stylesheet">
     <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.css" rel="stylesheet">
-    <!-- <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
     <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.3.0/css/bootstrap.css" rel="stylesheet">
     <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.2.1/css/bootstrap.css" rel="stylesheet">
     <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" rel="stylesheet">
     <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.1.2/css/bootstrap.css" rel="stylesheet">
-    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css" rel="stylesheet"> -->
-    <!-- <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.4.0/js/bootstrap.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.3.0/js/bootstrap.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.2.1/js/bootstrap.js"></script>
@@ -48,15 +48,59 @@
     </style>
 </head>
 <body>
-    <h3>
-        测试
-    </h3>
+    <dl class="completed">
+        <dt>已完成任务</dt>
+        <dd>深入理解ES6读书笔记</dd>
+        <dd>图解HTTP</dd>
+    </dl>
+    <dl class="doing">
+        <dt>未完成任务</dt>
+        <dd>深入浅出Node.js</dd>
+        <dd>JavaScript高级程序设计</dd>
+        <dd>揭秘underscore</dd>
+        <dd>talk_about系列</dd>
+        <dd>Javascript数据结构和算法</dd>
+    </dl>
 
-    <div>
-        <!-- 1. link标签加载不会阻塞DOM树的解析，DOM树解析和加载样式可以理解为并行触发，但是页面的渲染会等待样式加载，页面样式未加载完成不会渲染renderTree -->
-        2. 
+    <dl class="delay">
+        <dt>规划中任务</dt>
+        <dd>函数式编程</dd>
+        <dd>webpack</dd>
+    </dl>
+
+    <dl class="delay">
+        <dt>DEMO</dt>
+        <dd><a href="/a.html">1 stopImmediatePropagation与stopPropagation差别</a></dd>
+        <dd>webpack</dd>
+    </dl>
+
+    <div class="outter">
+        <div class="inner"></div>
     </div>
+
 <script>
+    var outter = document.querySelector('.outter'),
+        inner = document.querySelector('.inner');
+    /**
+     * stopImmediatePropagation
+     *  阻止事件的进一步捕获或者冒泡，同时阻止当前节点注册的其他的事件被调用
+     * 
+     * stopPropagation
+     *  阻止事件的进一步捕获或者冒泡 不会阻止当前节点注册的其他事件被调用
+    */
+    outter.addEventListener('click', function(e) {
+        debugger
+        // e.stopImmediatePropagation();
+        e.stopPropagation();
+        if(e.target === inner) {
+            console.log('inner')
+        }
+    }, false)
+
+    outter.addEventListener('click', function(e) {
+        console.log('outter')
+    }, false)
+
 
 </script>
 </body>
