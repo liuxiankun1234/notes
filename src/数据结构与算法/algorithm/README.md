@@ -35,6 +35,10 @@ vscode技巧操作
     command     +   X                               剪切当前行
     command     +   delete                          删除当前行
     command     +   option          + D             debugger
+    command     +   1~9                             切换浏览器标签页
+    control     +   tab                             向左切换标签栏
+    control     +   tab             + shift         向右切换标签栏
+
     
 算法刻意练习
     需要多次反复练习
