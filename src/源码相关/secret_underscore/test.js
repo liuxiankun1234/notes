@@ -1,8 +1,12 @@
 // import _ from './underscore.js';
-import './my_underscore.js'
+import './new_underscore.js'
 
-console.log(_)
-_.noConflict();
+
+console.log(
+    _.findIndex({a: 1,b: 2}, function (params) {
+        
+    })
+)
 
 // void function() {
 //     /**
