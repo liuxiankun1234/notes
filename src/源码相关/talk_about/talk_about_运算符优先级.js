@@ -1,14 +1,20 @@
 (function() {
     /**
      *  JS运算符号优先级问题
-     *      官网链接
      *      https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence
-     *  
-     *      
-     *      
-     * 
+     *  关联性 
+     *      不相关  
+     *          圆括号（分组操作符） ()
+     *      左关联
+     *          成员访问 . [] 
+     *          函数调用 x.()
+     *          ...
+     *      右关联 
+     *          一元操作符
+     *          ...
      * 
     **/
+    
 
     /**
      *  后置加 > 前置加 >  加 
@@ -62,4 +68,6 @@
     c = false;
     
     a && b || c ? c || b ? a : c && b : a
+
+    'foo' || false ? (c || b ? a : c && b) : a
 })();
