@@ -1,0 +1,41 @@
+引用地址：https://timothygu.me/es-howto/#algorithm-steps
+
+如何读ECMAScript 规范
+    摘要
+        ES规范是一个好的资源去学习JS工作原理，但是第一次阅读会感觉恐惧和困惑，本文能让文档读起来更容易
+    1 前奏
+        所以你已经决定每天读一点ES规范对你的身心是有好处的，也许这是一个新年决定，或许是一个药房，不论怎样，欢迎登机
+        1.1 为什么我们应该读ES规范
+            ES规范是权威的资源针对所有的JS实现行为来说，无论是在浏览器、Node服务端、物理机上，所有的JS引擎开发者都依赖于ES规范来让他们实现的新功能
+            能够预期的工作，像其他JS引擎一样
+            该规范的实用性超出了一种叫‘JS引擎开发者’的神秘的生物，事实上，该文档对你是有用的，你还没有意思到
+            假定有一天你在工作中发现了一些如下奇怪的问题，为什么有的原型方法工作，有的原型方法不工作，谷歌不能给你答案
+                Array.prototype.push(42) // 1
+                Array.prototype // [ 42 ]
+                Array.isArray(Array.prototype) // true
+                Set.prototype.add(42)
+                TypeError: Method Set.prototype.add called on incompatible receiver #<Set>
+                    at Set.add (<anonymous>)
+                Set.prototype
+                Set {}
+            读ES规范可以帮助到你
+            另一方面，不建议新手阅读规范，如果你是刚接触JavaScript，多围绕Web，制作几个web app或者是基于js的东西，当你有足够多的JS经验的时候再回头读这个规范
+            现在，你知道了ES规范是一个有用的工具来帮助你理解这个语言的复杂性，但是ES规范可以确切的包含什么内容呢
+        1.2 ES语言规范包含什么，不包含什么
+            笔者的答案是 ES规范包含语言特性，但是这么说好像又什么都没说，好像在说JS特性就是JS，我不是在重复
+            相反的，我将罗列一些在开发JS应用时经常看到的一些东西，来告诉你他们中的哪一个是ES语言规范，哪一个不是
+                ES语言规范包含
+                    句法元素(什么鬼)        for-in循环    
+                    语言学的元素(什么鬼)      typeof or {a: '1'}
+                    内置对象        Object, Array, Function, Number, Math, RegExp, Proxy, Map, Promise, ArrayBuffer, Uint8Array, globalThis...
+                不包含
+                    console, setTimeout(), setInterval(), clearTimeout(), clearInterval()
+                    Buffer, process, global*
+                    module, exports, require(), __dirname, __filename
+                    window, alert(), confirm(), the DOM (document, HTMLElement, addEventListener(), Worker, ...)
+        1.3 在进一步讨论前，ES规范在哪
+            当你Google"ECMAScript specification"时候，你可以看到许多结果，都声称自己是合法的规范，我们应该读哪一个呢？
+            https://tc39.es/ecma262 定义的规范是你更想要的          
+            长版本
+                ES规范被一群来自不同背景的人开发，这群人被称为ECMA国际技术委员会39(简称TC39)，TC39委会最新的ES规范在tc39.es
+
