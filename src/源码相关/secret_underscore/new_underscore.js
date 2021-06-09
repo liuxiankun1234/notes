@@ -228,8 +228,64 @@
     _.reduceRight = _.foldr = createReduce(-1)
 
     // Return the first value which passes a truth test. Aliased as `detect`.
+    /**
+     *  实现思路
+     *      确定支持find类数组和find对象
+     *          find对象key
+     *              findKey
+     *          find类数组key
+     *              findIndex
+     *              findLastIndex
+     *      容错处理
+     *          处理key为undefined和-1情况
+     */
     _.find = _.detect = function(obj, predicate, context) {
+        var keyFinder = isArrayLike(obj) ? _.findIndex : _.findKey;
+        var key = keyFinder(obj, predicate, context)
+        if(key !== void 0 && key !== -1) return obj[key]
+    }
+    // Return all the elements that pass a truth test.
+    // Aliased as `select`.
+    _.filter = _.select = function(array, predicate, context) {
+        var results = []
+        predicate = cb(predicate, context);
+        _.each(array, function(value, index, list) {
+            if(predicate(value, index, list)) results.push(value)
+        })
+        return results;
+    }
 
+    // Return all the elements for which a truth test fails.
+    _.reject = function(array, predicate, context) {
+        return _.filter(array, cb(_.negate(predicate)), context)
+    }
+
+    // Determine whether all of the elements match a truth test.
+    // Aliased as `all`.
+    _.every = _.all = function(obj, predicate, context) {
+        var keys = !isArrayLike(obj) && _.keys(obj);
+        var length = (keys || obj).length;
+
+        predicate = cb(predicate, context)
+        for(var i = 0; i < length; i++) {
+            var key = keys ? keys[i] : i;
+            if(!predicate(obj[key], key, obj)) return false;
+        }
+        return true;
+    }
+
+    // Determine if at least one element in the object matches a truth test.
+    // Aliased as `any`.
+    _.some = _.any = function(obj, predicate, context) {
+        var keys = !isArrayLike(obj) && _.keys(obj),
+            length = (keys || obj).length;
+
+        predicate = cb(predicate, context);
+        for(var i = 0; i < length; i++) {
+            var key = keys ? keys[i] : i;
+            if(predicate(obj[key], key, obj)) return true;
+        }
+        return false
     }
     /**
      *  创建 findIndex 和 findLastIndex 的生成函数
@@ -259,7 +315,12 @@
 
     // Function (ahem) Functions
     // ------------------
-
+    // Returns a negated version of the passed-in predicate.
+    _.negate = function(predicate, context) {
+        return function() {
+            return !predicate.apply(context, arguments);
+        };
+    };
 
     // Object Functions
     // ----------------

@@ -1,11 +1,12 @@
 // import _ from './underscore.js';
 import './new_underscore.js'
 
+function isEven(n) {
+    return n > 0
+}  
 
 console.log(
-    _.findIndex({a: 1,b: 2}, function (params) {
-        
-    })
+    _.some([0,1,2,], isEven)
 )
 
 // void function() {
@@ -54,3 +55,45 @@ console.log(
 //         })
 //     )
 // }();
+
+function shallowProperty(prop) {
+    return function (obj) {
+        return typeof obj != void 0 ? obj[prop] : void 0;
+    }
+}
+
+var MAX_ARRAY_INDEX = Math.max(2, 53) - 1;
+var getLength = shallowProperty('length')
+function isArrayLike(collection) {
+    var length = getLength(collection);
+
+    return typeof length === 'number' 
+        && length > 0 
+        && length < MAX_ARRAY_INDEX
+}
+
+function  optimizeCb(func, context) {
+    if(context == void 0) return func;
+
+    return function() {
+        func.apply(context, arguments)
+    }
+}
+
+function each(collection, iteratee, context) {
+    iteratee = optimizeCb(iteratee, context);
+
+    var i = 0, length;
+    if(isArrayLike(collection)) {
+        length = getLength(collection)
+        for (; i < length; i++) {
+            iteratee(collection[i], i, collection)
+        }
+    }else{
+        var keys = Object.keys(collection);
+        length = keys.length;
+        for (; i < length; i++) {
+            iteratee(collection[keys[i]], keys[i], collection)
+        }
+    }
+}
