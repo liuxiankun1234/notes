@@ -121,11 +121,10 @@
         if (value == null) return _.identity;
         // 传入的是函数 直接走优化函数
         if (_.isFunction(value)) return optimizeCb(value, context, argCount);
-        // 如果是对象 非数组 走 matcher
-        // if (_.isObject(value) && !_.isArray(value)) return _.matcher(value);
+        // 如果是对象 非数组 返回一个检验函数
+        if (_.isObject(value) && !_.isArray(value)) return _.matcher(value);
         // 非对象 函数 null undefined 
-        // return _.property(value);
-    
+        return _.property(value);
     }
 
     // 实际上仅兼容额 属性值为null的时候 返回undefined
@@ -138,6 +137,15 @@
     var has = function(obj, path) {
         return obj != null && hasOwnProperty.call(obj, path);
     };
+
+    var deepGet = function(obj, path) {
+        var length = path.length;
+        for(var i = 0; i < length; i++) {
+            if(obj == null) return void 0;
+            obj = obj[path[i]]
+        }
+        return length ? obj : void 0;
+    }
 
     var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
     var getLength = shallowProperty('length');
@@ -318,9 +326,29 @@
     _.findIndex = createPredicateIndexFinder(1);
     _.findLastIndex = createPredicateIndexFinder(-1);
 
+    // Use a comparator function to figure out the smallest index at which
+    // an object should be inserted so as to maintain order. Uses binary search.
+    _.sortedIndex = function(array, obj, iteratee, context) {
+
+    }
+
+    _.sortedIndex = function(array, obj, iteratee, context) {
+        iteratee = cb(iteratee, context, 1);
+        var value = iteratee(obj);
+        debugger
+        var low = 0,
+            high = getLength(array);
+        while (low < high) {
+            var mid = Math.floor((low + high) / 2);
+            if (iteratee(array[mid]) < value) low = mid + 1;
+            else high = mid;
+        }
+        return low;
+    };
+
     // Generator function to create the indexOf and lastIndexOf functions.
     var createIndexFinder = function() {
-
+        
     }
 
     // Return the position of the first occurrence of an item in an array,
@@ -356,6 +384,14 @@
         return keys;
     };
 
+    // Retrieve all the property names of an object.
+    _.allKeys = function(obj) {
+        if(!_.isObject(obj)) return []
+        var keys = [];
+        for (var key in obj) keys.push(key);
+        return keys;
+    }
+
     // Retrieve the values of an object's properties.
     _.values = function(obj) {
         var keys = _.keys(obj),
@@ -374,6 +410,10 @@
         return toString.call(obj) === '[object Array]'
     }
 
+    // Is a given variable an object?
+    /**
+     *  返回一个函数对象或者非null对象
+    **/
     _.isObject = function(obj) {
         var type = typeof obj;
         return type === 'function' || (type === 'object' && !!obj)
@@ -382,6 +422,40 @@
     _.isFunction = function (obj) {
         return typeof obj === 'function';
     }
+
+    // An internal function for creating assigner functions.
+    var createAssigner = function(keyFunc, defaults) {
+        return function(obj) {
+            var length = arguments.length;
+            if(length < 2 || obj == null) return obj;
+            /**
+             *  数据兼容处理
+             *  将基本数据类型进行包装
+             *      Number 
+             *      String 
+             *      Boolean 
+            **/
+            obj = Object(obj);
+            for(var index = 1; index < length; index++) {
+                var source = arguments[index],
+                    keys = keyFunc(source),
+                    len = getLength(keys);
+                for(var j = 0; j < len; j++) {
+                    var key = keys[j]
+                    if (!defaults || obj[key] === void 0)
+                    obj[key] = source[key]
+                }
+            }
+            return obj;  
+        }
+    }
+
+    // Extend a given object with all the properties in passed-in object(s).
+    _.extend = createAssigner(_.allKeys);
+
+    // Assigns a given object with all the own properties in the passed-in object(s).
+    // (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
+    _.extendOwn = _.assign = createAssigner(_.keys);
 
     // Returns the first key on an object that passes a predicate test.
     _.findKey = function (obj, predicate, context) {
@@ -395,8 +469,38 @@
         }
     }
 
+    // Returns whether an object has a given set of `key:value` pairs.
+    _.isMatch = function(object, attrs) {
+        var keys = _.keys(attrs),
+            length = getLength(keys);
+        // 如果attrs是空对象、null、void 0 ...会返回true
+        if(object == null) return !length;
+        var obj = Object(object)
+        for(var i = 0; i < length; i++) {
+            var key = keys[i];
+            /**
+             *  源码中是这么写的 
+             *      if (attrs[key] !== obj[key] || !(key in obj)) return false;
+             *      什么情况下 attrs的可以和obj的key属性值相等 但是 key不是obj的属性呢
+             *      我觉得反过来写更合理一点
+             *      if (!(key in obj) || obj[key] !== attrs[key]) return false
+            **/
+            if (!(key in obj) || obj[key] !== attrs[key]) return false
+        }
+        return true
+    }
+
     // Utility Functions
     // -----------------
+    // Returns a predicate for checking whether an object has a given set of
+    // `key:value` pairs.
+    _.matcher = function(attrs) {
+        attrs = _.extendOwn({}, attrs)
+        return function(obj) {
+            return _.isMatch(obj, attrs);
+        }
+    }
+
 
     // Run Underscore.js in *noConflict* mode, returning the `_` variable to its
     // previous owner. Returns a reference to the Underscore object.
@@ -409,6 +513,19 @@
     _.identity = function(value) {
         return value;
     };
+    
+    // Creates a function that, when passed an object, will traverse that object’s
+    // properties down the given `path`, specified as an array of keys or indexes.s
+    _.property = function(path) {
+        if(!_.isArray(path)) {
+            return shallowProperty(path);
+        }
+        return function(obj) {
+            return deepGet(obj, path)
+        }
+    }
+
+    
 
     // OOP
     // ---------------
@@ -441,6 +558,8 @@
  *      4、为什么优先使用call进行this绑定，而不是使用apply
  *      5、如何进行单元测试 
  *      6、for循环的语法规则
+ *      7、var obj = Object(object)  Object 的行为等同于 new Object()
+ *          包装类问题
  *  最佳实践
  *      使用分组运算符来区分优先级 语义化更强
  * 
