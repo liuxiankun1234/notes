@@ -82,4 +82,16 @@
                 ES规范使用term Record来指代一组键值对映射-有点像c语言,每一个Record的键值对被叫做field。因为Record仅能出现在规范中，不能在真实的代码中,因此使用[[notation]]来
                 指代 field of Record是有道理的
                 example 2
+                // TODO
+        2.5 JS对象
+            在ES中，每一个对象都有一系列内置方法，规范中的其他其他部分调用这些方法来执行一些确定的任务，这些内置方法有：
+                [[Get]] 获取对象的属性 (obj.prop)
+                [[Set]] 设置对象的属性 (obj.prop = 42)
+                [[GetPrototypeOf]] 获取对象的原型对象 (Object.getPrototypeOf(obj))
+                [[GetOwnProperty]] 获取对象一个属性的属性描述符 (Object.getOwnPropertyDescriptor(obj, "prop"))
+                [[Delete]] 删除一个对象的属性 (delete obj.prop)
+            基于以上定义，function objects也确实是JS对象，拥有额外的[[Call]]内置方法，也有可能拥有[[Construct]]内置方法，这也就是为什么他们叫可执行对象
+            这个文档将所有的对象分成了两个阵营，原生对象和变异对象
+
+            
                 

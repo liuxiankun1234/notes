@@ -287,6 +287,15 @@
         }
         return false
     }
+
+    // Determine if the array or object contains a given item (using `===`).
+    // Aliased as `includes` and `include`.
+    _.contains = _.includes = _.include = function(obj, item, fromIndex) {
+        if(!isArrayLike(obj)) obj = _.values(obj)
+        if(typeof fromIndex !== 'number') fromIndex = 0;
+        return ~_.indexOf(obj, item, fromIndex)
+    }
+
     /**
      *  创建 findIndex 和 findLastIndex 的生成函数
      *      getLength
@@ -308,6 +317,19 @@
     // Returns the first index on an array-like that passes a predicate test.
     _.findIndex = createPredicateIndexFinder(1);
     _.findLastIndex = createPredicateIndexFinder(-1);
+
+    // Generator function to create the indexOf and lastIndexOf functions.
+    var createIndexFinder = function() {
+
+    }
+
+    // Return the position of the first occurrence of an item in an array,
+    // or -1 if the item is not included in the array.
+    // If the array is large and already in sort order, pass `true`
+    // for **isSorted** to use binary search.
+    _.indexOf = createIndexFinder()
+
+
 
     // Array Functions
     // ---------------
@@ -333,6 +355,18 @@
         for (var key in obj) if (has(obj, key)) keys.push(key);
         return keys;
     };
+
+    // Retrieve the values of an object's properties.
+    _.values = function(obj) {
+        var keys = _.keys(obj),
+            length = getLength(keys),
+            results = new Array(length);
+
+        for(var i = 0, length = keys.length; i < length; i++) {
+            results[i] = obj[keys[i]]
+        }
+        return results;
+    }
 
     _.isArray = 
     nativeIsArray || 
