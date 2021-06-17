@@ -3,6 +3,7 @@
 //     (c) 2009-2018 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 //     Underscore may be freely distributed under the MIT license.
 
+
 // 立即执行函数表达式
 (function() {
     // 基础配置信息
@@ -88,8 +89,8 @@
 
         switch(argCount == null ? 3 : argCount) {
             case 1:
-                return function() {
-
+                return function(value) {
+                    return func.call(context, value);
                 }
             case 3:
                 return function(value, key, collection) {
@@ -328,34 +329,65 @@
 
     // Use a comparator function to figure out the smallest index at which
     // an object should be inserted so as to maintain order. Uses binary search.
-    _.sortedIndex = function(array, obj, iteratee, context) {
-
-    }
 
     _.sortedIndex = function(array, obj, iteratee, context) {
-        iteratee = cb(iteratee, context, 1);
-        var value = iteratee(obj);
-        debugger
-        var low = 0,
+        iteratee = cb(iteratee, context, 1)
+        var value = iteratee(obj),
+            low = 0,
             high = getLength(array);
         while (low < high) {
-            var mid = Math.floor((low + high) / 2);
-            if (iteratee(array[mid]) < value) low = mid + 1;
-            else high = mid;
+            var mid = Math.floor((low + high) / 2)
+            if (iteratee(array[mid]) > value) {
+                low = mid
+            } else {
+                high = mid + 1;
+            }
         }
         return low;
-    };
+    }
 
     // Generator function to create the indexOf and lastIndexOf functions.
-    var createIndexFinder = function() {
-        
+    var createIndexFinder = function(dir, predicateFind, sortedIndex) {
+        return function(array, item, idx) {
+            var i = 0,
+                length = getLength(array);
+
+            // 传入有效的索引
+            if(typeof idx === 'number') {
+                if (dir > 0) {
+                    // 大于0认为传入的有效值 不做校验处理
+                    // 小于0 并且小于数组长度 将0默认为有效值
+                    i = idx >= 0 ? idx : Math.max(idx + length, i)
+                } else {
+                    length = idx >= 0 ? Math.min(idx + 1, length) : idx + length + 1
+                }
+            } else if (sortedIndex && idx && length) {
+                idx = sortedIndex(array, item)
+                return array[idx] === item ? idx : -1;
+            }
+            // NaN处理
+            if(item !== item) {
+                idx = predicateFind(slice.call(array, i, length), _.isNaN)
+                return idx > 0 ? idx + 1 : -1;
+            }
+            // 处理正常数据
+            for (
+                idx = dir > 0 ? i : length - 1;
+                idx > 0 && idx < length;
+                idx += dir
+            ) {
+                if(array[idx] === item) return idx;
+            }
+            return -1;
+        }
     }
 
     // Return the position of the first occurrence of an item in an array,
     // or -1 if the item is not included in the array.
     // If the array is large and already in sort order, pass `true`
     // for **isSorted** to use binary search.
-    _.indexOf = createIndexFinder()
+    _.indexOf = createIndexFinder(1, _.findIndex, _.sortedIndex);
+    _.lastIndexOf = createIndexFinder(-1, _.findLastIndex);
 
 
 

@@ -787,7 +787,7 @@
                 idx = sortedIndex(array, item);
                 return array[idx] === item ? idx : -1;
             }
-            // 引用类型 / Symbol / NaN
+            // 异常处理 NaN
             if (item !== item) {
                 idx = predicateFind(slice.call(array, i, length), _.isNaN);
                 return idx >= 0 ? idx + i : -1;
