@@ -159,7 +159,7 @@
             func.apply(this, args)
         }
     };
-    
+
     // 实际上仅兼容额 属性值为null的时候 返回undefined
     var shallowProperty = function(key) {
         return function(obj) {
@@ -547,6 +547,9 @@
              *      什么情况下 attrs的可以和obj的key属性值相等 但是 key不是obj的属性呢
              *      我觉得反过来写更合理一点
              *      if (!(key in obj) || obj[key] !== attrs[key]) return false
+             * 
+             *      判断场景
+             *      attrs = {a: undefined} 但是 obj没有a属性 则需要这么判断
             **/
             if (!(key in obj) || obj[key] !== attrs[key]) return false
         }
