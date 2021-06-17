@@ -331,12 +331,28 @@
 
     // Determine if the array or object contains a given item (using `===`).
     // Aliased as `includes` and `include`.
-    _.contains = _.includes = _.include = function(obj, item, fromIndex) {
+    _.contains = _.includes = _.include = function(obj, item, fromIndex, guard) {
         if(!isArrayLike(obj)) obj = _.values(obj)
-        if(typeof fromIndex !== 'number') fromIndex = 0;
+        if(typeof fromIndex !== 'number' || guard) fromIndex = 0;
         return ~_.indexOf(obj, item, fromIndex)
     }
+    
+    // Invoke a method (with arguments) on every item in a collection.
+    // TODO 可以通过测试用例看下方法的作用
+    _.invoke = restArguments(function(obj, path, args) {
 
+    })
+
+    // Convenience version of a common use case of `map`: fetching a property.
+    _.pluck = function(obj, key) {
+        return _.map(obj, _.property(key))
+    }
+
+    // Convenience version of a common use case of `filter`: selecting only objects
+    // containing specific `key:value` pairs.
+    _.where = function(obj, attrs) {
+        return _.filter(obj, _.matcher(attrs))
+    }
     /**
      *  创建 findIndex 和 findLastIndex 的生成函数
      *      getLength

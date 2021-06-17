@@ -759,7 +759,7 @@
     _.sortedIndex = function(array, obj, iteratee, context) {
         iteratee = cb(iteratee, context, 1);
         var value = iteratee(obj);
-        debugger
+        
         var low = 0,
             high = getLength(array);
         while (low < high) {
