@@ -128,6 +128,38 @@
         return _.property(value);
     }
 
+    // Some functions take a variable number of arguments, or a few expected
+    // arguments at the beginning and then a variable number of values to operate
+    // on. This helper accumulates all remaining arguments past the function’s
+    // argument length (or an explicit `startIndex`), into an array that becomes
+    // the last argument. Similar to ES6’s "rest parameter".
+    var restArguments = function(func, startIndex) {
+        startIndex = startIndex == null ? func.length - 1 : +startIndex;
+        return function() {
+            var length = Math.max(arguments.length - startIndex, 0),
+                index = 0,
+                rest = Array(length);
+            for (; index < length; index++) {
+                rest[index] = arguments[index + startIndex]
+            }
+
+            switch(startIndex) {
+                case 0:
+                    return func.call(this, rest)
+                case 1:
+                    return func.call(this, arguments[0], rest)
+                case 2:
+                    return func.call(this, arguments[0], arguments[1], rest)
+            }
+            var args = Array(startIndex + 1)
+            for (index = 0; index < startIndex; index++) {
+                args[index] = arguments[index]
+            }
+            args[startIndex] = rest
+            func.apply(this, args)
+        }
+    };
+    
     // 实际上仅兼容额 属性值为null的时候 返回undefined
     var shallowProperty = function(key) {
         return function(obj) {
@@ -389,8 +421,6 @@
     _.indexOf = createIndexFinder(1, _.findIndex, _.sortedIndex);
     _.lastIndexOf = createIndexFinder(-1, _.findLastIndex);
 
-
-
     // Array Functions
     // ---------------
 
@@ -404,6 +434,7 @@
         };
     };
 
+    _.restArguments = restArguments;
     // Object Functions
     // ----------------
     // Retrieve the names of an object's own properties.
