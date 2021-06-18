@@ -353,6 +353,124 @@
     _.where = function(obj, attrs) {
         return _.filter(obj, _.matcher(attrs))
     }
+
+    // Convenience version of a common use case of `find`: getting the first object
+    // containing specific `key:value` pairs.
+    _.findWhere = function(obj, attrs) {
+        return _.find(obj, _.matcher(attrs))
+    }
+
+    // Return the maximum element (or element-based computation).
+    _.max = function(obj, iteratee, context) {
+        var result = -Infinity,
+            lastComputed= -Infinity,
+            computed;
+        /**
+         *  typeof iteratee == "number" && typeof obj[0] != "object" && obj != null
+         *  不知道这块处理的是什么情况的数据
+        **/
+        if(
+            iteratee == null ||
+            (
+                typeof iteratee == "number" &&
+                typeof obj[0] != "object" &&
+                obj != null
+            )
+        ) {
+            obj = isArrayLike(obj) ? obj : _.values(obj)
+            for(var i = 0, length = obj.length; i < length; i++) {
+                var value = list[i];
+                if(value != null && value > result) {
+                    result = value
+                }
+            }
+        }else{
+            iteratee = cb(iteratee, context);
+            _.each(obj, function(value, index, lists) {
+                computed = iteratee(value, index, lists)
+                /**
+                 *  (computed === -Infinity && result === -Infinity)
+                 *  处理computed值为-Infinity情况
+                **/
+                if(
+                    computed > lastComputed || 
+                    (computed === -Infinity && result === -Infinity)
+                ) {
+                    result = value;
+                    lastComputed = computed
+                }
+            })
+        }
+        return result;
+    }
+
+    // Return the minimum element (or element-based computation).
+    _.min = function(obj, iteratee, context) {
+        var result = Infinity,
+            lastComputed = Infinity,
+            computed;
+        /**
+         *  typeof iteratee == "number" && typeof obj[0] != "object" && obj != null
+         *  同理 不知道这块处理的是什么情况的数据
+        **/
+         if(
+            iteratee == null ||
+            (
+                typeof iteratee == "number" &&
+                typeof obj[0] != "object" &&
+                obj != null
+            )
+        ) {
+            obj = isArrayLike(obj) ? obj : _.values(obj);
+            for(var i = 0, length = obj.length; i < length; i++) {
+                var value = obj[i];
+                if(value < result && value != null) {
+                    result = value
+                }
+            }
+        }else{
+            iteratee = cb(iteratee, context);
+            _.each(obj, function(value, index, lists) {
+                computed = iteratee(value, index, lists)
+                if(
+                    computed < result ||
+                    (computed === Infinity && result === Infinity)
+                ) {
+                    result = value;
+                    lastComputed = computed;
+                }
+            })
+        }
+        return result;
+    }
+    // Shuffle a collection.
+    _.shuffle = function(obj) {
+        return _.sample(obj, Infinity)
+    }
+    
+    // Sample **n** random values from a collection using the modern version of the
+    // [Fisher-Yates shuffle](http://en.wikipedia.org/wiki/Fisher–Yates_shuffle).
+    // If **n** is not specified, returns a single random element.
+    // The internal `guard` argument allows it to work with `map`.
+    _.sample = function(obj, n, guard) {
+        if(n == null || guard) {
+            obj = isArrayLike(obj) ? obj : _.values(obj);
+            return obj[_.random(obj.length - 1)]
+        }
+        var sample = isArrayLike(obj) ? _.clone(obj) : _.values(obj),
+            length = getLength(sample),
+            last = length - 1;
+        n =  Math.min(Math.max(n, 0), length)
+
+        for(var i = 0; i < n; i++) {
+            var rand = _.random(i, last);
+            var temp = sample[rand]
+            sample[rand] = sample[i]
+            sample[i] = temp;
+        }
+        return sample.slice(0, n)
+    }
+
     /**
      *  创建 findIndex 和 findLastIndex 的生成函数
      *      getLength
@@ -548,6 +666,11 @@
         }
     }
 
+    // Create a (shallow-cloned) duplicate of an object.
+    _.clone = function(obj) {
+        if(!_.isObject(obj)) return obj;
+        return _.isArray(obj) ? obj.slice() : _.extend({}, obj)
+    }
     // Returns whether an object has a given set of `key:value` pairs.
     _.isMatch = function(object, attrs) {
         var keys = _.keys(attrs),
@@ -576,11 +699,19 @@
     // -----------------
     // Returns a predicate for checking whether an object has a given set of
     // `key:value` pairs.
-    _.matcher = function(attrs) {
+    _.matcher = _.matches = function(attrs) {
         attrs = _.extendOwn({}, attrs)
         return function(obj) {
             return _.isMatch(obj, attrs);
         }
+    }
+    // Return a random integer between min and max (inclusive). [min, max]
+    _.random = function(min, max) {
+        if(max == null) {
+            max = min
+            min = 0
+        }
+        return min + Math.floor(Math.random() * (max - min + 1))
     }
 
 
