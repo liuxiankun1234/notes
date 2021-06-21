@@ -471,6 +471,14 @@
         return sample.slice(0, n)
     }
 
+    // Sort the object's values by a criterion produced by an iteratee.
+    // TODO~~~~
+    _.sortBy = function(obj, iteratee, context) {}
+
+    // An internal function used for aggregate "group by" operations.
+    var group = function() {
+        
+    }
     /**
      *  创建 findIndex 和 findLastIndex 的生成函数
      *      getLength
