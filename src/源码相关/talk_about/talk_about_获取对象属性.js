@@ -9,7 +9,9 @@
      *  Object.getOwnPropertySymbols(obj)   获取当前对象上(非原型链上)所有可枚举和不可以枚举的Symbol属性的数组
      *  Object.keys(obj)                    获取当前对象(非原型链上)上的可枚举的字符串属性
      *  obj.hasOwnProperty(prop)            获取当前对象(非原型链上)是否含有prop字符串属性和Symbol属性(可枚举和不可枚举的属性)
-     *                     
+     *  
+     *  array.keys                          
+     *  
      *  ES3
      *  for-in                              获取当前对象（包含原型链上的）所有可以枚举的字符串属性
      *  in (prop in obj)                    获取当前对象（包含原型链上的）所有可以枚举或不可枚举的属性 字符串或symbol属性

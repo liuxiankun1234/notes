@@ -100,7 +100,6 @@
 
     var builtinIteratee;
 
-    // 一个内部方法 可以生成可以应用到集合中每个元素的回调，返回期望的结果 
     // 即 dentity 任意回调 属性匹配器 属性访问器
     var cb = function(value, context, argCount) {
         if (_.iteratee !== builtinIteratee) return _.iteratee(value, context);
