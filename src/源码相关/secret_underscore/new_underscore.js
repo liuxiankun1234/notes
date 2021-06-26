@@ -475,7 +475,14 @@
 
     // An internal function used for aggregate "group by" operations.
     var group = function(behavior, partition) {
-        
+        return function(obj, iteratee, context) {
+            var result = partition ? [[], []] : {};
+            iteratee = cb(iteratee, context)
+            _.each(obj, function(value, index, list) {
+                var key = iteratee(value, index, list)
+                behavior(result, value, key)
+            })
+        }
     }
 
     // Groups the object's values by a criterion. Pass either a string attribute
@@ -484,6 +491,46 @@
         if (has(result, key)) result[key].push(value);
         else result[key] = [value];
     });
+    
+    // Indexes the object's values by a criterion, similar to `groupBy`, but for
+    // when you know that your index values will be unique.
+    _.indexBy = group(function(result, value, key) {
+        result[key] = value
+    })
+
+    // Counts instances of an object that group by a certain criterion. Pass
+    // either a string attribute to count by, or a function that returns the
+    // criterion.
+    _.countBy = group(function(result, value, key) {
+        if (has(result, key)) result[key]++
+        else result[key] = 1
+    })
+    
+
+    var reStrSymbol = /[^\ud800-\udfff]|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff]/g;
+    // Safely create a real, live array from anything iterable.
+    _.toArray = function(obj) {
+        if(!obj) return [];
+        if(_.isArray(obj)) return obj.slice()
+        if (_.isString(obj)) {
+            return obj.match(reStrSymbol);
+        }
+        if(isArrayLike(obj)) return _.map(obj, _.identity)
+        return _.values(obj);
+    }
+
+    // Return the number of elements in an object.
+    _.size = function(obj) {
+        if(obj == null) return 0;
+        return isArrayLike(obj) ? obj.length : _.keys(obj).length
+    }
+
+    // Split a collection into two arrays: one whose elements all satisfy the given
+    // predicate, and one whose elements all do not satisfy the predicate.
+    _.partition = group(function(result, value, pass) {
+        result[pass ? 0 : 1].push(value)
+    }, true)
+
     /**
      *  创建 findIndex 和 findLastIndex 的生成函数
      *      getLength
@@ -628,6 +675,14 @@
         var type = typeof obj;
         return type === 'function' || (type === 'object' && !!obj)
     }
+
+    _.each([
+        'String'
+    ], function(type) {
+        _['is' + type] = function(obj) {
+            return toString.call(obj) === '[object ' + type + ']'
+        }
+    })
 
     _.isFunction = function (obj) {
         return typeof obj === 'function';
@@ -788,6 +843,9 @@
  *      6、for循环的语法规则
  *      7、var obj = Object(object)  Object 的行为等同于 new Object()
  *          包装类问题
+ *  
+ *      8 var reStrSymbol = /[^\ud800-\udfff]|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff]/g;
+ *      
  *  最佳实践
  *      使用分组运算符来区分优先级 语义化更强
  * 
