@@ -371,82 +371,112 @@
 
     // Return the maximum element (or element-based computation).
     _.max = function(obj, iteratee, context) {
-        var computed,
-            result = -Infinity,
-            lastComputed = -Infinity
-        if(iteratee == null) {
+        var result = -Infinity,
+        lastComputed = -Infinity,
+        value,
+        computed;
+        /**
+         *  typeof iteratee == "number" && typeof obj[0] != "object" && obj != null
+         *  同理 不知道这块处理的是什么情况的数据
+        **/
+        if (
+            iteratee == null ||
+            (typeof iteratee == "number" &&
+                typeof obj[0] != "object" &&
+                obj != null)
+        ) {
             obj = isArrayLike(obj) ? obj : _.values(obj);
-            for(var i = 0, length = obj.length; i < length; i++) {
-                computed = obj[i];
-                if(computed != null && computed > result) {
-                    result = computed
+            for (var i = 0, length = obj.length; i < length; i++) {
+                value = obj[i];
+                // 记得处理null
+                if (value != null && value > result) {
+                    result = value;
                 }
             }
         } else {
-            iteratee = cb(iteratee, context)
-            _.each(obj, function(value, index, list) {
-                computed = iteratee(value, index, list)
-                if(computed > lastComputed || (computed === -Infinity && result === -Infinity)) {
-                    result = value
-                    lastComputed = computed
+            iteratee = cb(iteratee, context);
+            _.each(obj, function(v, index, list) {
+                computed = iteratee(v, index, list);
+                /**
+                 *  (computed === -Infinity && result === -Infinity)
+                 *  处理computed值为-Infinity情况
+                **/
+                if (
+                    computed > lastComputed ||
+                    (computed === -Infinity && result === -Infinity)
+                ) {
+                    result = v;
+                    lastComputed = computed;
                 }
-            })
+            });
         }
-        return computed;
+        return result;
     }
 
     // Return the minimum element (or element-based computation).
     _.min = function(obj, iteratee, context) {
         var result = Infinity,
-            computed,
-            lastComputed = Infinity;
-
-        if(iteratee == null) {
+            lastComputed = Infinity,
+            value,
+            computed;
+        if (
+            iteratee == null ||
+            (typeof iteratee == "number" &&
+                typeof obj[0] != "object" &&
+                obj != null)
+        ) {
             obj = isArrayLike(obj) ? obj : _.values(obj);
-            for(var i = 0, length = obj.length; i < length; i++) {
-                computed = obj[i];
-                if(computed != null && computed < result) {
-                    result = computed
+            for (var i = 0, length = obj.length; i < length; i++) {
+                value = obj[i];
+                if (value != null && value < result) {
+                    result = value;
                 }
             }
-        }else{
+        } else {
             iteratee = cb(iteratee, context);
-            _.each(obj, function(value, index, list) {
-                computed = iteratee(value, index, list);
-                if(computed < lastComputed || (lastComputed === Infinity && result === Infinity)) {
-                    result = value;
-                    lastComputed = computed
+            _.each(obj, function(v, index, list) {
+                computed = iteratee(v, index, list);
+                if (
+                    computed < lastComputed ||
+                    (computed === Infinity && result === Infinity)
+                ) {
+                    result = v;
+                    lastComputed = computed;
                 }
-            })
+            });
         }
-    }
+        return result;
+    };
 
     // Shuffle a collection.
-    _.shuffle = function (obj) {
+    _.shuffle = function(obj) {
         return _.sample(obj, Infinity)
     }
-
+    
     // Sample **n** random values from a collection using the modern version of the
     // [Fisher-Yates shuffle](http://en.wikipedia.org/wiki/Fisher–Yates_shuffle).
     // If **n** is not specified, returns a single random element.
     // The internal `guard` argument allows it to work with `map`.
-    _.sample = function (obj, n, guard) {
-        if(n == null || guard) {
-            obj = isArrayLike(obj) ? obj : _.values(obj);
-            return obj[_.random(obj.length - 1)]
-        }
-        var sample = isArrayLike(obj) ? _.clone(obj) : _.values(obj),
-            length = getLength(sample);
-        n = Math.max(Math.min(n, length), 0)
-        for(var i = 0; i < n; i++) {
-            var rand = _.random(i, length - 1);
-            var temp = sample[i];
-            sample[i] = sample[rand]
-            sample[rand] = temp;
+    _.sample = function(obj, n, guard) {
+        if (n == null || guard) {
+            if (!isArrayLike(obj)) obj = _.values(obj);
+            // obj是一个对象 n == null
+            return obj[_.random(obj.length - 1)];
         }
 
-        return sample.slice(0, n)
-    }
+        var sample = isArrayLike(obj) ? _.clone(obj) : _.values(obj);
+        var length = getLength(sample);
+        // 兼容处理 保证n的范围 [0, length]
+        n = Math.max(Math.min(n, length), 0);
+        var last = length - 1;
+        for (var index = 0; index < n; index++) {
+            var rand = _.random(index, last);
+            var temp = sample[index];
+            sample[index] = sample[rand];
+            sample[rand] = temp;
+        }
+        return sample.slice(0, n);
+    };
 
     // Sort the object's values by a criterion produced by an iteratee.
     _.sortBy = function(obj, iteratee, context) {
@@ -808,9 +838,8 @@
     // Create a (shallow-cloned) duplicate of an object.
     _.clone = function(obj) {
         if(!_.isObject(obj)) return obj;
-        return isArrayLike(obj) ? obj.slice() : _.extendOwn({}, obj)
+        return _.isArray(obj) ? obj.slice() : _.extend({}, obj)
     }
-
     // Returns whether an object has a given set of `key:value` pairs.
     _.isMatch = function(object, attrs) {
         var keys = _.keys(attrs),
@@ -846,7 +875,7 @@
         }
     }
     
-    // Return a random integer between min and max (inclusive).
+    // Return a random integer between min and max (inclusive). [min, max]
     _.random = function(min, max) {
         if(max == null) {
             max = min
