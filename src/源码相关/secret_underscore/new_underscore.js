@@ -505,7 +505,6 @@
         if (has(result, key)) result[key]++
         else result[key] = 1
     })
-    
 
     var reStrSymbol = /[^\ud800-\udfff]|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff]/g;
     // Safely create a real, live array from anything iterable.
@@ -531,6 +530,81 @@
         result[pass ? 0 : 1].push(value)
     }, true)
 
+    // Array Functions
+    // ---------------
+    // Get the first element of an array. Passing **n** will return the first N
+    // values in the array. Aliased as `head` and `take`. The **guard** check
+    // allows it to work with `_.map`.
+    _.first = _.head = _.take = function(array, n, guard) {
+        if (array == null || array.length < 1) return n == null ? void 0 : [];
+        if(n == null || guard) return array[0]
+        return _.initial(array, array.length - n)
+    }
+
+    // Returns everything but the last entry of the array. Especially useful on
+    // the arguments object. Passing **n** will return all the values in
+    // the array, excluding the last N.
+    // 排除数组后面N个元素
+    _.initial = function(array, n, guard) {
+        return slice.call(
+            array,
+            0,
+            Math.max(0, array.length - (n == null || guard ? 1 : n))
+        )
+    }
+
+    // Get the last element of an array. Passing **n** will return the last N
+    // values in the array.
+    _.last = function(array, n, guard) {
+        if(array == null || array.length < 1) return n == null ? void 0 : [];
+        if(n == null || guard) return array[array.length - 1];
+        
+        return _.rest(array, Math.max(0, array.length - n));
+    }
+
+    // Returns everything but the first entry of the array. Aliased as `tail` and `drop`.
+    // Especially useful on the arguments object. Passing an **n** will return
+    // the rest N values in the array.
+    _.rest = _.tail = _.drop = function(array, n, guard) {
+        return slice.call(array, n == null || guard ? 1 : n)
+    };
+
+    // Trim out all falsy values from an array.
+    _.compact = function(array) {
+        return _.filter(array, Boolean)
+    }
+
+    // Internal implementation of a recursive `flatten` function.
+    var flatten = function(input, shallow, strict, output) {
+        output = output || [];
+        var idx = output.length;
+        var length = getLength(input);
+        for(var i = 0; i < length; i++) {
+            var value = input[i];
+            if(
+                isArrayLike(value) &&
+                (_.isArray(value) || _.isArguments(value))
+            ) {
+                if(shallow) {
+                    var j = 0,
+                    len = value.length;
+
+                    while(j < len) output[idx++] = value[j++]
+                }else{
+                    flatten(value, shallow, strict, output)
+                    // 需更新idx索引 
+                    idx = output.length;
+                }
+            }else if (!strict) {
+                output[idx++] = value
+            }
+        }
+        return output
+    }
+    // Flatten out an array, either recursively (by default), or just one level.
+    _.flatten = function(array, shallow) {
+        return flatten(array, shallow, false)
+    }
     /**
      *  创建 findIndex 和 findLastIndex 的生成函数
      *      getLength
@@ -615,10 +689,6 @@
     _.lastIndexOf = createIndexFinder(-1, _.findLastIndex);
 
 
-    // Array Functions
-    // ---------------
-
-
     // Function (ahem) Functions
     // ------------------
     // Returns a negated version of the passed-in predicate.
@@ -677,6 +747,7 @@
     }
 
     _.each([
+        'Arguments',
         'String'
     ], function(type) {
         _['is' + type] = function(obj) {
@@ -845,7 +916,9 @@
  *          包装类问题
  *  
  *      8 var reStrSymbol = /[^\ud800-\udfff]|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff]/g;
- *      
+ *      9  [].slice.call('1234567') 等于 [1,2,3,4,5,6,7]
+ * 
+ * 
  *  最佳实践
  *      使用分组运算符来区分优先级 语义化更强
  * 
