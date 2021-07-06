@@ -95,4 +95,11 @@
     a && b || c ? c || b ? a : c && b : a
 
     'foo' || false ? (c || b ? a : c && b) : a
+
+
+    step = step || stop > 0 ? 1 : -1
+
+
+    step = step || (stop > 0 ? 1 : -1)
+
 })();

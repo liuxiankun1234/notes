@@ -631,10 +631,113 @@
         }
         return output
     }
+
     // Flatten out an array, either recursively (by default), or just one level.
     _.flatten = function(array, shallow) {
         return flatten(array, shallow, false)
     }
+
+    // Return a version of the array that does not contain the specified value(s).
+    _.without = restArguments(function(array, otherArrays) {
+        return _.difference(array, otherArrays);
+    })
+
+    // Produce a duplicate-free version of the array. If the array has already
+    // been sorted, you have the option of using a faster algorithm.
+    // The faster algorithm will not work with an iteratee if the iteratee
+    // is not a one-to-one function, so providing an iteratee will disable
+    // the faster algorithm.
+    // Aliased as `unique`.
+    _.uniq = _.unique = function(array, isSorted, iteratee, context) {
+        if(!_.isBoolean(isSorted)) {
+            context = iteratee
+            iteratee = isSorted
+            isSorted = false
+        }
+        if(iteratee != null) iteratee = cb(iteratee, context)
+        var result = [];
+        var seen = []
+        for(var i = 0, length = array.length; i < length; i++) {
+            var value = array[i];
+            var computed = iteratee ? iteratee(value, i, array) : value;
+            if(isSorted && !iteratee) {
+                if(!i || seen !== computed) result.push(value)
+                seen = computed
+            }else if(iteratee) {
+                if(!_.contains(seen, computed)) {
+                    seen.push(computed) 
+                    result.push(value)
+                }
+            }else if(!_.contains(result, value)) {
+                result.push(value)
+            }
+        }
+        return result;
+    }
+
+    // Produce an array that contains the union: each distinct element from all of
+    // the passed-in arrays.
+    _.union = restArguments(function(arrays) {
+        return _.uniq(flatten(arrays, true, true))
+    })
+
+    // Produce an array that contains every item shared between all the
+    // passed-in arrays.
+    _.intersection = function(array) {
+        var result = [];
+        var argCount = arguments.length;
+        for(var i = 0, length = array.length; i < length; i++) {
+            var value = array[i];
+            if(_.contains(result, value)) continue;
+            for(var j = 1; j < argCount; j++) {
+                if(!_.contains(arguments[j], value)) break;
+            }
+            if(j === argCount) result.push(value)
+        }
+        return result
+    }
+
+    // Take the difference between one array and a number of other arrays.
+    // Only the elements present in just the first array will remain.
+    _.difference = restArguments(function(array, rest) {
+        rest = flatten(rest, true, true)
+        return _.filter(array, function(value) {
+            return !_.contains(rest, value)
+        })
+    })
+
+    // Complement of _.zip. Unzip accepts an array of arrays and groups
+    // each array's elements on shared indices.
+    _.unzip = function(array) {
+        var length = (array && _.max(array, getLength).length) || 0,
+            result = Array(length);
+        for(var i = 0; i < length; i++) {
+            result[i] = _.pluck(array, i)
+        }
+        return result;
+    }
+
+    // Zip together multiple lists into a single array -- elements that share
+    // an index go together.
+    // TODO
+    _.zip = restArguments(_.unzip);
+
+    // Converts lists into objects. Pass either a single array of `[key, value]`
+    // pairs, or two parallel arrays of the same length -- one of keys, and one of
+    // the corresponding values. Passing by pairs is the reverse of _.pairs.
+    _.object = function(list, values) {
+        var result = {};
+        for(var i = 0, length = list.length; i < length; i++) {
+            var pairs = list[i]
+            if(values) {
+                result[pairs] = values[i]
+            }else{
+                result[pairs[0]] = pairs[1]
+            }
+        }
+        return result;
+    }
+
     /**
      *  创建 findIndex 和 findLastIndex 的生成函数
      *      getLength
@@ -718,7 +821,65 @@
     _.indexOf = createIndexFinder(1, _.findIndex, _.sortedIndex);
     _.lastIndexOf = createIndexFinder(-1, _.findLastIndex);
 
+    // Generate an integer Array containing an arithmetic progression. A port of
+    // the native Python `range()` function. See
+    // [the Python documentation](http://docs.python.org/library/functions.html#range).
+    _.range = function(start, stop, step) {
+        if(stop == null) {
+            stop = start
+            start = 0
+        }
+        if(!step) {
+            step = stop < start ? -1 : 1;
+        }  
+        /**
+         *  这块并没有使用start、stop作为循环的对象
+         *  而是通过 start、stop、step计算出来需要循环的次数，对次数进行遍历，然后动态修改start的值
+         * 
+         *  这块如果用start、stop来做循环就比较麻烦了 还要考虑正负数情况
+         *  这块的for循环也比较好   
+        **/
+        var length = Math.max(Math.ceil((stop - start) / step), 0)
+        var range = Array(length);
+        for(var i = 0; i < length; i++, start += step) {
+            range[i] = start
+        }
+        return range;
+    }
 
+    _.range = function(start, stop, step) {
+        if (stop == null) {
+            stop = start || 0;
+            start = 0;
+        }
+        if (!step) {
+            step = stop < start ? -1 : 1;
+        }
+
+        var length = Math.max(Math.ceil((stop - start) / step), 0);
+        var range = Array(length);
+
+        for (var idx = 0; idx < length; idx++, start += step) {
+            range[idx] = start;
+        }
+
+        return range;
+    };
+
+    // Chunk a single array into multiple arrays, each containing `count` or fewer
+    // items.
+    _.chunk = function(array, count) {
+        if(count == null || count < 1) return [];
+        var result = [];
+        var i = 0,
+            length = array.length;
+        while(i < length) {
+            result.push(
+                slice.call(array, i, i+= count)
+            )
+        }
+        return result
+    }
     // Function (ahem) Functions
     // ------------------
     // Returns a negated version of the passed-in predicate.
@@ -778,6 +939,7 @@
 
     _.each([
         'Arguments',
+        'Boolean',
         'String'
     ], function(type) {
         _['is' + type] = function(obj) {
@@ -874,7 +1036,7 @@
             return _.isMatch(obj, attrs);
         }
     }
-    
+
     // Return a random integer between min and max (inclusive). [min, max]
     _.random = function(min, max) {
         if(max == null) {
@@ -941,6 +1103,7 @@
  *      4、为什么优先使用call进行this绑定，而不是使用apply
  *      5、如何进行单元测试 
  *      6、for循环的语法规则
+ *          for(var i = 0; i < length; i++, start += step) {
  *      7、var obj = Object(object)  Object 的行为等同于 new Object()
  *          包装类问题
  *  
