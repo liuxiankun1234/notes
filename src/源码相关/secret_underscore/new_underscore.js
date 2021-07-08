@@ -47,6 +47,9 @@
         nativeKeys = Object.keys,
         nativeCreate = Object.create;
 
+    // Naked function reference for surrogate-prototype-swapping.
+    var Ctor = function() {};
+
     // Create a safe reference to the Underscore object for use below.
     var _ = function(obj) {
         if(obj instanceof _) return _;
@@ -168,6 +171,16 @@
             func.apply(this, args)
         }
     };
+
+    // An internal function for creating a new object that inherits from another.
+    var baseCreate = function(prototype) {
+        if(!_.isObject(prototype)) return {};
+        if(nativeCreate) return nativeCreate(prototype)
+        Ctor.prototype = prototype
+        var result = new Ctor();
+        Ctor.prototype = null;
+        return result
+    }
 
     // 实际上仅兼容额 属性值为null的时候 返回undefined
     var shallowProperty = function(key) {
@@ -882,6 +895,9 @@
     }
     // Function (ahem) Functions
     // ------------------
+    
+
+
     // Returns a negated version of the passed-in predicate.
     _.negate = function(predicate, context) {
         return function() {
