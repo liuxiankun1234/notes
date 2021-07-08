@@ -895,8 +895,28 @@
     }
     // Function (ahem) Functions
     // ------------------
-    
+    // TODO bind
 
+    // Memoize an expensive function by storing its results.
+    _.memoize = function(func, hasher) {
+        var memoize = function(key) {
+            var cache = memoize.cache;
+            var address = '' + (hasher ? hasher.apply(this, arguments) : key)
+            if(!has(cache, address)) {
+                cache[address] = func.apply(this, arguments)
+            }
+            return cache[address]
+        }
+        memoize.cache = {};
+        return memoize;
+    }
+    // Delays a function for the given number of milliseconds, and then calls
+    // it with the arguments supplied.
+    _.delay = restArguments(function(func, wait, args) {
+        return setTimeout(function() {
+            func.apply(null, rest)
+        }, wait)
+    })
 
     // Returns a negated version of the passed-in predicate.
     _.negate = function(predicate, context) {
@@ -904,6 +924,40 @@
             return !predicate.apply(context, arguments);
         };
     };
+
+    // Returns a function that is the composition of a list of functions, each
+    // consuming the return value of the function that follows.
+    _.compose = function() {
+        var args = arguments;
+        var start = args.length - 1;
+        return function() {
+            var i = start;
+            var result = args[i].apply(this, arguments);
+            while(i--) result = args[i].apply(this, result);
+            return result
+        }
+    }
+
+    // Returns a function that will only be executed on and after the Nth call.
+    _.after = function(times, func) {
+        return function() {
+            if(--times < 1) {
+                return func.apply(this, arguments)
+            }
+        }
+    }
+
+    // Returns a function that will only be executed up to (but not including) the Nth call.
+    _.before = function(times, func) {
+        var memo;
+        return function() {
+            if(--times > 0) {
+                memo = func.apply(this, arguments)
+            }
+            if (times <= 1) func = null;
+            return memo
+        }
+    }
 
     _.restArguments = restArguments;
     // Object Functions
