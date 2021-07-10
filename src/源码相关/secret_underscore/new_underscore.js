@@ -895,7 +895,17 @@
     }
     // Function (ahem) Functions
     // ------------------
-    // TODO bind
+    // Determines whether to execute a function as a constructor
+    // or a normal function with the provided arguments.
+    var executeBound = function(
+        sourceFunc,
+        boundFunc,
+        context,
+        callingContext,
+        args
+    ) {
+        
+    }
 
     // Memoize an expensive function by storing its results.
     _.memoize = function(func, hasher) {
@@ -918,6 +928,97 @@
         }, wait)
     })
 
+    // Returns a function, that, when invoked, will only be triggered at most once
+    // during a given window of time. Normally, the throttled function will run
+    // as much as it can, without ever going more than once per `wait` duration;
+    // but if you'd like to disable the execution on the leading edge, pass
+    // `{leading: false}`. To disable execution on the trailing edge, ditto.
+    _.throttle = function(func, wait, options) {
+        options.leading
+        options = options || {}
+        var timer = null, result;
+        var previous = 0;
+
+        var later = function() {
+            previous = options.leading === false ? 0 : _.now();
+            timer = null;
+            func.apply(context, args)
+        }
+
+        var throttled = function() {
+            var now = _.now();
+            // 第一次调用判断是否需要首次执行 通过修正previous时间来控制是否执行
+            // 注意 options.leading === false 使用全等判断 表示必传false才可以
+            if(!previous && options.leading === false) previous = now;
+            var remaining = wait - (now - previous)
+            if(remaining <= 0) {
+                if(timer) {
+                    clearTimeout(timer)
+                    timer = null;
+                }
+                // 每次函数被执行 修正previous时间指针
+                previous = now;
+                result = func.apply(this, arguments)
+            // 仅绑定一次timer 如果在一段时间内持续调用函数 忽略
+            }else if(!timer && options.tailing !== false){
+                timer = setTimeout(later, remaining)
+            }
+            return result;
+        }
+
+        throttled.cancel = function() {
+            clearTimeout(timer)
+            previous = 0;
+            timer = null;
+        }
+
+        return throttled;
+    }
+
+    // Returns a function, that, as long as it continues to be invoked, will not
+    // be triggered. The function will be called after it stops being called for
+    // N milliseconds. If `immediate` is passed, trigger the function on the
+    // leading edge, instead of the trailing.
+    // 将函数执行时间放在最后一次执行时刻的wait时间间隔之后  immediate值为true的时候  debounce会在 wait 时间间隔的开始调用这个函数 并且在时间间隔之内不会再调用该函数
+    // 常见使用场景
+    //     onresize input 函数的监听
+    //     按钮的防止重复点击(将immediate设置为true)
+    // 假定你在电梯里，电梯准备关，突然有另一个人进来，电梯又开了，这时电梯需要过一阵才关，此期间有人进入 电梯还是会再等一会 很好的debounce例子
+    _.debounce = function(func, wait, immediate) {
+        var timer = null;
+
+        var later = function(context, args) {
+            //  重置timerId用处
+            //      immediate值为true时候通过timerId来保证函数立即执行
+            timer = null
+            // 仅immediate值为false时执行
+            if(args) func.apply(context, args)
+        }
+        var debounced = restArguments(function(args) {
+            if(timer) clearTimeout(timer)
+            /**
+             *  总体逻辑
+             *      immediate
+             *          true 立即执行 通过timerId来判断时候需要立即执行 在setTimeout中重置timerId
+             *          false 调用setTimeout，每次在wait间隔内调用，清掉之前的函数，重新wait
+            **/
+            if(immediate) {
+                var callNow = !timer
+                // 更新timerId
+                timer = setTimeout(later, wait)
+                if(callNow) func.apply(null, args)
+            }else{
+                timer = _.delay(later, wait, this, args)
+            }
+        })
+        
+        debounced.cancel = function() {
+            if(timer) clearTimeout(timer)
+            timer = null
+        }
+        return debounced
+    }
+    
     // Returns a negated version of the passed-in predicate.
     _.negate = function(predicate, context) {
         return function() {
@@ -1116,6 +1217,12 @@
         return min + Math.floor(Math.random() * (max - min + 1))
     }
 
+    // A (possibly faster) way to get the current timestamp as an integer.
+    _.now =
+        Date.now ||
+        function() {
+            return new Date().getTime();
+        };
 
     // Run Underscore.js in *noConflict* mode, returning the `_` variable to its
     // previous owner. Returns a reference to the Underscore object.
@@ -1179,7 +1286,7 @@
  *  
  *      8 var reStrSymbol = /[^\ud800-\udfff]|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff]/g;
  *      9  [].slice.call('1234567') 等于 [1,2,3,4,5,6,7]
- * 
+ *      setTimeout/setInterval 函数返回值 是正整数
  * 
  *  最佳实践
  *      使用分组运算符来区分优先级 语义化更强
