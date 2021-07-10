@@ -849,6 +849,8 @@
 
     // Determines whether to execute a function as a constructor
     // or a normal function with the provided arguments.
+
+
     var executeBound = function(
         sourceFunc,
         boundFunc,
@@ -867,6 +869,11 @@
     // Create a function bound to a given object (assigning `this`, and arguments,
     // optionally). Delegates to **ECMAScript 5**'s native `Function.bind` if
     // available.
+    /**
+     *  func 待绑定上下文的函数
+     *  context 待绑定的上下文
+     *  args 函数执行的参数
+    **/
     _.bind = restArguments(function(func, context, args) {
         if (!_.isFunction(func))
             throw new TypeError("Bind must be called on a function");

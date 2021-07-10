@@ -9,11 +9,15 @@ import _ from './underscore.js';
 //     _.some([0,1,2,], isEven)
 // )
 
-var x = _.debounce(function() {
-    console.log(1)
-}, 1000, true)
 
-window.onresize = x
+
+var buttonView = {
+    label  : 'underscore',
+    onClick: function(){ alert('clicked: ' + this.label); },
+    onHover: function(){ console.log('hovering: ' + this.label); }
+  };
+  _.bindAll(buttonView, ['onClick', ['onHover']]);
+  
 
 // void function() {
 //     /**

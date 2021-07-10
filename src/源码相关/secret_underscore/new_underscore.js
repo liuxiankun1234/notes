@@ -897,6 +897,7 @@
     // ------------------
     // Determines whether to execute a function as a constructor
     // or a normal function with the provided arguments.
+    // 决定是作为一个构造函数执行还是一个提供参数的普通函数执行
     var executeBound = function(
         sourceFunc,
         boundFunc,
@@ -904,8 +905,51 @@
         callingContext,
         args
     ) {
-        
+        if(!(callingContext instanceof boundFunc)) {
+            return sourceFunc.apply(context, args)
+        }
+        var self = baseCreate(sourceFunc.prototype)
+        // bind函数被new调用，会忽略context，但是传入的参数是生效的
+        var result = sourceFunc.apply(self, args)
+        if(_.isObject(result)) return result
+        return self
     }
+
+    // Create a function bound to a given object (assigning `this`, and arguments,
+    // optionally). Delegates to **ECMAScript 5**'s native `Function.bind` if
+    // available.
+    /**
+     *  func 待绑定上下文的函数
+     *  context 待绑定的上下文
+     *  args 函数执行的参数
+    **/
+   _.bind = restArguments(function(func, context, args) {
+        if(!_.isFunction(func)) {
+            throw new TypeError('Bind must be called on a function')
+        }
+        var bound = restArguments(function(callArgs) {
+            return executeBound(
+                func,
+                bound,
+                context,
+                this,
+                args.concat(callArgs)
+            )
+        })
+       return bound;
+   })
+   // Bind a number of an object's methods to that object. Remaining arguments
+    // are the method names to be bound. Useful for ensuring that all callbacks
+    // defined on an object belong to it.
+    _.bindAll = restArguments(function(obj, keys) {
+        keys = flatten(keys, false, false)
+        var index = keys.length;
+        if(index < 1) throw new Error('bindAll must be passed function names')
+        while(index--) {
+            var sourceFunc = keys[index];
+            obj[sourceFunc] = _.bind(sourceFunc, obj)
+        }
+    })
 
     // Memoize an expensive function by storing its results.
     _.memoize = function(func, hasher) {
@@ -1006,7 +1050,7 @@
                 var callNow = !timer
                 // 更新timerId
                 timer = setTimeout(later, wait)
-                if(callNow) func.apply(null, args)
+                if(callNow) func.apply(this, args)
             }else{
                 timer = _.delay(later, wait, this, args)
             }
