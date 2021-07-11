@@ -1276,7 +1276,26 @@
     }
     // Return a copy of the object only containing the whitelisted properties.
     _.pick = restArguments(function(obj, keys) {
-        
+        var result = {},
+            iteratee = keys[0];
+        if(obj == null) return result;
+        if(_.isFunction(iteratee)) {
+            // 传入iteratee函数的情况 下一个值一定是context
+            if(keys.length > 1) iteratee = optimizeCb(iteratee, keys[1])
+            keys = _.allKeys(obj)
+        }else{
+            iteratee = keyInObj;
+            keys = flatten(keys, false, false)
+            // 这块为什么包装一下呢 为了基本类型吗
+            obj = Object(obj);
+        }
+
+        for(var i = 0, length = keys.length; i < length; i++){
+            var key = keys[i],
+                value = obj[key];
+            if(iteratee(value, key, obj)) result[key] = value;
+        }
+        return result;
     })
 
     _.isArray = 
