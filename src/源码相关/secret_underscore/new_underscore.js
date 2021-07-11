@@ -1140,8 +1140,10 @@
     }
 
     _.restArguments = restArguments;
+
     // Object Functions
     // ----------------
+
     // Retrieve the names of an object's own properties.
     // Delegates to **ECMAScript 5**'s native `Object.keys`.
     _.keys = function(obj) {
@@ -1172,33 +1174,53 @@
         return results;
     }
 
-    _.isArray = 
-    nativeIsArray || 
-    function(obj) {
-        return toString.call(obj) === '[object Array]'
-    }
-
-    // Is a given variable an object?
-    /**
-     *  返回一个函数对象或者非null对象
-    **/
-    _.isObject = function(obj) {
-        var type = typeof obj;
-        return type === 'function' || (type === 'object' && !!obj)
-    }
-
-    _.each([
-        'Arguments',
-        'Boolean',
-        'String'
-    ], function(type) {
-        _['is' + type] = function(obj) {
-            return toString.call(obj) === '[object ' + type + ']'
+    // Returns the results of applying the iteratee to each element of the object.
+    // In contrast to _.map it returns an object.
+    _.mapObject = function(obj, iteratee, context) {
+        iteratee = cb(iteratee, context);
+        var keys = _.keys(obj),
+            length = keys.length,
+            result = {};
+        for(var i = 0; i < length; i++) {
+            var key = keys[i];
+            result[key] = iteratee(obj[key], key, obj)
         }
-    })
+        return result
+    }
 
-    _.isFunction = function (obj) {
-        return typeof obj === 'function';
+    // Convert an object into a list of `[key, value]` pairs.
+    // The opposite of _.object.
+    _.pairs = function(obj) {
+        var keys = _.keys(obj);
+        var length = keys.length;
+        var pairs = Array(length);
+        for(var i = 0; i < length; i++) {
+            var key = keys[i];
+            pairs[i] = [key, obj[key]]
+        }
+        return pairs;
+    }
+
+    // Invert the keys and values of an object. The values must be serializable.
+    _.invert = function(obj) {
+        var keys = _.keys(obj),
+            length = keys.length;
+        var result = {};
+        for(var i = 0; i < length; i++) {
+            var key = keys[i];
+            result[obj[key]] = key;
+        }
+        return result;
+    }
+
+    // Return a sorted list of the function names available on the object.
+    // Aliased as `methods`.
+    _.functions = _.methods = function(obj) {
+        var names = [];
+        for(var key in obj) {
+            if(_.isFunction(obj[key])) names.push(key)
+        }
+        return names.sort();
     }
 
     // An internal function for creating assigner functions.
@@ -1235,6 +1257,7 @@
     // (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
     _.extendOwn = _.assign = createAssigner(_.keys);
 
+
     // Returns the first key on an object that passes a predicate test.
     _.findKey = function (obj, predicate, context) {
         predicate = cb(predicate, context)
@@ -1245,6 +1268,44 @@
             key = keys[i];
             if(predicate(obj[key], key, obj)) return key;
         }
+    }
+
+    // Internal pick helper function to determine if `obj` has key `key`.
+    var keyInObj = function(value, key, obj) {
+        return key in obj;
+    }
+    // Return a copy of the object only containing the whitelisted properties.
+    _.pick = restArguments(function(obj, keys) {
+        
+    })
+
+    _.isArray = 
+    nativeIsArray || 
+    function(obj) {
+        return toString.call(obj) === '[object Array]'
+    }
+
+    // Is a given variable an object?
+    /**
+     *  返回一个函数对象或者非null对象
+    **/
+    _.isObject = function(obj) {
+        var type = typeof obj;
+        return type === 'function' || (type === 'object' && !!obj)
+    }
+
+    _.each([
+        'Arguments',
+        'Boolean',
+        'String'
+    ], function(type) {
+        _['is' + type] = function(obj) {
+            return toString.call(obj) === '[object ' + type + ']'
+        }
+    })
+
+    _.isFunction = function (obj) {
+        return typeof obj === 'function';
     }
 
     // Create a (shallow-cloned) duplicate of an object.
@@ -1366,6 +1427,8 @@
  *      8 var reStrSymbol = /[^\ud800-\udfff]|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff]/g;
  *      9  [].slice.call('1234567') 等于 [1,2,3,4,5,6,7]
  *      setTimeout/setInterval 函数返回值 是正整数
+ *      10、partial方法需要重新看下 
+ *      
  * 
  *  最佳实践
  *      使用分组运算符来区分优先级 语义化更强

@@ -1,23 +1,19 @@
-import _ from './underscore.js';
-// import './new_underscore.js'
+// import _ from './underscore.js';
+import './new_underscore.js'
 
 // function isEven(n) {
 //     return n > 0
 // }  
 
-// console.log(
-//     _.some([0,1,2,], isEven)
-// )
+var A = function() {}
+A.prototype.say = () => {}
+var a = new A()
+a.s = () => {}
 
+console.log(
+    _.functions(a)
+)
 
-
-var buttonView = {
-    label  : 'underscore',
-    onClick: function(){ alert('clicked: ' + this.label); },
-    onHover: function(){ console.log('hovering: ' + this.label); }
-  };
-  _.bindAll(buttonView, ['onClick', ['onHover']]);
-  
 
 // void function() {
 //     /**
