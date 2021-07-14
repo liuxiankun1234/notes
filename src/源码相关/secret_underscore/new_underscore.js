@@ -1298,6 +1298,47 @@
         return result;
     })
 
+    // Return a copy of the object without the blacklisted properties.
+    _.omit = restArguments(function(obj, keys) {
+        var iteratee = keys[0];
+        var i, length, key;
+        if(_.isFunction(iteratee)){
+            var defaultKeys = _.keys(obj);
+
+            for(i = 0, length = defaultKeys.length; i < length; i++) {
+                key = defaultKeys[i];
+
+                if(iteratee(obj[key], key, obj)) {
+                    delete obj[key]
+                }
+            }
+        }else{
+            keys = flatten(keys, false, false)
+            for(i = 0, length = keys.length; i < length; i++) {
+                key = keys[i]
+                if(obj[key] !== void 0) {
+                    delete obj[key]
+                }
+            }
+        }
+        return obj
+    })
+
+    _.omit = restArguments(function(obj, keys) {
+        var iteratee = keys[0],
+            context;
+        if (_.isFunction(iteratee)) {
+            iteratee = _.negate(iteratee);
+            if (keys.length > 1) context = keys[1];
+        } else {
+            keys = _.map(flatten(keys, false, false), String);
+            iteratee = function(value, key) {
+                return !_.contains(keys, key);
+            };
+        }
+        return _.pick(obj, iteratee, context);
+    });
+
     _.isArray = 
     nativeIsArray || 
     function(obj) {
