@@ -1286,7 +1286,7 @@
         }else{
             iteratee = keyInObj;
             keys = flatten(keys, false, false)
-            // 这块为什么包装一下呢 为了基本类型吗
+            // 这块为什么包装一下呢 处理基础类型的值
             obj = Object(obj);
         }
 
@@ -1300,79 +1300,47 @@
 
     // Return a copy of the object without the blacklisted properties.
     _.omit = restArguments(function(obj, keys) {
-        var iteratee = keys[0];
-        var i, length, key;
-        if(_.isFunction(iteratee)){
-            var defaultKeys = _.keys(obj);
-
-            for(i = 0, length = defaultKeys.length; i < length; i++) {
-                key = defaultKeys[i];
-
-                if(iteratee(obj[key], key, obj)) {
-                    delete obj[key]
-                }
-            }
-        }else{
-            keys = flatten(keys, false, false)
-            for(i = 0, length = keys.length; i < length; i++) {
-                key = keys[i]
-                if(obj[key] !== void 0) {
-                    delete obj[key]
-                }
-            }
-        }
-        return obj
-    })
-
-    _.omit = restArguments(function(obj, keys) {
         var iteratee = keys[0],
             context;
-        if (_.isFunction(iteratee)) {
-            iteratee = _.negate(iteratee);
-            if (keys.length > 1) context = keys[1];
-        } else {
-            keys = _.map(flatten(keys, false, false), String);
+        if(_.isFunction(iteratee)){
+            iteratee = _.negate(iteratee)
+            if(keys.length > 1) context = keys[1]
+        }else{
+            keys = _.map(flatten(keys, false, false), String)
             iteratee = function(value, key) {
-                return !_.contains(keys, key);
-            };
+                return !_.contains(keys, key)
+            }
         }
-        return _.pick(obj, iteratee, context);
-    });
-
-    _.isArray = 
-    nativeIsArray || 
-    function(obj) {
-        return toString.call(obj) === '[object Array]'
-    }
-
-    // Is a given variable an object?
-    /**
-     *  返回一个函数对象或者非null对象
-    **/
-    _.isObject = function(obj) {
-        var type = typeof obj;
-        return type === 'function' || (type === 'object' && !!obj)
-    }
-
-    _.each([
-        'Arguments',
-        'Boolean',
-        'String'
-    ], function(type) {
-        _['is' + type] = function(obj) {
-            return toString.call(obj) === '[object ' + type + ']'
-        }
+        return _.pick(obj, iteratee, context)
     })
 
-    _.isFunction = function (obj) {
-        return typeof obj === 'function';
+    // Fill in a given object with default properties.
+    _.defaults = createAssigner(_.allKeys, true);
+
+    // Creates an object that inherits from the given prototype object.
+    // If additional properties are provided then they will be added to the
+    // created object.
+    _.create = function(prototype, props) {
+        var result = baseCreate(prototype);
+        if(props) _.extendOwn(result, props)
+        return result
     }
 
     // Create a (shallow-cloned) duplicate of an object.
     _.clone = function(obj) {
         if(!_.isObject(obj)) return obj;
-        return _.isArray(obj) ? obj.slice() : _.extend({}, obj)
+        return _.isArray(obj) ? slice.call(obj) : _.extend({}, obj); 
     }
+    
+    // Invokes interceptor with the obj, and then returns obj.
+    // The primary purpose of this method is to "tap into" a method chain, in
+    // order to perform operations on intermediate results within the chain.
+    // 这块是怎么执行的呢  [2,400].tap(alert)
+    _.tap = function(obj, interceptor) {
+        interceptor(obj)
+        return obj;
+    }
+
     // Returns whether an object has a given set of `key:value` pairs.
     _.isMatch = function(object, attrs) {
         var keys = _.keys(attrs),
@@ -1396,9 +1364,160 @@
         }
         return true
     }
+    
+    // TODO 
+    _.isEqual = function(a, b) {
+        return eq(a, b)
+    }
+    // Is a given array, string, or object empty?
+    // An "empty" object has no enumerable own-properties.
+    _.isEmpty = function(obj) {
+        if(obj == null) return true;
+
+        if(
+            isArrayLike(obj) &&
+            (_.isArray(obj) || _.isArguments(obj) || _.isString(obj))
+        ) {
+            return obj.length === 0
+        }
+        return _.keys(obj).length === 0
+    }
+
+    // Is a given value a DOM element?
+    _.isElement = function(obj) {
+        return !!(obj && obj.nodeType === 1)
+    }
+
+    _.isArray = 
+    nativeIsArray || 
+    function(obj) {
+        return toString.call(obj) === '[object Array]'
+    }
+
+    // Is a given variable an object?
+    /**
+     *  返回一个函数对象或者非null对象
+    **/
+    _.isObject = function(obj) {
+        var type = typeof obj;
+        return type === 'function' || (type === 'object' && !!obj)
+    }
+
+    _.each([
+        "Arguments",
+        "Function",
+        "String",
+        "Number",
+        "Date",
+        "RegExp",
+        "Error",
+        "Symbol",
+        "Map",
+        "WeakMap",
+        "Set",
+        "WeakSet"
+    ], function(type) {
+        _['is' + type] = function(obj) {
+            return toString.call(obj) === '[object ' + type + ']'
+        }
+    })
+
+    _.isFunction = function (obj) {
+        return typeof obj === 'function';
+    }
+
+    // Is a given object a finite number?
+    _.isFinite = function(obj) {
+        return !_.isSymbol(obj) && isFinite(obj) && !isNaN(parseFloat(obj));
+    }
+
+    // Is the given value `NaN`?
+    _.isNaN = function(obj) {
+        var n = Number(obj);
+        return n !== n
+    };
+
+     // Is a given value a boolean?
+     _.isBoolean = function(obj) {
+        return (
+            obj === true ||
+            obj === false ||
+            toString.call(obj) === "[object Boolean]"
+        );
+    };
+
+    // Is a given value equal to null?
+    _.isNull = function(obj) {
+        return obj === null;
+    };
+
+    // Is a given variable undefined?
+    _.isUndefined = function(obj) {
+        return obj === void 0;
+    };
+
+    // Shortcut function for checking if an object has a given property directly
+    // on itself (in other words, not on a prototype).
+    _.has = function(obj, path) {
+        if(!_.isArray(path)) {
+            return has(obj, path)
+        }
+
+        var length = path.length;
+        for(var i = 0; i < length; i++) {
+            var key = path[i];
+
+            if(obj == null || !has(obj, path)) return false;
+            obj = obj[key]
+        }
+        return !!length
+    }
 
     // Utility Functions
     // -----------------
+
+    // Run Underscore.js in *noConflict* mode, returning the `_` variable to its
+    // previous owner. Returns a reference to the Underscore object.
+    // TODO 
+    _.noConflict = function() {
+        root._ = previousUnderscore;
+        return this;
+    };
+
+    // Keep the identity function around for default iteratees.
+    _.identity = function(value) {
+        return value;
+    };
+
+    // Predicate-generating functions. Often useful outside of Underscore.
+    _.constant = function(value) {
+        return function() {
+            return value;
+        };
+    };
+
+    _.noop = function() {};
+
+    // Creates a function that, when passed an object, will traverse that object’s
+    // properties down the given `path`, specified as an array of keys or indexes.s
+    _.property = function(path) {
+        if(!_.isArray(path)) {
+            return shallowProperty(path);
+        }
+        return function(obj) {
+            return deepGet(obj, path)
+        }
+    }
+
+    // Generates a function for a given object that returns a given property.
+    _.propertyOf = function(obj) {
+        if(obj == null) return _.noop;
+
+        return function(path) {
+            return !_.isArray(path) ? obj[path] : deepGet(obj, path)
+        }
+    }
+
     // Returns a predicate for checking whether an object has a given set of
     // `key:value` pairs.
     _.matcher = _.matches = function(attrs) {
@@ -1407,6 +1526,24 @@
             return _.isMatch(obj, attrs);
         }
     }
+
+    // Run a function **n** times.
+    _.times = function(n, iteratee, context) {
+        var accum = Array(Math.max(n, 0));
+        iteratee = optimizeCb(iteratee, context, 1)
+        for(var i = 0; i < n; i++) {
+            accum[i] = iteratee(i)
+        }
+        return accum;
+    }
+
+    // Run a function **n** times.
+    _.times = function(n, iteratee, context) {
+        var accum = Array(Math.max(0, n));
+        iteratee = optimizeCb(iteratee, context, 1);
+        for (var i = 0; i < n; i++) accum[i] = iteratee(i);
+        return accum;
+    };
 
     // Return a random integer between min and max (inclusive). [min, max]
     _.random = function(min, max) {
@@ -1424,28 +1561,6 @@
             return new Date().getTime();
         };
 
-    // Run Underscore.js in *noConflict* mode, returning the `_` variable to its
-    // previous owner. Returns a reference to the Underscore object.
-    _.noConflict = function() {
-        root._ = previousUnderscore;
-        return this;
-    };
-    
-    // Keep the identity function around for default iteratees.
-    _.identity = function(value) {
-        return value;
-    };
-    
-    // Creates a function that, when passed an object, will traverse that object’s
-    // properties down the given `path`, specified as an array of keys or indexes.s
-    _.property = function(path) {
-        if(!_.isArray(path)) {
-            return shallowProperty(path);
-        }
-        return function(obj) {
-            return deepGet(obj, path)
-        }
-    }
 
     
 
