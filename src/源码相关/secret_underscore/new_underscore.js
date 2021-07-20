@@ -1560,10 +1560,38 @@
         function() {
             return new Date().getTime();
         };
-
-
     
+    // List of HTML entities for escaping.
 
+    var escapeMap = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#x27;",
+        "`": "&#x60;"
+    };
+    var unescapeMap = _.invert(escapeMap);
+    // Functions for escaping and unescaping strings to/from HTML interpolation.
+    var createEscaper = function(map) {
+        var escaper = function(match) {
+            return map[match]
+        }
+        var source = '(?:' + _.keys(map).join('|') + ')' 
+        // TODO 待细处理下 
+        var testRegexp = new RegExp(source)
+        var replaceRegexp = new RegExp(source, 'g');
+
+        return function(input) {
+            input = input == null ? '' : String(input)
+
+            return testRegexp.test(input) 
+                ? input.replace(replaceRegexp, escaper)
+                : input
+        }
+    }
+    _.escape = createEscaper(escapeMap);
+    _.unescape = createEscaper(unescapeMap);
     // OOP
     // ---------------
 
