@@ -1679,6 +1679,7 @@
     _.result = function(obj, path, fallback) {
         if (!_.isArray(path)) path = [path];
         var length = path.length;
+        // 空数组
         if (!length) {
             return _.isFunction(fallback) ? fallback.call(obj) : fallback;
         }

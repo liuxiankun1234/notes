@@ -5,14 +5,8 @@ import './new_underscore.js'
 //     return n > 0
 // }  
 
-var A = function() {}
-A.prototype.say = () => {}
-var a = new A()
-a.s = () => {}
+// _([]) // 返回_实例
 
-console.log(
-    _.functions(a)
-)
 
 
 // void function() {
