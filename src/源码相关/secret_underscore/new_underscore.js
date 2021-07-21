@@ -31,6 +31,16 @@
     var previousUnderscore = root._;
 
     // Save bytes in the minified (but not gzipped) version:
+    /**
+     *  使用变量存原生方法有什么好处呢？
+     *      减少了访问层级 减少了代码的冗余
+     *      使用局部变量缓存 减少了作用域链查找 提升性能
+     *      使用变量存起来防止后面代码重写原型的方法，使框架内部出问题
+     *          例子 _.trim = function(str){ return String.prototype.trim.call() }
+     *              框架后修改 String.protoype.trim = function(){return '大傻'}
+     *              _.trim() // 使用变量存起来的话 后文被修改没有问题 StrProto.trim.call()
+     *
+     **/
     var ArrayProto = Array.prototype,
         ObjProto = Object.prototype;
     var SymbolProto = typeof Symbol !== 'undefined' ? Symbol.prototype : null;
@@ -140,9 +150,10 @@
         if (value == null) return _.identity;
         // 传入的是函数 直接走优化函数
         if (_.isFunction(value)) return optimizeCb(value, context, argCount);
-        // 如果是对象 非数组 返回一个检验函数
+        // value的值是一个引用类型(非数组对象) 返回一个断言函数 用于检测是否含有value(对象)键值对
         if (_.isObject(value) && !_.isArray(value)) return _.matcher(value);
         // 非对象 函数 null undefined 
+        // 处理数组 字符串类型 value = ['curly', 'fears'] 返回 obj['curly']['fears']属性值
         return _.property(value);
     }
 
@@ -151,7 +162,22 @@
     // on. This helper accumulates all remaining arguments past the function’s
     // argument length (or an explicit `startIndex`), into an array that becomes
     // the last argument. Similar to ES6’s "rest parameter".
+    /**
+     *  返回 function 的一个版本，该函数版本在调用时接收来自 startIndex 的所有参数，并将其收集到单个数组中。 如果未传递显式的 startIndex ，则将通过查看 function 本身的参数数来确定。 与 ES6 的 rest参数语法类似
+     *
+     *  function.length
+     *      返回函数形参的数量
+     *      形参数量不包括剩余参数(a,b,...rest ---> length = 2)个数
+     *      仅包括第一个具有默认值(a,b = 2 --> length = 1)之前的参数个数
+     *  arguments.length
+     *      返回实参的数量 默认参数不算实参
+     *      实参传入任何值都可以 undefined也算长度
+     **/
     var restArguments = function(func, startIndex) {
+        /**
+         *  为啥 startIndex 默认等于 func.length - 1 ?
+         *  因为调用参数问题 调用时最后一个参数为rest
+         **/
         startIndex = startIndex == null ? func.length - 1 : +startIndex;
         return function() {
             var length = Math.max(arguments.length - startIndex, 0),
@@ -160,7 +186,7 @@
             for (; index < length; index++) {
                 rest[index] = arguments[index + startIndex]
             }
-
+            // 优化处理 call性能优于apply
             switch(startIndex) {
                 case 0:
                     return func.call(this, rest)
@@ -169,6 +195,7 @@
                 case 2:
                     return func.call(this, arguments[0], arguments[1], rest)
             }
+            // 长度加一 给rest留空间
             var args = Array(startIndex + 1)
             for (index = 0; index < startIndex; index++) {
                 args[index] = arguments[index]
@@ -179,6 +206,7 @@
     };
 
     // An internal function for creating a new object that inherits from another.
+    // 同Object.create  将prototype变为新创建的对象的__proto_
     var baseCreate = function(prototype) {
         if(!_.isObject(prototype)) return {};
         if(nativeCreate) return nativeCreate(prototype)
@@ -189,16 +217,24 @@
     }
 
     // 实际上仅兼容额 属性值为null的时候 返回undefined
+    // 最终返回的属性 包含原型上的属性 和 实例上的属性 同 in操作符
     var shallowProperty = function(key) {
         return function(obj) {
             return obj[key] == null ? void 0 : obj[key];
         }
     }
-
+    // has方法判断当前对象（非null 非原型）上是否包含path属性
     var has = function(obj, path) {
         return obj != null && hasOwnProperty.call(obj, path);
     };
-
+    /**
+     *
+     *  deepGet方法
+     *      path 数组 ['curly', 'fears', 'worst']
+     *      obj 对象
+     *  返回值  obj['curly']['fears']['worst'] 属性
+     *
+     **/
     var deepGet = function(obj, path) {
         var length = path.length;
         for(var i = 0; i < length; i++) {
@@ -208,6 +244,17 @@
         return length ? obj : void 0;
     }
 
+    /**
+     *  isArrayLike（判断是否是一个伪数组）
+     *      判断条件
+     *          只要有length属性  并且length在 0 ～ (2^32 - 1) 之间就可以
+     *
+     *      适用于
+     *          {0: 1, length: 1}
+     *          'abcdefg'
+     *          [1,2,3,4]
+     *          HTMLCollection等
+     **/
     var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
     var getLength = shallowProperty('length');
     var isArrayLike = function(collection) {
@@ -246,7 +293,22 @@
     // Return the results of applying the iteratee to each element.
     _.map = _.collect = function(obj, iteratee, context) {
         iteratee = cb(iteratee, context);
-
+        /**
+         *  小技巧
+         *
+         *  obj 是类数组 keys是false值
+         *      keys = false                length = obj.length
+         *  obj 非类数组 keys是一个数组
+         *      keys = true && _.keys(obj)  length = keys.length
+         *  length 等于 keys = false       --->  obj.length
+         *             keys = _.keys(obj)  ---> keys.length
+         *
+         *  results = new Array(length) --> [] && [].length = length
+         *
+         *  obj类型
+         *      number undefined null boolean RegExp Date 在_.keys方法内部做处理 返回[]
+         *      只对 string [] arrayLike 做处理
+         **/
         var keys = !isArrayLike(obj) && _.keys(obj);
         var length = (keys || obj).length;
         var results = Array(length);
@@ -259,6 +321,13 @@
     }
 
     // Create a reducing function iterating left or right.
+    /**
+     *  createReduce方法
+     *      创建一个左右迭代函数(内部代码类似map方法)
+     *
+     *  小技巧
+     *      for循环可以通过传入dir来控制循环方向 通过 index >= 0 && index < length 约束循环
+     **/
     var createReduce = function (dir) {
         var reducer = function(obj, iteratee, memo, initial) {
             // 只能处理 字符串 数组 类数组 对象
@@ -309,14 +378,27 @@
      *          处理key为undefined和-1情况
      */
     _.find = _.detect = function(obj, predicate, context) {
+        /**
+         *  类型检测确定keyFinder函数
+         *  注意没有使用cb函数处理predicate 因为处理逻辑放在findIndex/findKey函数内部了
+         **/
         var keyFinder = isArrayLike(obj) ? _.findIndex : _.findKey;
         var key = keyFinder(obj, predicate, context)
+        /**
+         *  findKey 检索失败返回 undefined
+         *  findIndex 检索失败返回 -1
+         **/
         if(key !== void 0 && key !== -1) return obj[key]
     }
     // Return all the elements that pass a truth test.
     // Aliased as `select`.
     _.filter = _.select = function(array, predicate, context) {
         var results = []
+        /**
+         * 不同于find方法 需要单独做cb处理
+         * each方法内部是optimizeCb优化函数
+         * 所以这块用了cb函数具体哪块更好了呢？？？？
+         **/
         predicate = cb(predicate, context);
         _.each(array, function(value, index, list) {
             if(predicate(value, index, list)) results.push(value)
@@ -359,6 +441,12 @@
 
     // Determine if the array or object contains a given item (using `===`).
     // Aliased as `includes` and `include`.
+    /**
+     *  检测collection是否包含value
+     *      检测使用全等
+     *      collection 可以为数组 对象
+     *      guard可以不考虑 感觉像是外挂
+    **/
     _.contains = _.includes = _.include = function(obj, item, fromIndex, guard) {
         if(!isArrayLike(obj)) obj = _.values(obj)
         if(typeof fromIndex !== 'number' || guard) fromIndex = 0;
@@ -1230,6 +1318,18 @@
     }
 
     // An internal function for creating assigner functions.
+    /**
+     *  一个创建分配函数的内部函数
+     *      keysFunc 获取属性方法
+     *          _.allKeys   获取所有可枚举的字符串属性（对象及原型属性）
+     *          _.keys      获取当前对象上可枚举的字符串属性
+     *      defaults Boolean类型
+     *          true    仅合并自身不存在属性
+     *          false   合并所有属性
+     *
+     *      注： 函数没有必要对assign的对象进行 类型检测 如果是基本类型 直接添加属性 也不会报错
+     *
+     **/
     var createAssigner = function(keyFunc, defaults) {
         return function(obj) {
             var length = arguments.length;
@@ -1348,6 +1448,20 @@
     }
 
     // Returns whether an object has a given set of `key:value` pairs.
+    /**
+     *  _.isMatch(object, properties)
+     *      返回值布尔类型，告诉你properties中的键和值是否包含在object中
+     *
+     *      var stooge = {name: 'lxk', age: 24, sex: 'male'}
+     *      _.isMatch(stooge, {sex: 'male', name: 'lxk'})
+     *
+     *
+     *  Object() 返回一个对象包装器
+     *      string      --> new String('str')
+     *      Boolean     --> new Boolean(boolean)
+     *      Number      --> new Number(nums)
+     *
+     **/
     _.isMatch = function(object, attrs) {
         var keys = _.keys(attrs),
             length = getLength(keys);
@@ -1557,6 +1671,20 @@
             max = min
             min = 0
         }
+        /**
+         *  Math.random 取值范围 [0, 1)
+         *
+         *  A ===> Math.ceil(Math.random() * (max - min))
+         *  B ===> Math.floor(Math.random() * (max - min + 1))
+         *
+         *  假设 max - min = 2
+         *  A ===> [0, 2) ===> [0, 1, 2]
+         *  B ===> [0, 3) ===> [0, 1, 2]
+         *
+         *  注意虽然 A B 方法得到的结果都是 [1, 2, 3] 但是范围是不同的
+         *  A方法返回0的概率极小
+         *  B方法返回的概率均衡
+         **/
         return min + Math.floor(Math.random() * (max - min + 1))
     }
 
@@ -1769,6 +1897,8 @@
  *      throttle
  *      debounce
  *      i = length 执行完当前代码 终止掉循环
+ *      
+ *      出一系列总结性文章
  * 
  * 
  * 
