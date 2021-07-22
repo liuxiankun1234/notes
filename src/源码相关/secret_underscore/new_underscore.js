@@ -153,7 +153,7 @@
         // value的值是一个引用类型(非数组对象) 返回一个断言函数 用于检测是否含有value(对象)键值对
         if (_.isObject(value) && !_.isArray(value)) return _.matcher(value);
         // 非对象 函数 null undefined 
-        // 处理数组 字符串类型 value = ['curly', 'fears'] 返回 obj['curly']['fears']属性值
+        // 处理数组 字符串  value = ['curly', 'fears'] 返回 obj['curly']['fears']属性值
         return _.property(value);
     }
 
@@ -954,25 +954,6 @@
         return range;
     }
 
-    _.range = function(start, stop, step) {
-        if (stop == null) {
-            stop = start || 0;
-            start = 0;
-        }
-        if (!step) {
-            step = stop < start ? -1 : 1;
-        }
-
-        var length = Math.max(Math.ceil((stop - start) / step), 0);
-        var range = Array(length);
-
-        for (var idx = 0; idx < length; idx++, start += step) {
-            range[idx] = start;
-        }
-
-        return range;
-    };
-
     // Chunk a single array into multiple arrays, each containing `count` or fewer
     // items.
     _.chunk = function(array, count) {
@@ -1362,7 +1343,6 @@
     // Assigns a given object with all the own properties in the passed-in object(s).
     // (https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/assign)
     _.extendOwn = _.assign = createAssigner(_.keys);
-
 
     // Returns the first key on an object that passes a predicate test.
     _.findKey = function (obj, predicate, context) {
