@@ -11,4 +11,5 @@
  *      accumulator 累加器
  *      predicate   断言
  *      negate      否定 
+ *      
 **/ 
