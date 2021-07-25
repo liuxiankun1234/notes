@@ -59,13 +59,49 @@
 </head>
 <body>
     <h3>
-        测试
+        测试1
     </h3>
 
     <div>
         <!-- 1. link标签加载不会阻塞DOM树的解析，DOM树解析和加载样式可以理解为并行触发，但是页面的渲染会等待样式加载，页面样式未加载完成不会渲染renderTree -->
         2. 
     </div>
+
+    <script>
+        Promise = undefined
+    </script>
+    <script src="https://www.promisejs.org/polyfills/promise-6.1.0.js"></script>
+    
+    <script>
+        // 第四段代码
+Promise.resolve()
+    .then(() => {
+        console.log('0');
+        return new Promise(resolve => {
+            return resolve(4);
+        })
+            .then((res) => res);
+    })
+    .then(res => {
+        console.log(res);
+    });
+Promise.resolve()
+    .then(() => {
+        console.log('1');
+    })
+    .then(() => {
+        console.log('2');
+    })
+    .then(() => {
+        console.log('3');
+    })
+    .then(() => {
+        console.log('5');
+    })
+    .then(() => {
+        console.log('6');
+    });
+    </script>
 <script>
     // console.log(document.styleSheets.length)
     // var outter = document.querySelector('.outter'),

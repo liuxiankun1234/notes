@@ -91,117 +91,160 @@
  *          看哪个fulfilled的函数执行的快
  *          如果失败 catch返回第一个失败的原因
 **/
-(function () {
-    /**
-     *  模拟同步
-     *      yield之后的代码 必须通过调用task.next()才能执行
-     *      通过注册函数 resolve/reject 等待完成之后 在run函数内部监听完成之后 调用task.next()函数 模拟同步
-    **/
-    function run(taskDef) {
-        let task = taskDef(),
-            result = task.next();
+// (function f1() {
+//     return;
+//     /**
+//      *  模拟同步
+//      *      yield之后的代码 必须通过调用task.next()才能执行
+//      *      通过注册函数 resolve/reject 等待完成之后 在run函数内部监听完成之后 调用task.next()函数 模拟同步
+//     **/
+//     function run(taskDef) { 
+//         let task = taskDef(),
+//             result = task.next();
 
-        function step() {
-            if (!result.done) {
-                var p = Promise.resolve(result.value);
-                p.then(data => {
-                    result = task.next(data);
-                    step();
-                }).catch(err => {
-                    result = task.throw(err)
-                    step();
-                })
-            }
-        }
-        step();
-    }
-    function readFile() {
-        return new Promise((resolve, reject) => {
-            var n = Math.random();
-            if (n > .1) {
-                resolve({ code: 0, data: [1, 2, 3, 4] })
-            } else {
-                reject({ code: 1, message: 'err' })
-            }
-        })
-    }
-    run(function* () {
-        const data = yield readFile();
-        // 模拟同步
-        console.log(data);
-        console.log(1);
-    })
-
-
-    var p = readFile();
-    // promise变成已处理状态依然可以添加事件处理程序，并且保证程序能被调用
-    p.then(res => {
-        console.log(res);
-        p.then(res => {
-            console.log(res);
-        })
-    }, err => {
-        console.log(err);
-        p.catch(err => {
-            console.log(err);
-        })
-    })
-
-    // Promise.resolve()和resolve.reject()方法接收非Promise的thenable对象并且返回一个已处理的Promise对象
-    var o = {
-        then: function(resolve, reject) {
-            resolve(42)
-        }
-    }
-    var o1 = {
-        then: function(resolve, reject) {
-            reject(42)
-        }
-    }
-
-    var p2 = Promise.resolve(o)
-    var p3 = Promise.resolve(o1)
+//         function step() {
+//             if (!result.done) {
+//                 var p = Promise.resolve(result.value);
+//                 p.then(data => {
+//                     result = task.next(data);
+//                     step();
+//                 }).catch(err => {
+//                     result = task.throw(err)
+//                     step();
+//                 })
+//             }
+//         }
+//         step();
+//     }
+//     function readFile() {
+//         return new Promise((resolve, reject) => {
+//             var n = Math.random();
+//             if (n > .1) {
+//                 resolve({ code: 0, data: [1, 2, 3, 4] })
+//             } else {
+//                 reject({ code: 1, message: 'err' })
+//             }
+//         })
+//     }
+//     run(function* () {
+//         const data = yield readFile();
+//         // 模拟同步
+//         console.log(data);
+//         console.log(1);
+//     })
 
 
-    window.addEventListener('unhandledrejection', function(e) {
-        console.log(e.type)
-        console.log(e.reason)
-        console.log(e.promise === p4)
-    })
-    window.addEventListener('rejectionhandled', function(e) {
-        console.log(e.type)
-        console.log(e.reason)
-        console.log(e.promise === p4)
-    })
+//     var p = readFile();
+//     // promise变成已处理状态依然可以添加事件处理程序，并且保证程序能被调用
+//     p.then(res => {
+//         console.log(res);
+//         p.then(res => {
+//             console.log(res);
+//         })
+//     }, err => {
+//         console.log(err);
+//         p.catch(err => {
+//             console.log(err);
+//         })
+//     })
 
-    var p4 = Promise.reject(new Error('12'))
-    p4.catch(e=>e)
-})();
-(function () {
-    // 测试题
-    async function async1() {
-        console.log('async1 start')
-        await async2();
-        console.log('async1 end')
-    }
+//     // Promise.resolve()和resolve.reject()方法接收非Promise的thenable对象并且返回一个已处理的Promise对象
+//     var o = {
+//         then: function(resolve, reject) {
+//             resolve(42)
+//         }
+//     }
+//     var o1 = {
+//         then: function(resolve, reject) {
+//             reject(42)
+//         }
+//     }
 
-    async function async2() {
-        console.log('async2')
-    }
+//     var p2 = Promise.resolve(o)
+//     var p3 = Promise.resolve(o1)
 
-    console.log('script start')
 
-    setTimeout(function () {
-        console.log('setTimeout')
-    }, 0)
+//     window.addEventListener('unhandledrejection', function(e) {
+//         console.log(e.type)
+//         console.log(e.reason)
+//         console.log(e.promise === p4)
+//     })
+//     window.addEventListener('rejectionhandled', function(e) {
+//         console.log(e.type)
+//         console.log(e.reason)
+//         console.log(e.promise === p4)
+//     })
 
-    async1();
+//     var p4 = Promise.reject(new Error('12'))
+//     p4.catch(e=>e)
+// })();
+// (function f2() {
+//     return;
+//     // 测试题
+//     async function async1() {
+//         console.log('async1 start')
+//         await async2();
+//         console.log('async1 end')
+//     }
 
-    new Promise(function (resolve) {
-        console.log('promise1')
-        resolve();
-    }).then(function () {
-        console.log('promise2')
-    })
-    console.log('script end')
-})();
+//     async function async2() {
+//         console.log('async2')
+//     }
+
+//     console.log('script start')
+
+//     setTimeout(function () {
+//         console.log('setTimeout')
+//     }, 0)
+
+//     async1();
+
+//     new Promise(function (resolve) {
+//         console.log('promise1')
+//         resolve();
+//     }).then(function () {
+//         console.log('promise2')
+//     })
+//     console.log('script end')
+// })();
+
+console.log('start')
+setTimeout(function end() {
+    console.log('end')
+})
+// 基础版本
+// 0 13
+// Promise.resolve()
+//     .then( function r1() { // 3
+//         console.log('1');
+//     })
+//     .then(function r2() { // 4
+//         console.log('2');
+//     })
+//     .then(function r3() {// 5
+//         console.log('3');
+//     })
+//     .then(function r4() { // 6
+//         console.log('5');
+//     })
+//     .then(function r5() { // 7
+//         console.log('6');
+//     });
+
+// // 0 13
+// Promise.resolve()
+// .then(function r6() { // 3
+//     console.log('----------------->1');
+// })
+// .then(() => { // 4
+//     console.log('----------------->2');
+// })
+// .then(() => {// 5
+//     console.log('----------------->3');
+// })
+// .then(() => { // 6
+//     console.log('----------------->5');
+// })
+// .then(() => { // 7
+//     console.log('----------------->6');
+// });
