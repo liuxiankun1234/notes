@@ -57,9 +57,10 @@
 // import './Javascrip知识/深入理解ES6/第八章 迭代器与生成器/index'
 // import './Javascrip知识/深入理解ES6/第九章 js中的类/index' 
 // import './Javascrip知识/深入理解ES6/第十章 改进的数组功能/index' 
-import './Javascrip知识/深入理解ES6/第十一章 Promise与异步编程/index'
+// import './Javascrip知识/深入理解ES6/第十一章 Promise与异步编程/index'
 // import './Javascrip知识/深入理解ES6/第十二章 代理和反射API/index'
 // import './Javascrip知识/深入理解ES6/第十三章 用模块封装代码/index'
+
 
 
 /***************************** TypeSciprt  *****************************/
