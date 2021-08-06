@@ -1,5 +1,7 @@
 // import '../common/scss/index.scss'
 
+import './源码相关/lib/es6-promise'
+
 /***************************** JavaScript高级程序设计 上卷 *****************************/
 // import './高程3/第三章/index';
 // import './高程3/第四章/index';
@@ -60,6 +62,12 @@
 // import './Javascrip知识/深入理解ES6/第十一章 Promise与异步编程/index'
 // import './Javascrip知识/深入理解ES6/第十二章 代理和反射API/index'
 // import './Javascrip知识/深入理解ES6/第十三章 用模块封装代码/index'
+
+
+
+
+/***************************** TypeSciprt  *****************************/
+// import './TypeScript/1/index'
 
 
 
