@@ -21,7 +21,9 @@ export default Promise;
 
 
 var p = new Promise(function(resolve, reject) {
-    resolve({a: 12})
+    resolve({a: 12, then(res) {
+        console.log(res)
+    }})
 })
 
 console.log(p)
