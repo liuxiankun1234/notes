@@ -86,7 +86,13 @@ function handleMaybeThenable(promise, maybeThenable, then) {
   }
 }
 
+/**
+ *  @params
+ *    promise new Promise 实例
+ *    value resolve的参数
+**/
 function resolve(promise, value) {
+  debugger
   if (promise === value) {
     reject(promise, selfFulfillment());
   } else if (objectOrFunction(value)) {
@@ -200,10 +206,16 @@ function invokeCallback(settled, promise, callback, detail) {
   }
 }
 
+
+/**
+ *  @param
+ *    promise   当前Promise构造函数实例 
+ *    resolver  Promise函数执行器参数
+**/
 function initializePromise(promise, resolver) {
-  debugger
   try {
     resolver(function resolvePromise(value){
+      // 一个透传 用于补充参数
       resolve(promise, value);
     }, function rejectPromise(reason) {
       reject(promise, reason);

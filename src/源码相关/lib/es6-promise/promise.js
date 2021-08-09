@@ -137,6 +137,7 @@ class Promise {
     this._result = this._state = undefined;
     this._subscribers = [];
 
+    // 内部有一个 new this.constructor(noop) 生成child实例
     if (noop !== resolver) {
       typeof resolver !== 'function' && needsResolver();
       this instanceof Promise ? initializePromise(this, resolver) : needsNew();
