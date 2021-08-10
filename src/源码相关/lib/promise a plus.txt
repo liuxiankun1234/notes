@@ -1,0 +1,140 @@
+https://promisesaplus.com/
+
+
+Promise A+
+
+    一个开源标准围绕着promises，由实施者，为实施者
+
+    一个promise代表一个异步操作的最终结果，一个promise的主要的交互方法是通过then方法去注册回调函数去接收一个promise最终值或者一个promise不能成功的原因
+
+    这个规范描述了then方法的行为，提供了一个可互操作的基础，所有符合Promise/A+的promise实现都可以依赖它提供，像这样，这个规范应该被认为是非常稳定的，虽然
+    Promise/A+组织也许偶尔会通过一些次要的想下兼容的改变来修复它的规范，以解决一些新发现的极端问题，我们只有在经过仔细的考虑、讨论、测试之后，我们才会集合大成，或向后兼容修改
+
+    Promise/A+澄清了早期的promise/A提议条款，扩展了它以覆盖事实上的行为并且省略有问题的、未详细定义的内容
+
+    最后，这个核心的promise/A+规范不处理如何去创建成功或者拒绝的promise，而是聚焦去提供一个可互操作的then方法，配套规范的工作未来可能涉及到这几个主题
+
+    1、Terminology
+        1、promise是一个有行为符合规范的then方法的object或者function
+        2、thenable是一个定义了then方法的object或者function
+        3、value是任何合法的JavaScript值（包括undefined、thenable、promise）
+        4、exception是一个使用throw抛出的值
+        5、reason是一个指示为什么promims被拒绝的一个值
+
+    2、Requirements
+        1、Promise states
+            一个promise的状态一定是 pending fulfilled rejected 三个状态中的一个
+            pending 
+                将会过度到fulfilled或者rejected
+            fulfilled
+                一定不能过度到其他状态
+                必须有一个不能改变的值 
+            rejected
+                一定不能过度到其他状态
+                必须有一个不能改变的原因
+            这里的不能改变意味着不改变的身份，而不是意味着永久不可变
+        2、The then Method
+            一个promise必须提供一个then方法去接受当前的或者最终的值或者原因
+            一个promise的then方法接受两个参数
+                promise.then(onFulfilled, onRejected)
+                    1、onFulfilled 和 onRejected都是可选参数
+                        如果onFulfilled不是一个function，它将被忽略
+                        如果onRejected不是一个function，它将被忽略
+                    2、onFulfilled是一个function    
+                        它必须被执行在promise是 fulfilled 状态，并且promise的value是它的第一个参数
+                        在promise是 fulfilled 状态之前，它一定不能执行
+                        它只能被执行一次
+                    3、onRejected是一个function
+                        它必须被执行在promise是 rejected 状态，并且promise的reason是它的第一个参数
+                        在promise是 rejected 状态之前，它一定不能执行
+                        它只能被执行一次
+                    4、onFulfilled 和 onRejected一定不能执行，当执行上下文调用栈包含平台代码(仅执行上下文调用栈不包含代码才可以执行)[3.1]
+                    5、onFulfilled 和 onRejected一定被执行作为一个functions(没有this值)[3.2]
+                    6、同一个promise的then方法可以被多次执行
+                        如果promise是 fulfilled 状态，所有的各自的 onFulfilled 回调函数一定按照原始顺序被执行
+                        如果promise是 rejected 状态，所有的各自的 onRejected 回调函数一定按照原始顺序被执行
+                    7、then 必须返回一个 promise[3.3]
+                        promise2 = promise1.then(onFulfilled, onRejected)
+                        如果 onFulfilled 或者 onRejected 返回一个值x，运行Promise解决程序
+                        如果 onFulfilled 或者 onRejected 抛出一个异常e，promise2必须以这个e为原因拒绝(Promise.reject(e))
+                        如果 onFulfilled 不是一个function，并且promise1是 fulfilled 状态， promise2必须被 fulfilled 以同promise1一样的值
+                        如果 onRejected 不是一个function，并且promise是 rejected 状态，promise2必须被 rejected 以同promise1一样的原因
+        3、The Promise Resolution Procedure
+            promise解决程序是一个抽象操作讨论输入一个promise和一个值，我们表示为[[Resolve]](promise, x)，在这个x的行为至少有点像promise的假设下，如果x是一个thenable对象，它将企图创建一个promise
+            去领养这个x状态。否则它将用x值填充promise
+
+            运行[[Resolve]](promise, x)，履行一下步骤
+                1、如果promise和x引用相同的对象， reject promise 使用 TypeError 作为原因
+                2、如果x是一个promise，领养它的状态[3.4]
+                    1、如果x是 pending ，promise必须保持 pending 直到 x 是 fulfilled 或 rejected
+                    2、x是 fulfilled 状态， fulfill promise 用相同的值
+                    3、x是 rejected 状态， reject promise 用相同的原因
+                3、其他情况 x 是一个 object 或者 function
+                    1、设置 then 等于 x.then [3.5]
+                    2、如果检索 x.then 结果抛出一个异常 e ，拒绝这个promise用 e 作为原因
+                    3、如果 then 是一个function，执行它用x作为它的this，第一个参数 resolvePromise ， 第二个参数 rejectPromise
+                        1、resolvePromise 被执行带有一个参数y，运行 [[Resolve]](promise, y)
+                        2、rejectPromise 被执行带有一个参数原因r，reject promise with r
+                        3、如果 resolvePromise 和 rejectPromise 都被执行，或者多次执行相同的参数，第一个被执行的优先，其他被忽略
+                        4、如果执行then抛出一个异常 e 
+                            如果 resolvePromise 或者 rejectPromise 已经执行了 忽略它
+                            否则 reject promise with e 作为原因
+                    4、如果then不是一个function， fulfill promise with x
+                4、如果 x 不是一个object 或 funciton，fulfill promise with x
+
+            如果一个 promise 是 resolved 用一个参与 thenable 链，根据算法上将引导去无限递归，实操是被鼓励的，但是不是必须的，去检测这样的一个递归
+            和 reject promise 伴随着 TypeError 信息
+    Notes
+        1、平台代码意味着 引擎、环境和promise 实操代码，实际上，这个请求保证 onFulfilled 和 onRejected 执行异步，then被执行之后的事件循环里，有一个新鲜的栈
+        它可以被实施用一个macro-task 像 setTimeout 或者 setImmediate,或者被实施用一个 micro-task，例如 MutationObserver 或者 process.nextTick
+        自从promise实施是被考虑平台代码，它也许自己包含一个 task-scheduling queue 或 trampoline  
+        2、严格模式 this === undefined 非严格模式 this === window
+        3、实现可能允许 promise2 === promise1，只要满足所有要求，每一个实现都应该是否提供是否 promise2 === promise1，并且在什么情况下
+        4、一般来说，只有当 x 来自当前的实现时，才会知道 x 是一个真正的promise。 该条款允许使用特定于实现的手段来采用已知符合promise的状态。
+        5、
+
+
+
+
+ensures                 保证
+recursive               递归
+participates            参与
+circular                圆的
+precedence              优先级 take precedence 取得优先
+perform                 履行
+treatment               治疗
+assump                  假设                      
+adopt                   领养
+abstract                抽象的
+Procedure               程序
+originate               起源
+respective              各自的                                  
+ignore                  忽略
+optional                可选
+immutable               不可变
+exception               例外
+Terminology             术语
+companion               伴侣、配套
+facto                   事实上
+omitting                省略
+proposal                提议
+clause                  条款
+integrate               整合
+address                 n 地址 v 发表/讲话
+backward-compatible     向下兼容
+backward                落后
+compatible              兼容的
+minor                   次要的
+revise                  修正
+Although                虽然
+occasionally            偶尔
+organization            组织
+consider                考虑
+stable                  稳定
+as such                 像这样
+conform                 符合
+interacte               相互作用
+interoperable           可互操作的
+implementer             实施者
+fulfilled               成功
+
