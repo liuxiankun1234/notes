@@ -12,25 +12,23 @@ import { asap } from './asap';
 
 export default function then(onFulfillment, onRejection) {
   const parent = this;
-
   const child = new this.constructor(noop);
   
-  console.log(`child[PROMISE_ID] ---------------> ${child[PROMISE_ID] }`)
-
   // 什么情况下 child的PROMISE_ID属性可能是 undefined 呢  
   if (child[PROMISE_ID] === undefined) {
     // 补充内部属性
     makePromise(child);
   }
-
+  
   const { _state } = parent;
-
+  
+  debugger
+  
   /**
    *  PENDING   = void 0;
    *  FULFILLED = 1;
    *  REJECTED  = 2;
-   * 
-  **/
+   **/
   if (_state) {
     const callback = arguments[_state - 1];
     asap(() => invokeCallback(_state, child, callback, parent._result));

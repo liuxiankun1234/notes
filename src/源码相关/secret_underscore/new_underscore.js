@@ -1747,7 +1747,6 @@
 
     // Add a "chain" function. Start chaining a wrapped Underscore object.
     _.chain = function(obj) {
-        debugger
         var instance = _(obj);
         instance._chain = true;
         return instance;

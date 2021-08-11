@@ -88,7 +88,6 @@ function useSetTimeout() {
 
 const queue = new Array(1000);
 function flush() {
-  debugger
   for (let i = 0; i < len; i+=2) {
     let callback = queue[i];
     let arg = queue[i+1];

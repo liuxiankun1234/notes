@@ -131,12 +131,28 @@ function needsNew() {
   @constructor
 */
 
+
+/**
+ *  Promise构造器
+ *      内部属性
+ *          PROMISE_ID
+ *          _result
+ *          _state
+ *          _subscribers
+ *            i 添加then方法return的promise
+ *            i + 1 onFulfillment 
+ *            i + 2 onRejection
+ *      形参
+ *          resolver (function)   
+ *      一些内部校验
+ *          resolver must be fuction
+ *          called be new
+**/
 class Promise {
   constructor(resolver) {
     this[PROMISE_ID] = nextId();
     this._result = this._state = undefined;
     this._subscribers = [];
-
     // 内部有一个 new this.constructor(noop) 生成child实例
     if (noop !== resolver) {
       typeof resolver !== 'function' && needsResolver();
