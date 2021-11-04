@@ -34,7 +34,14 @@ function subscribe(parent, child, onFulfillment, onRejection) {
     const { _state, _subscribers } = parent;
 }
 
-function invokeCallback() {
+/**
+ *  invokeCallback执行then方法的回调函数
+ *      settled     当前promise的决议状态
+ *      promise     then return出去的promise
+ *      callback    执行的回调(成功或失败的回调)
+ *      detail      value 或 reason 
+**/
+function invokeCallback(settled, promise, callback, detail) {
     
 }
 
