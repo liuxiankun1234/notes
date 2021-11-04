@@ -13,8 +13,3 @@
 // import './talk_about_promise'
 // import './talk_about_ generator'
 import './talk_about_数组方法'
-
-
-
-
-// 新增测试代码
