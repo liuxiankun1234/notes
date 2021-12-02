@@ -5,8 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --config ./webpack.dev.config.js --display-error-details --mode development",
-    "prepare": "husky install"
+    "dev": "webpack-dev-server --config ./webpack.dev.config.js --display-error-details --mode development"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS"
+    }
   },
   "author": "",
   "license": "ISC",
@@ -29,6 +33,8 @@
     "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
+    "@commitlint/cli": "^15.0.0",
+    "@commitlint/config-conventional": "^15.0.0",
     "echarts": "^4.3.0",
     "underscore": "^1.9.1"
   }
