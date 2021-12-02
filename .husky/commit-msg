@@ -2,7 +2,3 @@
 . "$(dirname "$0")/_/husky.sh"
 
 echo 'commit msg'
-echo $1
-
-npx commitlint -e $1
-
