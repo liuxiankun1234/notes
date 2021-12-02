@@ -1,0 +1,28 @@
+# 1.0.0 (2021-12-02)
+
+
+### Bug Fixes
+
+* 优化 ([549ac6d](https://github.com/liuxiankun1234/notes/commit/549ac6dc776568dd3a5c1eb430bba4527931bc8d))
+
+
+### Features
+
+*  Object Functions ([8618a56](https://github.com/liuxiankun1234/notes/commit/8618a569e929d48ceeb505e6e7d5d60e3e0eb553))
+* 大结局前言 ([f64024f](https://github.com/liuxiankun1234/notes/commit/f64024ff9ce9a6397095837477def364309de950))
+* 分析promise代码 ([d4b3043](https://github.com/liuxiankun1234/notes/commit/d4b3043e6a9862383e206a86ebc2fd88535ff54d))
+* Array Functions 完结 ([1f1a59b](https://github.com/liuxiankun1234/notes/commit/1f1a59b462d01891f9c9f196dcefa8c4675b87d0))
+* debounce and throttle functions ([7b7772c](https://github.com/liuxiankun1234/notes/commit/7b7772cddb88ded86eb66b7e3851aa06ecb5c241))
+* Function Functions ([34a1192](https://github.com/liuxiankun1234/notes/commit/34a119244e4598aab37c11ba6701c6e3efb7e56f))
+* Function Functions ([430f042](https://github.com/liuxiankun1234/notes/commit/430f04227b5b498c64f6f2208868bab2f0b9f523))
+* HTTP报文学习 ([51b1934](https://github.com/liuxiankun1234/notes/commit/51b1934e3688b5bdef690afe57623dcf0dac07b3))
+* indexOf lastIndexOf ([5c82083](https://github.com/liuxiankun1234/notes/commit/5c82083898cfd54daa657aadfbb86b321de38007))
+* log 1 ([cca1ebb](https://github.com/liuxiankun1234/notes/commit/cca1ebbfd134db729096998efabc2777e4f25d50))
+* Object Functions 完结 ([0b9e7f8](https://github.com/liuxiankun1234/notes/commit/0b9e7f86e2ce84c7bb4cab961b89ac9fc4c2f767))
+* Object pick ([9b6bb56](https://github.com/liuxiankun1234/notes/commit/9b6bb56c64d9c10263991fda14c7875e0c742d04))
+* omit ([47efa13](https://github.com/liuxiankun1234/notes/commit/47efa13c3f69dc9184a55ffe361fb707c39d91ec))
+* partial函数 ([8347494](https://github.com/liuxiankun1234/notes/commit/8347494ec8427a3eb98e11f53ccef3ea2d145cf6))
+* promise/A+协议 ([84afd60](https://github.com/liuxiankun1234/notes/commit/84afd60866e494fde43c0b191816011469deaa22))
+
+
+
