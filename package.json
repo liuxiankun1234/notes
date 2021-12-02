@@ -33,8 +33,6 @@
     "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
-    "@commitlint/cli": "^15.0.0",
-    "@commitlint/config-conventional": "^15.0.0",
     "echarts": "^4.3.0",
     "underscore": "^1.9.1"
   }
