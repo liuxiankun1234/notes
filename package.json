@@ -10,7 +10,15 @@
   },
   "husky": {
     "hooks": {
+      "commit-msg": "npx commitlint -e $1",
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "src/**/*.{jsx,txs,ts,js,json,css,md}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   },
   "author": "",
   "license": "ISC",
