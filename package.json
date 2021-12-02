@@ -8,11 +8,6 @@
     "dev": "webpack-dev-server --config ./webpack.dev.config.js --display-error-details --mode development",
     "prepare": "husky install"
   },
-  "husky": {
-    "hooks": {
-      "commit-msg": "npx commitlint -e HUSKY_GIT_PARAMS"
-    }
-  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
