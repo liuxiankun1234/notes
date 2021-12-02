@@ -1991,7 +1991,7 @@
   "resolved" "https://registry.npmjs.org/core-util-is/-/core-util-is-1.0.2.tgz"
   "version" "1.0.2"
 
-"cosmiconfig@^7.0.0", "cosmiconfig@>=6":
+"cosmiconfig@^7.0.0":
   "integrity" "sha512-a1YWNUV2HwGimB7dU2s1wUMurNKjpx60HxBB6xUM8Re+2s1g1IIfJvFR0/iCF+XHdE0GMTKTuLR32UQff4TEyQ=="
   "resolved" "https://registry.npmjs.org/cosmiconfig/-/cosmiconfig-7.0.1.tgz"
   "version" "7.0.1"
@@ -2524,7 +2524,7 @@
     "memory-fs" "^0.4.0"
     "tapable" "^1.0.0"
 
-"enquirer@^2.3.5", "enquirer@^2.3.6", "enquirer@>= 2.3.0 < 3":
+"enquirer@^2.3.5", "enquirer@^2.3.6":
   "integrity" "sha512-yjNnPr315/FjS4zIsUxYguYUPP2e1NK4d7E7ZOLiyYCcbFBiTMyID+2wvm2w6+pZ/odMA7cRkjhsPbltwBOrLg=="
   "resolved" "https://registry.npmjs.org/enquirer/-/enquirer-2.3.6.tgz"
   "version" "2.3.6"
@@ -4182,9 +4182,8 @@
   "resolved" "https://registry.npmjs.org/jsonfile/-/jsonfile-6.1.0.tgz"
   "version" "6.1.0"
   dependencies:
-    "universalify" "^2.0.0"
-  optionalDependencies:
     "graceful-fs" "^4.1.6"
+    "universalify" "^2.0.0"
 
 "jsonparse@^1.2.0":
   "integrity" "sha1-P02uSpH6wxX3EGL4UhzCOfE2YoA="
@@ -7220,7 +7219,7 @@
   "resolved" "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
   "version" "0.0.6"
 
-"typescript@^4.4.3", "typescript@>=2.7":
+"typescript@^4.4.3":
   "integrity" "sha512-5BlMof9H1yGt0P8/WF+wPNw6GfctgGjXp5hkblpyT+8rkASSmkUKMXrxR0Xg8ThVCi/JnHQiKXeBaEwCeQwMFw=="
   "resolved" "https://registry.npmjs.org/typescript/-/typescript-4.5.2.tgz"
   "version" "4.5.2"

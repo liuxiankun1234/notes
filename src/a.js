@@ -1,4 +1,4 @@
-const a = 12;
+const ERR_OK = 0;
 
-a = 13;
-console.log(a)
+
+console.log(ERR_OK);
