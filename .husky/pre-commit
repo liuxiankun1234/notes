@@ -1,4 +1,10 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+echo $1
+
+echo $0
+
+echo $2
+
 npx commitlint -e $1
