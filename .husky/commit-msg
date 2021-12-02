@@ -3,4 +3,4 @@
 
 echo 'commit msg'
 
-npx commitlint -e $1
+npx commitlint -e $1 
