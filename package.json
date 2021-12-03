@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --config ./webpack.dev.config.js --display-error-details --mode development",
     "prepare": "husky install",
-    "changelog": "npx conventional-changelog-cli -p angular -i CHANGELOG.md -s -r 0"
+    "changelog": "npx conventional-changelog-cli -p angular -i CHANGELOG.md -s -r 0",
+    "cp": "npm run changelog && npm run build && npm run publish"
   },
   "author": "",
   "license": "ISC",
