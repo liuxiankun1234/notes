@@ -11,6 +11,7 @@
 *  Object Functions ([8618a56](https://github.com/liuxiankun1234/notes/commit/8618a569e929d48ceeb505e6e7d5d60e3e0eb553))
 * 大结局前言 ([f64024f](https://github.com/liuxiankun1234/notes/commit/f64024ff9ce9a6397095837477def364309de950))
 * 分析promise代码 ([d4b3043](https://github.com/liuxiankun1234/notes/commit/d4b3043e6a9862383e206a86ebc2fd88535ff54d))
+* 新增需求 ([dded9f6](https://github.com/liuxiankun1234/notes/commit/dded9f6b3534d5295bd7e701557730ab8a8969e2))
 * Array Functions 完结 ([1f1a59b](https://github.com/liuxiankun1234/notes/commit/1f1a59b462d01891f9c9f196dcefa8c4675b87d0))
 * debounce and throttle functions ([7b7772c](https://github.com/liuxiankun1234/notes/commit/7b7772cddb88ded86eb66b7e3851aa06ecb5c241))
 * Function Functions ([34a1192](https://github.com/liuxiankun1234/notes/commit/34a119244e4598aab37c11ba6701c6e3efb7e56f))
