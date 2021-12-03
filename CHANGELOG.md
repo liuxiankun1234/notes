@@ -5,7 +5,9 @@
 
 * 修复bug ([d716a60](https://github.com/liuxiankun1234/notes/commit/d716a60e235d22612127ec4141f93d13b94412b8))
 * 优化 ([549ac6d](https://github.com/liuxiankun1234/notes/commit/549ac6dc776568dd3a5c1eb430bba4527931bc8d))
+* 优化代码01 ([c8c09bc](https://github.com/liuxiankun1234/notes/commit/c8c09bc89854639e83642df53e86d7681756a852))
 * 优化配置 ([cdbea2f](https://github.com/liuxiankun1234/notes/commit/cdbea2f7eb464698fa9fc920e2fa04cbb0766335))
+* 优化配置文件 ([b1119f1](https://github.com/liuxiankun1234/notes/commit/b1119f1553fbc59ff7e23b9d1ac19a63c9dc1834))
 
 
 ### Features

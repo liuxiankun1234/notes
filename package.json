@@ -9,7 +9,7 @@
     "dev": "webpack-dev-server --config ./webpack.dev.config.js --display-error-details --mode development",
     "prepare": "husky install",
     "changelog": "npx conventional-changelog-cli -p angular -i CHANGELOG.md -s -r 0",
-    "prepublish": "npm run changelog && npm run build && npm publish" 
+    "prepublishOnly": "echo 'prepublish' && npm run changelog && npm run build"
   },
   "author": "",
   "license": "ISC",
