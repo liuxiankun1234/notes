@@ -1,3 +1,14 @@
+# Changelog
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [1.1.0](https://github.com/liuxiankun1234/notes/compare/v1.0.0...v1.1.0) (2021-12-04)
+
+
+### Features
+
+* 更新内容 ([86cda9f](https://github.com/liuxiankun1234/notes/commit/86cda9fbbe7b5e33073c7cc769474f1062b03e4c))
+
 ## [1.0.3](https://github.com/liuxiankun1234/notes/compare/v1.0.0...v1.0.3) (2021-12-04)
 
 
@@ -39,6 +50,3 @@
 * omit ([47efa13](https://github.com/liuxiankun1234/notes/commit/47efa13c3f69dc9184a55ffe361fb707c39d91ec))
 * partial函数 ([8347494](https://github.com/liuxiankun1234/notes/commit/8347494ec8427a3eb98e11f53ccef3ea2d145cf6))
 * promise/A+协议 ([84afd60](https://github.com/liuxiankun1234/notes/commit/84afd60866e494fde43c0b191816011469deaa22))
-
-
-
