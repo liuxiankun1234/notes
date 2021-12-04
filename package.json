@@ -8,7 +8,7 @@
     "build": "echo 'build OK'",
     "dev": "webpack-dev-server --config ./webpack.dev.config.js --display-error-details --mode development",
     "prepare": "husky install",
-    "release": "standard-version",
+    "release": "echo 'npm run build' && npm run build && 'build success' && standard-version",
     "prepublishOnly": "echo 'prepublish' && npm run changelog && git add CHANGELOG.md &&  git commit -m 'chore: 修改changelog' && git push   && npm run build"
   },
   "author": "",
