@@ -9,7 +9,7 @@
     "dev": "webpack-dev-server --config ./webpack.dev.config.js --display-error-details --mode development",
     "prepare": "husky install",
     "prepublishOnly": "echo 'npm run build start' && npm run build && echo 'npm run build OK' && standard-version",
-    "postpublish": "pusblish OK ~~~~~~~~~~~~~~~~~~~"
+    "postpublish": "git push origin --tags && git push"
   },
   "author": "",
   "license": "ISC",
