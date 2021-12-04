@@ -1958,17 +1958,6 @@
   dependencies:
     "q" "^1.5.1"
 
-"conventional-changelog-cli@^2.1.1":
-  "integrity" "sha1-ehGYC8OZk44FCdKt+Oeg4hPrmU4="
-  "resolved" "http://npmjs.zhi3.net/conventional-changelog-cli/-/conventional-changelog-cli-2.1.1.tgz"
-  "version" "2.1.1"
-  dependencies:
-    "add-stream" "^1.0.0"
-    "conventional-changelog" "^3.1.24"
-    "lodash" "^4.17.15"
-    "meow" "^8.0.0"
-    "tempfile" "^3.0.0"
-
 "conventional-changelog-codemirror@^2.0.8":
   "integrity" "sha1-OY6VMPCM407EZAr5jurzAi6x99w="
   "resolved" "http://npmjs.zhi3.net/conventional-changelog-codemirror/-/conventional-changelog-codemirror-2.0.8.tgz"
@@ -2066,7 +2055,7 @@
     "split" "^1.0.0"
     "through2" "^4.0.0"
 
-"conventional-changelog@^3.1.24", "conventional-changelog@3.1.24":
+"conventional-changelog@3.1.24":
   "integrity" "sha1-69GAsP0bLh8AlcSwT9CIaYNIpGQ="
   "resolved" "http://npmjs.zhi3.net/conventional-changelog/-/conventional-changelog-3.1.24.tgz"
   "version" "3.1.24"
@@ -7449,19 +7438,6 @@
     "mkdirp" "^0.5.0"
     "safe-buffer" "^5.1.2"
     "yallist" "^3.0.2"
-
-"temp-dir@^2.0.0":
-  "integrity" "sha1-vekrBb3+sVFugEycAK1FF38xMh4="
-  "resolved" "http://npmjs.zhi3.net/temp-dir/-/temp-dir-2.0.0.tgz"
-  "version" "2.0.0"
-
-"tempfile@^3.0.0":
-  "integrity" "sha1-U3ajSS3nxUFQ0MwGEsPwDiza92w="
-  "resolved" "http://npmjs.zhi3.net/tempfile/-/tempfile-3.0.0.tgz"
-  "version" "3.0.0"
-  dependencies:
-    "temp-dir" "^2.0.0"
-    "uuid" "^3.3.2"
 
 "terser-webpack-plugin@^1.4.1":
   "integrity" "sha512-ZXmmfiwtCLfz8WKZyYUuuHf3dMYEjg8NrjHMb0JqHVHVOSkzp3cW2/XG1fP3tRhqEqSzMwzzRQGtAPbs4Cncxg=="
