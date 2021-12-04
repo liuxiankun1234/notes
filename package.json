@@ -8,7 +8,6 @@
     "build": "echo 'build OK'",
     "dev": "webpack-dev-server --config ./webpack.dev.config.js --display-error-details --mode development",
     "prepare": "husky install",
-    "changelog": "npx conventional-changelog-cli -p angular -i CHANGELOG.md -s -r 0",
     "release": "standard-version",
     "prepublishOnly": "echo 'prepublish' && npm run changelog && git add CHANGELOG.md &&  git commit -m 'chore: 修改changelog' && git push   && npm run build"
   },
