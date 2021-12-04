@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.2](https://github.com/liuxiankun1234/notes/compare/v1.2.1...v1.2.2) (2021-12-04)
+
+
+### Bug Fixes
+
+* 优化配置文件 ([e3167a1](https://github.com/liuxiankun1234/notes/commit/e3167a144d0cc30b6fee49aada924e61a24da1c9))
+
 ### [1.2.1](https://github.com/liuxiankun1234/notes/compare/v1.2.0...v1.2.1) (2021-12-04)
 
 
