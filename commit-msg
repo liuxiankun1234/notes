@@ -1,0 +1,4 @@
+Usage:
+  husky install [dir] (default: .husky)
+  husky uninstall
+  husky set|add <file> [cmd]
