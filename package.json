@@ -11,14 +11,12 @@
     "changelog": "npx conventional-changelog-cli -p angular -i CHANGELOG.md -s -r 0",
     "prepublishOnly": "echo 'prepublish' && npm run changelog && git add CHANGELOG.md &&  git commit -m 'chore: 修改changelog' && git push   && npm run build"
   },
-  "lint-staged": {
-    "*.{js,ts}": "eslint --fix"
-  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@commitlint/cli": "^15.0.0",
     "@commitlint/config-conventional": "^15.0.0",
+    "@ireader/eslint-config": "^1.0.3",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-plugin-transform-runtime": "^6.23.0",
