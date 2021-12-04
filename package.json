@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "echo 'build OK'",
+    "build": "echo 'building'",
     "dev": "webpack-dev-server --config ./webpack.dev.config.js --display-error-details --mode development",
     "prepare": "husky install",
     "release": "echo 'npm run build' && npm run build && echo 'build success' && standard-version",
-    "prepublishOnly": "echo 'prepublish' && npm run changelog && git add CHANGELOG.md &&  git commit -m 'chore: 修改changelog' && git push   && npm run build"
+    "prepublishOnly": "echo 'npm run build start' && npm run build && echo 'npm run build OK' && standard-version"
   },
   "author": "",
   "license": "ISC",
