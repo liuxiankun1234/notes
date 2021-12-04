@@ -8,8 +8,8 @@
     "build": "echo 'building'",
     "dev": "webpack-dev-server --config ./webpack.dev.config.js --display-error-details --mode development",
     "prepare": "husky install",
-    "release": "echo 'npm run build' && npm run build && echo 'build success' && standard-version",
-    "prepublishOnly": "echo 'npm run build start' && npm run build && echo 'npm run build OK' && standard-version"
+    "prepublishOnly": "echo 'npm run build start' && npm run build && echo 'npm run build OK' && standard-version",
+    "postpublishOnly": "pusblish OK ~~~~~~~~~~~~~~~~~~~"
   },
   "author": "",
   "license": "ISC",
