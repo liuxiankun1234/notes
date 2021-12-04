@@ -7,7 +7,12 @@ const CONSTANTS = {
 
 alert(1)
 
-console.log(ERR_OK, 1);
+
+skdfjak
+sdfkjk
+
+
+console.log(ERR_OK, 1)
 
 
 
