@@ -57,7 +57,7 @@ https://leetcode.com/problems/sum-of-all-odd-length-subarrays/solution/
     vscode 操作技巧
     制作一个思维导图
     自上而下的编程模式 
-    先搭主逻辑架构 再编写代码
+    先搭主逻辑架构 再编写代码   很重要
 
 
 
