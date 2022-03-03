@@ -37,3 +37,17 @@ var twoSum = function(nums, target) {
         map.set(target - nums[i], i)
     }
 };
+
+
+var twoSum = function(nums, target) {
+    const map = {}
+
+    for(let i = 0; i < nums.length; i++) {
+        const current = nums[i]
+        if(map[current] === undefined) {
+            map[target - current] = i
+            continue
+        }
+        return [i, map[current]]
+    }
+}

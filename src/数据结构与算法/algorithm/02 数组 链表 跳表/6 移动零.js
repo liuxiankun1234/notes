@@ -42,3 +42,17 @@ var moveZeroes = function(nums) {
         }
     }
 };
+
+
+// 快慢指针
+var moveZeroes = function(nums) {   
+    let slow = 0
+    for(let fast = 0; fast < nums.length; fast++) {
+        const current = nums[fast]
+        if(current !== 0) {
+            nums[slow++] = current
+            nums[fast] = 0
+        }
+    }
+    return nums
+};

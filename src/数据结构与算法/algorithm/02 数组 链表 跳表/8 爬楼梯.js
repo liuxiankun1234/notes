@@ -81,4 +81,18 @@ var climbStairs = function(n) {
 };
 
 
+var climbStairs = function(n) {
+
+    if(n <= 3) return n
+    let a = 1, b = 2, c = 3;
+
+    for(let i = 3; i < n; i++) {
+        a = b;
+        b = c
+        c = a + b
+    }
+    return c;
+
+}
+
 climbStairs(0)

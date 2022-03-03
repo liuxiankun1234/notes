@@ -122,4 +122,43 @@ var threeSum = function(nums) {
     return sums
 };
 
+var threeSum = function(nums) {
+    debugger
+    if(nums.length < 3) return []
+    const ret = []
+    nums = nums.sort((a, b) => a - b)
+
+    var i = 0, j, k;
+
+    for(i; i < nums.length - 2; i++) {
+        j = i + 1
+        k = nums.length - 1
+
+        if(nums[i] > 0) break
+
+        if(i !== 0 && nums[i] === nums[i - 1]) continue
+
+        while(j < k) {
+            const total = nums[i] + nums[j] + nums[k]
+            
+            if (total === 0) {
+                ret.push([
+                    nums[i], nums[j], nums[k]
+                ])
+                while(j < k && nums[j] === nums[j + 1]) j++
+                while(j < k && nums[k] === nums[k - 1]) k--
+                j++ 
+                k--
+            }else if(total > 0) {
+                k--
+            }else{
+                j++
+            }
+        }
+    }
+
+    return ret
+}
+
+
 threeSum([1,2,-2,-1])
