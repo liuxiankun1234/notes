@@ -2,6 +2,13 @@ let len = 0;
 let vertxNext;
 let customSchedulerFn;
 
+
+
+/**
+ *  编排任务
+ *    向队列里添加任务，并且触发微任务 处理队列内容
+**/
+
 export var asap = function asap(callback, arg) {
   queue[len] = callback;
   queue[len + 1] = arg;

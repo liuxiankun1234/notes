@@ -1,15 +1,21 @@
 {
   "name": "notes",
-  "version": "1.0.0",
+  "version": "1.3.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --config ./webpack.dev.config.js --display-error-details --mode development"
+    "build": "echo 'building'",
+    "dev": "webpack-dev-server --config ./webpack.dev.config.js --display-error-details --mode development",
+    "prepare": "husky install",
+    "prepublishOnly": "echo 'npm run build start' && npm run build && echo 'npm run build OK' && standard-version",
+    "postpublish": "git push origin --tags && git push"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@commitlint/cli": "^15.0.0",
+    "@commitlint/config-conventional": "^15.0.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-plugin-transform-runtime": "^6.23.0",
@@ -17,9 +23,13 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-latest": "^6.24.1",
     "css-loader": "^2.1.0",
+    "eslint": "^8.4.0",
     "html-webpack-plugin": "^3.2.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.1.2",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
+    "standard-version": "^9.3.2",
     "style-loader": "^0.23.1",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.29.6",

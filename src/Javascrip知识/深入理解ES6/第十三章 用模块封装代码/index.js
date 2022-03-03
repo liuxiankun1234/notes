@@ -1,6 +1,10 @@
 import ERR_OK from './test_01'
 import * as all from './test_01';
-console.log(ERR_OK, all);
+
+import { PROMISE_ID } from './test_01'
+
+
+console.log(`PROMISE_ID-----------> ${PROMISE_ID}`);
 /**
  *      全局作用域命名冲突问题和安全问题 才会有模块化
  * 
@@ -28,14 +32,15 @@ console.log(ERR_OK, all);
  *          import关键字 从那个模块导入标识符
  *              import { identifier } from './index.js'
  *          导入绑定的列表不是解构对象
- *          从模块中导入一个绑定时，他就好像使用const定义的一样 无法定义另一个同名变量（包含导入另一个同名变量） 也不法在import之前使用该变量
+ *          从模块中导入一个绑定时，他就好像使用const定义的一样 无法定义另一个同名变量（包含导入另一个同名变量） 也不放在import之前使用该变量
  *          
  *      导入单个绑定 import { num } from '../index.js'
  *      导入多个绑定 import { num, multiply } from '../index.js'
  *      导入整个模块 将所有都挂在导example对象上 import * as example from '../index.js' 
- *      
+ *     
  *      不管import语句把一个模块写了多少次 该模块将只执行一次（类似单例模式 实际上是导入代码执行后 实例化过后的模块会被保存在内存中）
- *      
+ *      不同模块import同一个模块 该模块也仅只执行一次
+ * 
  *      导出 和 导入时重命名
  *          export { add as sum } 将add重新命名为sum导出
  *          import { sum as add } 将sum重新命名为add导入

@@ -3,6 +3,10 @@
 //     (c) 2009-2018 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 //     Underscore may be freely distributed under the MIT license.
 
+// lxk_test_03_20211104 新增二次提交
+// 我这块再改其他东西了
+
+
 
 // 立即执行函数表达式
 (function() {
@@ -1747,7 +1751,6 @@
 
     // Add a "chain" function. Start chaining a wrapped Underscore object.
     _.chain = function(obj) {
-        debugger
         var instance = _(obj);
         instance._chain = true;
         return instance;
