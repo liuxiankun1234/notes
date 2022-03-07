@@ -37,4 +37,28 @@ var isValid = function(s) {
     }
     return arr.length === 0
 };
+
+
+var isValid = function(s) {
+    if(s.length % 2 !== 0) return false
+    var stack = [],
+     keys = {
+         '(': ')',
+         '{': '}',
+         "[": ']'
+     }
+ 
+     for(let char of s) {
+         if(keys[char]) {
+             stack.push(keys[char])
+         }else{
+             if(stack.pop() !== char) {
+                 return false
+             }
+         }
+     }
+ 
+    return stack.length === 0
+ };
+ 
 isValid('(]]]]]')
