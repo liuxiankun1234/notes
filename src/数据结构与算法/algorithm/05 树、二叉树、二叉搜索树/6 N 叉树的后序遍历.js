@@ -19,20 +19,17 @@
  * @param {Node} root
  * @return {number[]}
  */
-var preorder = function(root) {
+var postorder = function(root) {
     const tree = [];
+   
+    const postorder = (root) => {
+        if(root === null) return;
 
-    const preorder = (root) => {
-        if(!root) return;
-
-        root.children.forEach(child => {
-            preorder(child)
-        })
+        if(root.children) {
+            root.children.forEach(child => postorder(child))
+        }
         tree.push(root.val)
     }
-
-    preorder(root)
-    
-
-    return tree;
+    postorder(root)
+    return tree
 };

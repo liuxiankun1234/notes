@@ -40,6 +40,24 @@ var preorder = function(root) {
     return tree;
 };
 
+/**
+ * @param {Node} root
+ * @return {number[]}
+ */
+var preorder = function(root) {
+    const tree = [];
+ 
+    const preorder = (root) => {
+        if (root === null) return
+
+        tree.push(root.val)
+        if(root.children) {
+            root.children.forEach(child => preorder(child))
+        }
+    }
+    preorder(root)
+    return tree;
+ };
 
 /**
  * // Definition for a Node.

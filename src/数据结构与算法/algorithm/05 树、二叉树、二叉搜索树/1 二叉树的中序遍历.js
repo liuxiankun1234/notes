@@ -38,6 +38,22 @@ var inorderTraversal = function(root) {
 };
 
 
+var inorderTraversal = function(root) {
+    let tree = []
+ 
+     const inorder = (root) => {
+         if(root === null) {
+             return
+         }
+         inorder(root.left)
+         tree.push(root.val)
+         inorder(root.right)
+     }
+     inorder(root)
+     return tree
+ };
+
+
 
 
 /**
@@ -68,5 +84,3 @@ var inorderTraversal = function(root) {
     
     return tree;
 };
-
-

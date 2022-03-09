@@ -39,3 +39,35 @@ var levelOrder = function(root) {
     }
     return tree
 };
+
+
+/**
+ * // Definition for a Node.
+ * function Node(val,children) {
+ *    this.val = val;
+ *    this.children = children;
+ * };
+ */
+
+/**
+ * @param {Node} root
+ * @return {number[][]}
+ */
+var levelOrder = function(root) {
+    var tree = []
+    const levelOrder = (root, level) => {
+        if(root == null) return
+
+        tree[level] = tree[level] || []
+        tree[level].push(root.val)
+        
+        level++;
+        if(root.children) {
+            root.children.forEach(child => {
+                levelOrder(child, level)
+            })
+        }
+    }
+    levelOrder(root, 0)
+    return tree
+};
