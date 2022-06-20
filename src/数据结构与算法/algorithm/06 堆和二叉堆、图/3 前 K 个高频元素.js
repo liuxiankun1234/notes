@@ -1,12 +1,11 @@
 /**
  *  题目
- *      最小的k个数
+ *      前 K 个高频元素
  *  地址
- *      https://leetcode-cn.com/problems/zui-xiao-de-kge-shu-lcof/
+ *      https://leetcode-cn.com/problems/top-k-frequent-elements/
  *  解题思路
- *      1、sort slice
- *      2、快排   这个到时候可以看下
- *      3、小顶堆
+ *      1、快排   这个到时候可以看下
+ *      2、大顶堆
 */
 /**
  * @param {number[]} arr
