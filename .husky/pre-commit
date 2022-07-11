@@ -1,7 +1,2 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
-<<<<<<< HEAD
-
-
-=======
->>>>>>> lxk_test_20220711
