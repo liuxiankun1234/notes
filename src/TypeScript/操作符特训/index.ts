@@ -3,6 +3,7 @@
  *  in
  *  as
  *  never
+ *  any
  *  keyof
  *      keyof any
  *  typeof
