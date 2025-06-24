@@ -52,6 +52,7 @@
  *              不必须命名成source、subString，下面也支持 但是s、sub必须是string类型
  *              const search:SearchFunc = (s, sub) => true;
  *      可索引的类型
+ *          TODO 这块需要单独看下 没有清晰 symbol number string 类型 都需要单独看下
  *          可索引的类型有一个索引签名，描述了对象索引的类型和索引对应返回值的类型
  *          可以描述通过索引得到的类型arr[0] or ageMap['age']
  *              interface StringArray {
@@ -60,7 +61,7 @@
  *              这个索引签名表示用number去索引StringArray时会返回一个string类型的值
  *              let myArray: StringArray = ["Bob", "Fred"];
  *          索引签名类型
- *              仅支持 数字 & 字符串 类型
+ *              仅支持 数字 & 字符串 类型 数字类型和字符串索引类型是有区别的
  *                  可以同时使用数字、字符串签名，但是数字索引返回值必须是字符串索引返回值的子类型
  *                  已声明属性和索引签名类型必须一致，否则类型检查器会错误提示
  *                      interface NumberDictionary {
@@ -134,3 +135,15 @@ interface Ponit {
     readonly x: number;
     readonly y: number;
 }
+interface User {
+    [prop: number]: number;
+    age: string;
+}
+
+// const users: User = ['bob', 'tom', 'jerry'];
+
+// const us2: User = {
+//     0: 'bob',
+//     1: '',
+//     age: 12
+// }

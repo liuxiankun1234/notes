@@ -1,9 +1,3 @@
-// 基础类型
-// let n: number = 1;
-var isDone = false;
-var string = "string";
-console.log(isDone, string);
-
 /**
  *  基本类型
  *      布尔值
@@ -29,6 +23,8 @@ console.log(isDone, string);
  *          tuple[2] = 'abc' // success, 可以赋值给(string | number)类型
  *      枚举
  *          默认从数字类型0开始编号，自增，如果有赋值 以当前值为准
+ *          数字类型的值枚举会进行反向映射
+ *          非数字类型的值枚举不会进行反向映射
  *          枚举逻辑 Color[ Color['Red'] = 0 ] = 'Red'
  *          enum  Color { Red, Green = 2, Blue }
  *          Color.Red === 0 // true
@@ -65,7 +61,6 @@ console.log(isDone, string);
  *              let len1: number = (<string>someValue).length;
  *              let len: number = (someValue as String).length;
  *
- *
  *      疑问
  *          数组和元组有什么区别?
  *             常规数组限制了元素的类型必须唯一，不确定长度
@@ -79,3 +74,7 @@ console.log(isDone, string);
  *          object类型干嘛用的？
  *
  **/
+// 基础类型
+// let n: number = 1;
+var number = 12, string = 'string', isDone = false, arr1 = [1, 2, '3'];
+console.log(number, isDone, string);

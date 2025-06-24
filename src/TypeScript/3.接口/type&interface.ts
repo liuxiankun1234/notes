@@ -1,3 +1,11 @@
+/*
+ * @Author: liuxiankun liuxiankun@zhangyue.com
+ * @Date: 2024-09-10 20:03:57
+ * @LastEditors: liuxiankun liuxiankun@zhangyue.com
+ * @LastEditTime: 2024-10-20 13:52:27
+ * @FilePath: /private/notes/src/TypeScript/3.接口/type&interface.ts
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 /**
  *  比较 type 和 interface 
  *      1.可以定义的值不同
@@ -19,17 +27,22 @@
  *      联合类型
  *          基本类型的值 直接取并集
  *          只要满足任意一个的type声明即可，不需要同时满足多个type声明，同时可以使用其他type声明的部分属性
+ *          但是不能定义联合类型不存在的属性
  *              type T5 = { name: string; sex: 1 | 0 };
  *              type T6 = { age: number; color: string; } | T5;
  *              const t6: T6 = { name: '', sex: 1 } // ✅
  *              const t6: T6 = { name: '', sex: 1, age: 18 } // ✅
  *              const t6: T6 = { age: 18, name: '' } // ❌
  *      交叉类型
- *          需要同时满足多个type声明
+ *          需要同时满足多个type声明的全部属性
  *              type T5 = { name: string; sex: 1 | 0 };
- *              type T6 = { age: number; color: string; } | T5;
+ *              type T6 = { age: number; color: string; } & T5;
  *              const t6: T6 = { name: '', sex: 1, age: 178, color: '' } // ✅
- *          基本类型不需要使用 感觉没啥意义
+ *          基本类型使用交叉类型场景    
+ *              可以过滤出同类型的联合类型值
+ *                  type A = 'name' | 'age' | 1 | 2;
+ *                  type A1 = A & string; // 'name' | age
+ *          
  *              type T7 = string & number; // never 
  *              const t7:T7 = (() => {
  *                  while(true) {}
@@ -60,12 +73,12 @@ type T4 = {
 type T5 = { name: string; sex: 1 | 0 };
 type T6 = { age: number; color: string; } | T5;
 type T7 = { age: number; color: string; } & T5;
-const t4:T6 = {
+const t4: T6 = {
     name: '18',
     color: '',
     age: 18,
 }
-const t5:T7 = {
+const t5: T7 = {
     name: '18',
     age: 18,
     color: ''
